@@ -358,7 +358,7 @@ function processJSON(txt) {
 function sanitizeForUrl(name) {
     if (!name) name = "unknown";
     // Replace all non-alphanumeric characters with underscore
-    name = name.replace(/[^a-zA-Z0-9_-]/g, "_");
+    name = name.replace(/[<>:"/\\|?* .,&#]/g, "_");
     // Collapse multiple underscores
     name = name.replace(/_+/g, "_");
     // Trim leading/trailing underscores
