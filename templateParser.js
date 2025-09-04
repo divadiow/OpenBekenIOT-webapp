@@ -367,7 +367,14 @@ function sanitizeFilename(name) {
 
 
 function pageNameForDevice(device) {
-    const baseName = (device.vendor || "Unknown") + "_" + (device.model || device.name || "NA");
+	let start = (device.vendor || "Unknown");
+	let sub = (device.model || device.name || "NA");
+    let baseName;
+	if(sub.startsWith(start)) {
+		baseName = sub;
+	} else {
+		baseName = start + "_" + sub;
+	}
     return sanitizeFilename(baseName);
 }
 
