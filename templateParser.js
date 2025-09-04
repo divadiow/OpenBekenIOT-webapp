@@ -355,10 +355,18 @@ function processJSON(txt) {
     return processJSONInternal(txt);
 }
 // Helper to make safe filenames
-function sanitizeFilename(name) {
+function sanitizeForUrl(name) {
     if (!name) name = "unknown";
-    return name.replace(/[<>:"/\\|?* ]/g, "_");
+    // Replace all non-alphanumeric characters with underscore
+    name = name.replace(/[^a-zA-Z0-9_-]/g, "_");
+    // Collapse multiple underscores
+    name = name.replace(/_+/g, "_");
+    // Trim leading/trailing underscores
+    name = name.replace(/^_+|_+$/g, "");
+    return name || "unknown";
 }
+
+
 
 
 function pageNameForDevice(device) {
