@@ -357,7 +357,7 @@ function processJSON(txt) {
 // Helper to make safe filenames
 function sanitizeFilename(name) {
     if (!name) name = "unknown";
-    name = name.replace(/[<>:"/\\|?* .,&#]/g, "_");
+    name = name.replace(/[<>:"/\\|?* .,&#+]/g, "_");
     name = name.replace(/_+/g, "_");
     name = name.replace(/^_+|_+$/g, "");
     return name || "unknown";
