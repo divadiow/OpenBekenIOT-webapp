@@ -44,6 +44,10 @@ function createDeviceHTML(device, safeName) {
     const parsed = processJSON_OpenBekenTemplateStyle(device);
     const pinsDesc = parsed.desc.replace(/\n/g, "<br>");
     const rawTemplate = JSON.stringify(device, null, 2);
+	const showTuyaWarning = (device.keywords || []).some(k => /tuyamcu/i.test(k));
+	const showAddressableLED = (device.keywords || []).some(k => /ws2812|sm16703/i.test(k));
+
+
 
     return `
 <!DOCTYPE html>
@@ -92,6 +96,7 @@ textarea { width: 100%; height: 250px; font-family: monospace; }
       <div class="card-body">
         <textarea readonly id="deviceTemplate">${rawTemplate}</textarea>
         <button class="btn btn-primary copy-btn" onclick="copyTemplate()">Copy Template</button>
+        <button class="btn btn-primary copy-btn" onclick="showTemplateTutorial()">View Templates Tutorial</button>
       </div>
     </div>
   </div>
@@ -103,6 +108,40 @@ textarea { width: 100%; height: 250px; font-family: monospace; }
     </div>
   </div>
 
+	${showTuyaWarning ? `
+	<div class="col-12 mb-3">
+	  <div class="card">
+		<div class="card-body">
+		  <p class="font-weight-bold" style="font-size: 1.5rem;">
+			Warning! This device is using TuyaMCU. Please consult generic TuyaMCU guide: 
+			<a href="https://www.elektroda.com/rtvforum/topic4038151.html" target="_blank">
+			  TuyaMCU flashing, setup and configuration guide - configure dpIDs for Home Assistant
+			</a>
+		  </p>
+		</div>
+	  </div>
+	</div>
+	` : ""}
+
+
+	${showAddressableLED ? `
+	<div class="col-12 mb-3">
+	  <div class="card">
+		<div class="card-body">
+		  <p class="font-weight-bold" style="font-size: 1.5rem;">
+			Warning! This device is using per-pixel addressable LEDs. Please consult generic PixelAnim guide: 
+			<a href="https://www.elektroda.com/rtvforum/topic4057187.html" target="_blank">
+			  OpenBeken WS2812B animations - new HTTP panel integration, PixelAnim driver
+			</a>
+		  </p>
+		</div>
+	  </div>
+	</div>
+	` : ""}
+
+  
+  
+  
   <div class="col-12 mb-3">
     <div class="card">
       <div class="card-body">
@@ -117,6 +156,7 @@ textarea { width: 100%; height: 250px; font-family: monospace; }
       </div>
     </div>
   </div>
+  
 </div>
 </div>
 
@@ -126,6 +166,9 @@ function copyTemplate() {
     txt.select();
     document.execCommand("copy");
     alert("Device template copied!");
+}
+function showTemplateTutorial() {
+    window.open("https://www.youtube.com/watch?v=VDbaLR_0YWs","_blank");
 }
 </script>
 </body>
