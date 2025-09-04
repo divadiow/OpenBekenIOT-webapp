@@ -359,6 +359,7 @@ function sanitizeForUrl(name) {
     if (!name) name = "unknown";
     // Replace all non-alphanumeric characters with underscore
     name = name.replace(/[<>:"/\\|?* .,&#]/g, "_");
+    name = name.replace("&", "_");
     // Collapse multiple underscores
     name = name.replace(/_+/g, "_");
     // Trim leading/trailing underscores
