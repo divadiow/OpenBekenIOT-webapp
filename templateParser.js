@@ -357,8 +357,9 @@ function processJSON(txt) {
 // Helper to make safe filenames
 function sanitizeFilename(name) {
     if (!name) name = "unknown";
-    return name.replace(/[<>:"/\\|?*]/g, "_");
+    return name.replace(/[<>:"/\\|?* ]/g, "_");
 }
+
 
 function pageNameForDevice(device) {
     const baseName = (device.vendor || "Unknown") + "_" + (device.model || device.name || "NA");
