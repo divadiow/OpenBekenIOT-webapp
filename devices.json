@@ -12399,7 +12399,7 @@
       "5": "BP5758D_DAT;0",
       "6": "BP5758D_CLK;0"
     },
-    "command": "powersave 1\r\nBP5758D_Current 10 10\r\n",
+    "command": "powersave 1\r\nBP5758D_Current 10 10\r\nLED_Map -1 -1 -1 3 4\r\n",
     "image": "https://obrazki.elektroda.pl/4210559400_1757052854.jpg",
     "wiki": "https://www.elektroda.com/rtvforum/topic4137054.html"
   },
