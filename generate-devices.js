@@ -173,7 +173,7 @@ textarea { width: 100%; height: 250px; font-family: monospace; }
   
   
   <div class="col-12 mb-3">
-    <div class="card">">
+    <div class="card">
       <div class="card-header">Futher reading</div>
       <div class="card-body">
 	  <p class="font-weight-bold" style="font-size: 1.5rem;">
