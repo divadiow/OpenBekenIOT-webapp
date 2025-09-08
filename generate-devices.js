@@ -36,6 +36,18 @@ fs.mkdirSync(devicesDir, { recursive: true });
 
 const { processJSON_OpenBekenTemplateStyle, pageNameForDevice, sanitizeFilename } = require(path.join(__dirname, "templateParser.js"));
 
+
+function comparePins(p1, p2) {
+    if (!p1 || !p2) return 0;
+    const keys = new Set([...Object.keys(p1), ...Object.keys(p2)]);
+    let match = 0;
+    keys.forEach(k => {
+        if (p1[k] && p2[k] && p1[k] === p2[k]) match++;
+    });
+    const total = Math.max(Object.keys(p1).length, Object.keys(p2).length);
+    return total > 0 ? (match / total) : 0;
+}
+
 function createDeviceHTML(device, safeName) {
     const detailed = !!device.bDetailed;
     const englishLink = device.wiki || "#";
@@ -47,7 +59,25 @@ function createDeviceHTML(device, safeName) {
 	const showTuyaWarning = (device.keywords || []).some(k => /tuyamcu/i.test(k));
 	const showAddressableLED = (device.keywords || []).some(k => /ws2812|sm16703/i.test(k));
 
-
+    let peers = [];
+    if (device.pins && Object.keys(device.pins).length) {
+        peers = data.devices
+            .filter(d => d !== device && d.pins && Object.keys(d.pins).length)
+            .map(d => {
+                const ratio = comparePins(device.pins, d.pins);
+                return { d, ratio };
+            })
+            .filter(x => x.ratio > 0)
+            .sort((a, b) => b.ratio - a.ratio)
+            .slice(0, 5)
+            .map(x => {
+                const peerSafe = sanitizeFilename(pageNameForDevice(x.d));
+                const pct = (x.ratio * 100).toFixed(1);
+                return `<li><a href="${peerSafe}.html">${x.d.name || peerSafe}</a> - ${pct}% match</li>`;
+            });
+    }
+	
+	
 
     return `
 <!DOCTYPE html>
@@ -143,12 +173,13 @@ textarea { width: 100%; height: 250px; font-family: monospace; }
   
   
   <div class="col-12 mb-3">
-    <div class="card">
+    <div class="card">">
+      <div class="card-header">Futher reading</div>
       <div class="card-body">
 	  <p class="font-weight-bold" style="font-size: 1.5rem;">
           ${detailed 
-            ? `Read detailed flashing guide and get help in device topic: <a href="${englishLink}" target="_blank">English guide</a>, <a href="${polishLink}" target="_blank">Polish guide</a>`
-            : `Read more information and get help on forum: <a href="${englishLink}" target="_blank">English thread</a>, <a href="${polishLink}" target="_blank">Polish thread</a>`
+            ? `Read detailed flashing guide and get help in device topic: <a href="${englishLink}" target="_blank">English guide</a>, see also <a href="${polishLink}" target="_blank">Polish guide</a>`
+            : `Read more information and get help on forum: <a href="${englishLink}" target="_blank">English thread</a>, see also <a href="${polishLink}" target="_blank">Polish thread</a>`
           }
         </p>
         ${device.product ? `<p>You can also visit <a href="${device.product}" target="_blank">shop site</a>.</p>` : ""}
@@ -157,6 +188,19 @@ textarea { width: 100%; height: 250px; font-family: monospace; }
     </div>
   </div>
   
+  
+    ${peers.length ? `
+    <div class="col-12 mb-3">
+      <div class="card">
+        <div class="card-header">Devices with similar GPIO configuration</div>
+        <div class="card-body">
+          <ul>
+            ${peers.join("\n")}
+          </ul>
+        </div>
+      </div>
+    </div>` : ""}
+	
 </div>
 </div>
 
