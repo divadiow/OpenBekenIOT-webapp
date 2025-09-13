@@ -5014,12 +5014,7 @@
       "chip": "RTL87X0C",
       "board": "TODO",
       "flags": "1024",
-      "keywords": [
-        "double",
-        "outdoors",
-        "waterproof",
-        "outlet"
-      ],
+      "keywords": ["double", "outdoors", "waterproof", "outlet"],
       "pins": {
         "2": "LED_n;2",
         "3": "WifiLED;0",
