@@ -5007,6 +5007,34 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4066446.html"
     },
     {
+      "vendor": "TP-Link",
+      "bDetailed": "0",
+      "name": "Kasa Dual WiFi Exterior Smart Plug (US)",
+      "model": "KP400",
+      "chip": "RTL87X0C",
+      "board": "TODO",
+      "flags": "1024",
+      "keywords": [
+        "double",
+        "outdoors",
+        "waterproof",
+        "outlet"
+      ],
+      "pins": {
+        "2": "LED_n;2",
+        "3": "WifiLED;0",
+        "7": "Rel;2",
+        "8": "Rel;1",
+        "9": "WifiLED;0",
+        "10": "LED_n;1",
+        "11": "Btn;2",
+        "12": "Btn;1"
+      },
+      "command": "setButtonTimes 50 1 5",
+      "image": "https://obrazki.elektroda.pl/2201733400_1757640007.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4144475.html"
+    },
+    {
       "vendor": "BSEED",
       "bDetailed": "0",
       "name": "2-Gang SmartLife Switch",
