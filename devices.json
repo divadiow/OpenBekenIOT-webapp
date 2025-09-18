@@ -502,7 +502,7 @@
       "chip": "BK7231N",
       "board": "CB2S",
       "flags": "1024",
-      "keywords": ["power metering", "smart plug", "bl0937"],
+      "keywords": ["power metering", "smart plug", "bl0937", "RM-TY016-MAJ2HG","RM-SMART"],
       "pins": {
         "6": "BL0937CF1;0",
         "7": "BL0937CF;0",
@@ -523,7 +523,7 @@
       "chip": "BK7231T",
       "board": "WB3S",
       "flags": "50180",
-      "keywords": ["IR", "RF", "Remote", "USB", "5V"],
+      "keywords": ["IR", "RF", "Remote", "USB", "5V", "CS-IRC-RF V1.3", "Z40029", "21/09/23"],
       "pins": {
         "8": "IRRecv;20",
         "9": "LED;10",
