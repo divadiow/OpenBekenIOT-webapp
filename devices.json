@@ -8,7 +8,7 @@
       "model": "ZN268131",
       "chip": "BK7231T",
       "board": "WB2S",
-      "keywords": ["switch", "relay", "AP8506"],
+      "keywords": ["switch", "relay", "AP8506", "YTA-SS-105DM"],
       "pins": {
         "6": "Rel;1",
         "7": "WifiLED_n;1",
@@ -74,7 +74,7 @@
       "chip": "ESP32-DOWD-R2-V3",
       "board": "on PCB",
       "flags": "1024",
-      "keywords": ["LP3667", "3-gang switch"],
+      "keywords": ["LP3667", "3-gang switch", "W18-1AST"],
       "pins": {},
       "command": "",
       "image": "https://obrazki.elektroda.pl/2708764200_1749056310.jpg",
@@ -118,7 +118,10 @@
         "TuyaMCU",
         "energy meter",
         "XJ26225",
-        "A2307_1PH_WIFI_3DP_LCD V1.1"
+        "A2307_1PH_WIFI_3DP_LCD V1.1",
+		"c3xogekcff60tlig",
+		"TM1729",
+		"HC89F0541"
       ],
       "pins": {},
       "command": "",
@@ -168,7 +171,7 @@
       "chip": "LN882H",
       "board": "WL2S",
       "flags": "1024",
-      "keywords": ["socket", "bl0937"],
+      "keywords": ["socket", "bl0937", "WF09-1 Plug 20A"],
       "pins": {
         "0": "LED;0",
         "3": "Btn;1",
@@ -190,7 +193,7 @@
       "chip": "LN882H",
       "board": "on PCB",
       "flags": "1024",
-      "keywords": ["LN882HKI", "BL0937", "socket"],
+      "keywords": ["LN882HKI", "BL0937", "socket", "BP2525"],
       "pins": {
         "6": "LED_n;0",
         "7": "Btn;0",
@@ -211,7 +214,7 @@
       "chip": "LN882H",
       "board": "WL2S",
       "flags": "1024",
-      "keywords": ["power", "socket", "4400W"],
+      "keywords": ["power", "socket", "4400W", "M3FF3.0-1A DC5V", "BP2525"],
       "pins": {
         "3": "Btn;0",
         "7": "BL0937CF1;0",
@@ -255,7 +258,7 @@
       "chip": "BK7231T",
       "board": "WB2S",
       "flags": "1156",
-      "keywords": ["power metering", "energy metering"],
+      "keywords": ["power metering", "energy metering","BL0942", "WRG RE-105DM1F 5VDC"],
       "pins": {
         "6": "LED_n;1",
         "7": "Btn;1",
@@ -273,7 +276,7 @@
       "chip": "BL602",
       "board": "SDV-002_V1.2",
       "flags": "134218820",
-      "keywords": ["relay", "garage", "module"],
+      "keywords": ["relay", "garage", "module", "4x SONGLE SRD-05VDC-SL-C"],
       "pins": {
         "0": "Rel;4",
         "1": "Btn;4",
@@ -343,7 +346,7 @@
       "chip": "BL602",
       "board": "SM-028_V1.3",
       "flags": "1024",
-      "keywords": ["south america", "230v", "ITEAD", "BL0937", "bouffalo"],
+      "keywords": ["south america", "230v", "ITEAD", "BL0937", "bouffalo","QLRELAY BRD-SS-105LMF"],
       "pins": {
         "2": "Rel;0",
         "3": "BL0937CF1;0",
@@ -364,7 +367,7 @@
       "chip": "BK7231N",
       "board": "WB3S",
       "flags": "1024",
-      "keywords": ["button", "canada", "TuyaMCU"],
+      "keywords": ["button", "canada", "TuyaMCU", "BYD BF7812AM28-TJLX-P1Q6"],
       "pins": {},
       "command": "",
       "image": "https://obrazki.elektroda.pl/5985347300_1715119401.png",
