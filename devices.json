@@ -14321,6 +14321,26 @@
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=20927159"
     },
     {
+      "vendor": "LSC",
+      "bDetailed": "0",
+      "name": "LSC Connect Smart Neon LED Strip 3m",
+      "model": "3200654",
+      "chip": "LN882H",
+      "board": "on PCB",
+      "flags": "1032",
+      "keywords": ["led strip", "WS2811", "addressable", "24v"],
+      "pins": {
+        "6": "SM16703P_DIN;0",
+        "7": "PWM;10",
+        "11": "Rel;52",
+        "20": "Btn;43",
+        "21": "IRRecv;0"
+      },
+      "command": "backlog startDriver DDP; startDriver SM16703P; SM16703P_Init 36 RBG; startDriver pixelAnim;",
+      "image": "https://obrazki.elektroda.pl/7599725600_1730200466.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4083817.html"
+    },
+    {
       "vendor": "Milfra",
       "bDetailed": "0",
       "name": "Milfra TB-23 Wifi Smart Switch",
