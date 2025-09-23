@@ -691,8 +691,19 @@ function refreshJSON() {
 			bt.onclick = function() {
 				window.open("devices/"+pageName + ".html"); // open device page in new tab
 			};
+			var bt2 = document.createElement('button');
+			bt2.innerText = "Copy link!";
+			bt2.onclick = function() {
+				let url = window.location.origin + "/devices/" + pageName + ".html";
+				navigator.clipboard.writeText(url).then(() => {
+					alert("Link copied: " + url);
+				}).catch(err => {
+					console.error("Failed to copy: ", err);
+				});
+			};
 		}
 		td5.appendChild(bt);
+		td5.appendChild(bt2);
 		var img = document.createElement('img');
 		
 		var a = document.createElement('a');
