@@ -694,9 +694,9 @@ function refreshJSON() {
 			var bt2 = document.createElement('button');
 			bt2.innerText = "Copy link!";
 			bt2.onclick = function() {
-				let url = window.location.origin + "/devices/" + pageName + ".html";
+				let url = window.location.origin + "/webapp/devices/" + pageName + ".html";
 				navigator.clipboard.writeText(url).then(() => {
-					alert("Link copied: " + url);
+				
 				}).catch(err => {
 					console.error("Failed to copy: ", err);
 				});
