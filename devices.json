@@ -8180,6 +8180,33 @@
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=20855531#20855531"
     },
     {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "EARU Circuit Breaker 63A MCB 1P+N with Power Monitoring and Threshold Protection",
+      "model": "EAKCB-T-M",
+      "chip": "BK7231N",
+      "board": "CBU",
+      "flags": "536871936",
+      "keywords": [
+        "CBU",
+        "BL0942",
+        "temperature",
+        "bridgerelay",
+        "din"
+      ],
+      "pins": {
+        "9": "LED_n;0",
+        "15": "WifiLED_n;0",
+        "17": "Btn;0",
+        "23": "ADC;1",
+        "24": "BridgeFWD;0",
+        "26": "BridgeREV;0"
+      },
+      "command": "startDriver BL0942; PowerSave 1;",
+      "image": "https://obrazki.elektroda.pl/6650537900_1758140638.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21693217"
+    },
+    {
       "vendor": "AVATTO",
       "bDetailed": "0",
       "name": "Tuya US Wifi Wall Switch 1 Gang",
@@ -10976,9 +11003,52 @@
         "9": "Btn_Tgl_All;0",
         "24": "TglChanOnTgl;1"
       },
-      "command": "",
+      "command": "powersave 1",
       "image": "https://obrazki.elektroda.pl/9808726800_1756671551.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4136377.html"
+    },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Generic 16A Mini Smart Switch with Power Monitoring",
+      "model": "",
+      "chip": "BK7238",
+      "board": "T1-2S-NL",
+      "flags": "1024",
+      "keywords": ["breaker", "diy"],
+      "pins": {
+        "1": "WifiLED;0",
+        "8": "Rel;1",
+        "9": "Btn_Tgl_All;0",
+        "24": "TglChanOnTgl;1"
+      },
+      "command": "backlog powersave 1; startdriver bl0942",
+      "image": "https://obrazki.elektroda.pl/9702950000_1758450245.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21696124#21696124"
+    },
+    {
+      "vendor": "Teckin",
+      "bDetailed": "0",
+      "name": "Smart Socket (EU)",
+      "model": "SP22",
+      "chip": "RTL8710BN",
+      "board": "T112_V1.1",
+      "flags": "1024",
+      "keywords": [
+        "plug"
+      ],
+      "pins": {
+        "0": "BL0937CF;0",
+        "1": "LED_n;1",
+        "8": "BL0937CF;0",
+        "9": "BL0937SEL;0",
+        "10": "Rel;1",
+        "11": "LED_n;2",
+        "14": "Btn;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/5899965000_1758606802.png",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21654509#21654509"
     },
     {
       "vendor": "Tuya",
