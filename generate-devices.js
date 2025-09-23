@@ -96,7 +96,7 @@ textarea { width: 100%; height: 250px; font-family: monospace; }
 </head>
 <body>
 <div class="container">
-<h5>Firmware change information, guide, template, tutorial and help for...</h5>
+<h5>Firmware change information, Home Assistant pairing, guide, template, tutorial and help for...</h5>
 <h1 class="my-3">${device.name || safeName} (${device.model || ""})</h1>
 
 <div class="row">
