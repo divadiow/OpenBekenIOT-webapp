@@ -11025,7 +11025,31 @@
       "command": "backlog powersave 1; startdriver bl0942",
       "image": "https://obrazki.elektroda.pl/9702950000_1758450245.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21696124#21696124"
-    },    
+    },
+    {
+      "vendor": "Teckin",
+      "bDetailed": "0",
+      "name": "Smart Socket (EU)",
+      "model": "SP22",
+      "chip": "RTL8710BN",
+      "board": "T112_V1.1",
+      "flags": "1024",
+      "keywords": [
+        "plug"
+      ],
+      "pins": {
+        "0": "BL0937CF;0",
+        "1": "LED_n;1",
+        "8": "BL0937CF;0",
+        "9": "BL0937SEL;0",
+        "10": "Rel;1",
+        "11": "LED_n;2",
+        "14": "Btn;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/3082975100_1758606216.png",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21654509#21654509"
+    },
     {
       "vendor": "Tuya",
       "bDetailed": "0",
