@@ -11042,11 +11042,18 @@
         "TXW817-810"
       ],
       "pins": {
-        "11": "Btn;1", //PA11 Mode Button
-        "34": "SoftSCL;10", //PC2
-        "35": "SoftSDA;11", //PC3
-        "36": "LED;1", //PC04 Blue LED
-        "37": "LED;2" //PC05 Red LED
+        "11": "Btn;1",
+        "34": "SoftSCL;10",
+        "35": "SoftSDA;11",
+        "36": "LED;1",
+        "37": "LED;2"
+      },
+      "pin_notes": {
+        "11": "PA11 Mode Button",
+        "34": "PC2",
+        "35": "PC3",
+        "36": "PC04 Blue LED",
+        "37": "PC05 Red LED"
       },
       "command": "startdriver txwcam",
       "image": "https://obrazki.elektroda.pl/7393256800_1746980271.jpg",
