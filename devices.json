@@ -11056,8 +11056,30 @@
         "37": "PC05 Red LED"
       },
       "command": "startdriver txwcam",
-      "image": "https://obrazki.elektroda.pl/7393256800_1746980271.jpg",
+      "image": "https://obrazki.elektroda.pl/1447090200_1759249256.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4121456.html"
+    },
+    {
+      "vendor": "Gosund",
+      "bDetailed": "0",
+      "name": "Nitebird Gosund RGB+W Smart LED Bulb",
+      "model": "WB4",
+      "chip": "RTL87X0C",
+      "board": "CUCO-KK-R-V1.2",
+      "flags": "17040384",
+      "keywords": [
+        "tuya",
+        "lamp"
+      ],
+      "pins": {
+        "3": "PWM;3",
+        "4": "PWM;1",
+        "11": "PWM;2",
+        "17": "PWM;4"
+      },
+      "command": "powersave 1",
+      "image": "https://obrazki.elektroda.pl/8358343600_1759248710.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic3946504.html"
     },
     {
       "vendor": "Teckin",
