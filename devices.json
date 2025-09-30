@@ -11027,6 +11027,30 @@
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21696124#21696124"
     },
     {
+      "vendor": "Shenzhen Pinmei",
+      "bDetailed": "0",
+      "name": "Linklemo Mini Camera - WIP - NO CAM/SD SUPPORT",
+      "model": "A9",
+      "chip": "BK7252N",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "xiaomi",
+        "4k",
+        "innovision?",
+        "cctv",
+        "IPC",
+        "INO-IPC-A9-V2.4",
+        "BK7252N481",
+        "0x7252a"
+      ],
+      "pins": {},
+      "pin_notes": {},
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/8163978300_1759253772.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4118499.html"
+    },    
+    {
       "vendor": "Taixin",
       "bDetailed": "0",
       "name": "YsxLite \"Xiaomi\" X6 \"4K\" Mini Spy Camera - WIP",
@@ -11039,7 +11063,8 @@
         "20240328",
         "RTSP",
         "cctv",
-        "TXW817-810"
+        "TXW817-810",
+        "IPC"
       ],
       "pins": {
         "11": "Btn;1",
