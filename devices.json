@@ -11056,7 +11056,7 @@
         "37": "PC05 Red LED"
       },
       "command": "startdriver txwcam",
-      "image": "https://obrazki.elektroda.pl/7393256800_1746980271.jpg",
+      "image": "https://obrazki.elektroda.pl/1447090200_1759249256.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4121456.html"
     },
     {
@@ -11077,7 +11077,7 @@
         "11": "PWM;2",
         "17": "PWM;4"
       },
-      "command": "",
+      "command": "powersave 1",
       "image": "https://obrazki.elektroda.pl/8358343600_1759248710.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic3946504.html"
     },
