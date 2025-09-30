@@ -11049,7 +11049,37 @@
       "command": "",
       "image": "https://obrazki.elektroda.pl/8163978300_1759253772.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4118499.html"
-    },    
+    },
+    {
+      "vendor": "Naxclow",
+      "bDetailed": "0",
+      "name": "\"Xiaomi\" Mini Cam - WIP - NO CAM/SD SUPPORT",
+      "model": "A11",
+      "chip": "BK7252",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "A9_B",
+        "V2.7_240426",
+        "Shenzhen Zhiyu Network Technology Co., Ltd",
+        "cctv",
+        "BK7252UQN48",
+        "IPC",
+        "cn1084274271nkea",
+        "XCCD0060-A11",
+        "STD-8136V0",
+        "V720"
+      ],
+      "pins": {
+        "22": "LED;1"
+      },
+      "pin_notes": {
+        "22": "P22 Blue LED"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/8218082100_1759254902.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4127023.html"
+    },       
     {
       "vendor": "Taixin",
       "bDetailed": "0",
