@@ -49,7 +49,7 @@
     {
       "vendor": "Cozylife",
       "bDetailed": "0",
-      "name": "Aiyatto Homekit 9W RGBWW Dimmable 2700-6500K E27 Bulb",
+      "name": "Aiyato Homekit 9W RGBWW Dimmable 2700-6500K E27 Bulb",
       "model": "",
       "chip": "ESP32C2",
       "board": "ESPC2-05",
@@ -11033,9 +11033,97 @@
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21696124#21696124"
     },
     {
+      "vendor": "Shenzhen Pinmei",
+      "bDetailed": "0",
+      "name": "Linklemo Mini Camera - WIP - NO CAM/SD SUPPORT",
+      "model": "A9",
+      "chip": "BK7252N",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "xiaomi",
+        "4k",
+        "innovision?",
+        "cctv",
+        "IPC",
+        "INO-IPC-A9-V2.4",
+        "BK7252N481",
+        "0x7252a"
+      ],
+      "pins": {},
+      "pin_notes": {},
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/8163978300_1759253772.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4118499.html"
+    },
+    {
+      "vendor": "Naxclow",
+      "bDetailed": "0",
+      "name": "\"Xiaomi\" Mini Cam - WIP - NO CAM/SD SUPPORT",
+      "model": "A11",
+      "chip": "BK7252",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "A9_B",
+        "V2.7_240426",
+        "Shenzhen Zhiyu Network Technology Co., Ltd",
+        "cctv",
+        "BK7252UQN48",
+        "IPC",
+        "cn1084274271nkea",
+        "XCCD0060-A11",
+        "STD-8136V0",
+        "V720"
+      ],
+      "pins": {
+        "22": "LED;1"
+      },
+      "pin_notes": {
+        "22": "P22 Blue LED"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/8218082100_1759254902.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4127023.html"
+    },
+    {
+      "vendor": "FTY",
+      "bDetailed": "0",
+      "name": "Mini Cam - WIP - NO SD SUPPORT",
+      "model": "A9",
+      "chip": "TXW81X",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "TXW817-810",
+        "Hunan Shiyue Technology Co. Ltd",
+        "Room 514,515,516, 517-208. Building 3",
+        "Yulong Tianxia Jiayuan II Complex",
+        "No. 799 Youmutang Road, Guanshaling Street",
+        "Yuelu District Changsha City, Hunan Province, PR China",
+        "742329872052",
+        "LT1757-OA-10 V1.0",
+        "SuperPix SP0A19",
+        "640x480",
+        "20240112JC 817_V1.3",
+        "CCTV"
+      ],
+      "pins": {
+        "35": "SoftSCL;0",
+        "36": "SoftSDA;0"
+      },
+      "pin_notes": {
+        "35": "PC03",
+        "36": "PC04"
+      },
+      "command": "startdriver txwcam",
+      "image": "https://obrazki.elektroda.pl/5951044100_1759257094.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4124009.html"
+    },              
+    {
       "vendor": "Taixin",
       "bDetailed": "0",
-      "name": "YsxLite \"Xiaomi\" X6 \"4K\" Mini Spy Camera - WIP",
+      "name": "YsxLite \"Xiaomi\" X6 \"4K\" Mini Spy Camera - WIP - NO SD SUPPORT",
       "model": "X6",
       "chip": "TXW81X",
       "board": "on PCB",
@@ -11045,19 +11133,20 @@
         "20240328",
         "RTSP",
         "cctv",
-        "TXW817-810"
+        "TXW817-810",
+        "IPC"
       ],
       "pins": {
         "11": "Btn;1",
-        "34": "SoftSCL;10",
-        "35": "SoftSDA;11",
+        "34": "SoftSCL;0",
+        "35": "SoftSDA;0",
         "36": "LED;1",
         "37": "LED;2"
       },
       "pin_notes": {
         "11": "PA11 Mode Button",
-        "34": "PC2",
-        "35": "PC3",
+        "34": "PC02",
+        "35": "PC03",
         "36": "PC04 Blue LED",
         "37": "PC05 Red LED"
       },
