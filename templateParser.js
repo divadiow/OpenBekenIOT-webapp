@@ -180,6 +180,12 @@ function processJSON_UserParamKeyStyle(js,user_param_key) {
         scr += "setPinRole "+value+" Btn_Tgl_All"+"\n";
         tmpl.pins[""+value] = "Btn_Tgl_All;0";
     }
+    value = user_param_key.reset_pin;
+    if(value != undefined) {
+        desc += "- Pair/Reset All Pin on P"+value+"\n";
+        scr += "setPinRole "+value+" Btn"+"\n";
+        tmpl.pins[""+value] = "Btn;0";
+    }
     value = user_param_key.key_pin;
     if(value != undefined) {
         desc += "- Pair/Toggle All Pin on P"+value+"\n";
