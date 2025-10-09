@@ -129,6 +129,12 @@ function processJSON_UserParamKeyStyle(js,user_param_key) {
         scr += "setPinRole "+value+" BL0937SEL"+"\n";
         tmpl.pins[""+value] = "BL0937SEL;0";
     }
+    value = user_param_key.wfst_pin;
+    if(value != undefined) {
+        desc += "- WiFi LED on P"+value+"\n";
+        scr += "backlog setPinRole "+value+" WifiLED_n"+"; ";
+        tmpl.pins[""+value] = "WifiLED_n;0";
+    }
     value = user_param_key.r_pin;
     if(value != undefined) {
         let ch = 1;
