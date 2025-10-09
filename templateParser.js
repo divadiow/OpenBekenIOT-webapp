@@ -135,6 +135,18 @@ function processJSON_UserParamKeyStyle(js,user_param_key) {
         scr += "backlog setPinRole "+value+" WifiLED_n"+"; ";
         tmpl.pins[""+value] = "WifiLED_n;0";
     }
+    value = user_param_key.infrr;
+    if(value != undefined) {
+        desc += "- IR Receiver on P"+value+"\n";
+        scr += "backlog setPinRole "+value+" IRRecv"+"; ";
+        tmpl.pins[""+value] = "IRRecv;0";
+    }
+    value = user_param_key.infre;
+    if(value != undefined) {
+        desc += "- IR Sender on P"+value+"\n";
+        scr += "backlog setPinRole "+value+" IRSend"+"; ";
+        tmpl.pins[""+value] = "IRSend;0";
+    }
     value = user_param_key.r_pin;
     if(value != undefined) {
         let ch = 1;
