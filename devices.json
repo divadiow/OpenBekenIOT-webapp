@@ -11155,6 +11155,38 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4121456.html"
     },
     {
+      "vendor": "BroadLink",
+      "bDetailed": "0",
+      "name": "13A 250V UK Smart Plug",
+      "model": "SP4L-UK",
+      "chip": "RDA5981",
+      "board": "BL335-P",
+      "flags": "1024",
+      "keywords": [
+        "BL0908",
+        "RDA5891A",
+        "socket",
+        "HF115F",
+        "SocketBoard V1.5",
+        "WiFiBoard V1.6",
+        "3335-P1V2 S1000H",
+        "SLWS-M2",
+        "E324684",
+        "2ACDZ-BL3335-P",
+        "16A",
+        "SP9AH0200828"
+      ],
+      "pins": {
+        "5": "Btn_n;1",
+        "7": "Rel;1",
+        "8": "LED;1",
+        "26": "WifiLED;0"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/2344339500_1760280671.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4148573.html"
+    },
+    {
       "vendor": "Gosund",
       "bDetailed": "0",
       "name": "Nitebird Gosund RGB+W Smart LED Bulb",
