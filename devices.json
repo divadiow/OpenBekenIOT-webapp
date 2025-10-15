@@ -11157,7 +11157,7 @@
     {
       "vendor": "BroadLink",
       "bDetailed": "0",
-      "name": "13A 250V UK Smart Plug",
+      "name": "13A 250V Smart Plug (UK)",
       "model": "SP4L-UK",
       "chip": "RDA5981",
       "board": "BL335-P",
@@ -11186,6 +11186,35 @@
       "image": "https://obrazki.elektroda.pl/2344339500_1760280671.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4148573.html"
     },
+    {
+      "vendor": "BG Electrical",
+      "bDetailed": "0",
+      "name": "Nexus 13A Twin Switched Smart Home Control Socket (UK)",
+      "model": "822/HC-01",
+      "chip": "RDA5981",
+      "board": "BL335-P",
+      "flags": "1024",
+      "keywords": [
+        "double",
+        "plug",
+        "RDA5891A",
+        "16A",
+        "broadlink",
+        "3335-P1V2 S1000H",
+        "SLWS-M2",
+        "E324684"
+      ],
+      "pins": {
+        "3": "Btn_n;1",
+        "4": "Btn_n;2",
+        "7": "Rel;2",
+        "25": "AlwaysHigh;0",
+        "26": "Rel;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/5992008100_1760133211.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4148862.html"
+    },    
     {
       "vendor": "Gosund",
       "bDetailed": "0",
