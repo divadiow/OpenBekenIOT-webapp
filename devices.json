@@ -12776,8 +12776,7 @@
       "keywords": ["AK001-ZJ21412", "CCT", "2700K-6500K", "zengge", "surplife", "3D_22_20250107_ZIL-BK38"],
       "pins": {
         "6": "PWM;5",
-        "8": "PWM;4",
-        "12": "SM16703P_DIN;0"
+        "8": "PWM;4"
       },
       "command": "backlog powersave 1; startDriver SM16703P; SM16703P_Init 240 GRB; startdriver pixelanim",
       "image": "https://obrazki.elektroda.pl/9496845200_1761371358.png",
