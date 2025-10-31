@@ -11087,6 +11087,32 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4127023.html"
     },
     {
+      "vendor": "Eightree",
+      "bDetailed": "0",
+      "name": "13A 230V Smart Plug w/Power Metering (UK)",
+      "model": "",
+      "chip": "RTL87X0C",
+      "board": "T112B",
+      "flags": "1024",
+      "keywords": [
+        "B0B711B6S1",
+        "725414718128",
+        "W701H"
+      ],
+      "pins": {
+        "11": "BL0937SEL;0",
+        "12": "WifiLED_n;0",
+        "13": "LED;1",
+        "14": "Btn;1",
+        "17": "BL0937CF;0",
+        "18": "Rel;1",
+        "19": "BL0937CF1;0"
+      },
+      "command": "powersave 1",
+      "image": "https://obrazki.elektroda.pl/5467955300_1761719981.png",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21733076#21733076"
+    },
+    {
       "vendor": "FTY",
       "bDetailed": "0",
       "name": "Mini Cam - WIP - NO SD SUPPORT",
@@ -12764,6 +12790,23 @@
       "command": "backlog powersave 1; BP5758D_Current 8 30",
       "image": "https://obrazki.elektroda.pl/4021604800_1735993014.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4097320.html"
+    },
+    {
+      "vendor": "Ledytech",
+      "bDetailed": "0",
+      "name": "Smart Ceiling Light Replacement, RGB LED Ceiling Fan Light Retrofit Kit 1800LM",
+      "model": "XGD-NZ-002",
+      "chip": "BK7238",
+      "board": "WB43-M5 V1.1",
+      "flags": "1024",
+      "keywords": ["AK001-ZJ21412", "CCT", "2700K-6500K", "zengge", "surplife", "3D_22_20250107_ZIL-BK38"],
+      "pins": {
+        "6": "PWM;5",
+        "8": "PWM;4"
+      },
+      "command": "backlog powersave 1; startDriver SM16703P; SM16703P_Init 240 GRB; startdriver pixelanim",
+      "image": "https://obrazki.elektroda.pl/9496845200_1761371358.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4150277.html"
     },
     {
       "vendor": "Amazon",
