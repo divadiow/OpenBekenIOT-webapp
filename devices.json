@@ -11090,7 +11090,7 @@
       "vendor": "Eightree",
       "bDetailed": "0",
       "name": "13A 230V Smart Plug w/Power Metering (UK)",
-      "model": "",
+      "model": "JX-SP23BL-8720CF-13A",
       "chip": "RTL87X0C",
       "board": "T112B",
       "flags": "1024",
@@ -11111,6 +11111,31 @@
       "command": "powersave 1",
       "image": "https://obrazki.elektroda.pl/5467955300_1761719981.png",
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21733076#21733076"
+    },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "AVATTO WiFi 1CH Smart Dry Contact Module",
+      "model": "WSM16-DC-1",
+      "chip": "BK7231N",
+      "board": "CBU",
+      "flags": "1088",
+      "keywords": [
+        "switch",
+        "MK-WC1H05N-A_V1.1",
+        "20230919",
+        "AC100-240V",
+        "LED 150W 5A"
+      ],
+      "pins": {
+        "6": "WifiLED_n;0",
+        "8": "Btn_Tgl_All;0",
+        "14": "TglChanOnTgl;1",
+        "20": "Rel;1"
+      },
+      "command": "backlog PowerSave 1",
+      "image": "https://obrazki.elektroda.pl/9295714800_1762116726.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4151498.html"
     },
     {
       "vendor": "FTY",
