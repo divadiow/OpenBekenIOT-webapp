@@ -11113,6 +11113,28 @@
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21733076#21733076"
     },
     {
+      "vendor": "SparkleIoT",
+      "bDetailed": "0",
+      "name": "Mini Matter 16A AC100-240V Smart Switch",
+      "model": "MINI_SWITCH_V1.3",
+      "chip": "BK7231M",
+      "board": "XH-CB2S",
+      "flags": "1024",
+      "keywords": [
+        "MINI通断器_V1.3",
+        "breaker",
+        "4mb"
+      ],
+      "pins": {
+        "6": "LED_n;1",
+        "7": "Btn_Tgl_All;0",
+        "24": "Rel;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/1790643400_1762454021.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4086986.html"
+    },
+    {
       "vendor": "Tuya",
       "bDetailed": "0",
       "name": "AVATTO WiFi 1CH Smart Dry Contact Module",
