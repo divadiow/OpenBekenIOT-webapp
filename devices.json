@@ -11113,6 +11113,32 @@
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21733076#21733076"
     },
     {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "1-Gang Dry Contact Relay Module",
+      "model": "QS-WIFI-SEC01-DC",
+      "chip": "BK7231N",
+      "board": "CBLC9S",
+      "flags": "0",
+      "keywords": [
+        "switch",
+        "QLRELAY",
+        "BJ-SS-105D",
+        "QL-0833",
+        "REV:0",
+        "2024.09.25",
+        "P-mjnr"
+      ],
+      "pins": {
+        "6": "WifiLED_n;0",
+        "7": "Rel;0",
+        "8": "dInput_n;0"
+      },
+      "command": "powersave 1",
+      "image": "https://obrazki.elektroda.pl/6083973100_1761845359.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4151106.html"
+    },
+    {
       "vendor": "SparkleIoT",
       "bDetailed": "0",
       "name": "Mini Matter 16A AC100-240V Smart Switch",
