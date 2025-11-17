@@ -6550,6 +6550,31 @@
     {
       "vendor": "Farylink",
       "bDetailed": "0",
+      "name": "Tuya 1CH 16A Mini Smart Switch",
+      "model": "S180v3.1",
+      "chip": "LN882H",
+      "board": "FL-M118-V1.1",
+      "flags": "2098176",
+      "keywords": [
+        "cb2s",
+        "XINCHUANGZHI",
+        "SCH-T73-1A-5S",
+        "20A/125VAC",
+        "breaker"
+      ],
+      "pins": {
+        "6": "TglChanOnTgl;1",
+        "7": "WifiLED;0",
+        "10": "Btn_Tgl_All;0",
+        "11": "Rel;1"
+      },
+      "command": "powersave 1",
+      "image": "https://obrazki.elektroda.pl/5279774000_1763372813.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4153500.html"
+    },
+    {
+      "vendor": "Farylink",
+      "bDetailed": "0",
       "name": "16A Tuya Smart Plug with Power Metering (UK)",
       "model": "",
       "chip": "LN882H",
