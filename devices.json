@@ -632,7 +632,7 @@
       "flags": "1024",
       "keywords": ["2APUZ-SW6", "SM01_BK_N"],
       "pins": {
-        "6": "Rel_n;2",
+        "6": "Rel;2",
         "14": "LED;3",
         "22": "Btn;2",
         "24": "dInput_NoPullUp_n;3",
