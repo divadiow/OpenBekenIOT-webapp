@@ -644,6 +644,31 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4120237.html"
     },
     {
+      "vendor": "Avatar",
+      "bDetailed": "0",
+      "name": "Smart RGBCW LED Bulb GU10 5W",
+      "model": "GU10-EU-UK",
+      "chip": "BK7231N",
+      "board": "on PCB",
+      "flags": "2251937261425664",
+      "keywords": [
+        "26X32SEG21172",
+        "Avatar Controls",
+        "ALS23L",
+        "X001ASUR2F",
+        "SM2235",
+        "500lm",
+        "5.0 W"
+      ],
+      "pins": {
+        "24": "SM2235DAT;0",
+        "26": "SM2235CLK;0"
+      },
+      "command": "backlog powersave 1; SM2235_Map 1 0 2 3 4",
+      "image": "https://obrazki.elektroda.pl/1057299100_1763206637.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4153643.html"
+    },
+    {
       "vendor": "Gerier",
       "bDetailed": "0",
       "name": "2CH WiFi Switch",
@@ -5021,7 +5046,7 @@
       "name": "Kasa Dual WiFi Exterior Smart Plug (US)",
       "model": "KP400",
       "chip": "RTL87X0C",
-      "board": "TODO",
+      "board": "",
       "flags": "1024",
       "keywords": ["double", "outdoors", "waterproof", "outlet"],
       "pins": {
