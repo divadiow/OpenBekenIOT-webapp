@@ -669,6 +669,29 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4153643.html"
     },
     {
+      "vendor": "Ewelink",
+      "bDetailed": "0",
+      "name": "SMART GU10 RGBWW LED Bulb",
+      "model": "570471",
+      "chip": "LN882H",
+      "board": "LN-CBLC8",
+      "flags": "263169",
+      "keywords": [
+        "lamp",
+        "PWM"
+      ],
+      "pins": {
+        "0": "PWM;5",
+        "1": "PWM;3",
+        "4": "PWM;2",
+        "5": "PWM;1",
+        "6": "PWM;4"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/5753651000_1763912707.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4154373.html"
+    },
+    {
       "vendor": "Gerier",
       "bDetailed": "0",
       "name": "2CH WiFi Switch",
