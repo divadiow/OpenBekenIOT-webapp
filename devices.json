@@ -3876,6 +3876,38 @@
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21284444#21284444"
     },
     {
+      "vendor": "DEMASLED",
+      "bDetailed": "0",
+      "name": "4 Gang Smart Switch WiFi RF 433MHz",
+      "model": "DOMO-18-4G",
+      "chip": "BK7231N",
+      "board": "FL-M168-V1.1",
+      "flags": "0",
+      "keywords": [
+        "4-gang",
+        "breaker",
+        "e1ktojl0",
+        "S229-4L通断器",
+        "keyjnuy4s3kre7m7",
+        "xwxu0op4dnzunh1a"
+      ],
+      "pins": {
+        "6": "TglChanOnTgl;4",
+        "9": "Rel;1",
+        "10": "Btn_Tgl_All;0",
+        "11": "WifiLED_n;0",
+        "15": "Rel;4",
+        "17": "TglChanOnTgl;1",
+        "22": "TglChanOnTgl;3",
+        "23": "Rel;2",
+        "24": "TglChanOnTgl;2",
+        "26": "Rel;3"
+      },
+      "command": "PowerSave 1",
+      "image": "https://obrazki.elektroda.pl/8679351100_1765239328.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4156506.html"
+    },
+    {
       "vendor": "Tuya",
       "bDetailed": "0",
       "name": "DETA Grid Connect Smart Outdoor Double Powerpoint",
