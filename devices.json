@@ -251,6 +251,24 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4082772.html"
     },
     {
+      "vendor": "Aimachip",
+      "bDetailed": "0",
+      "name": "XradioTech/AllWinner XR87AT Module + YiChip YC1021 Bluetooth Module",
+      "model": "S610",
+      "chip": "XR872",
+      "board": "AM-01-S610",
+      "flags": "1024",
+      "keywords": [
+        "GigaDevice",
+        "GD25Q64CSIG",
+        "40-ALIDFM-HFD4H"
+      ],
+      "pins": {},
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6591104600_1751006191.png",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21589985#21589985"
+    },
+    {
       "vendor": "Tuya",
       "bDetailed": "0",
       "name": "Smart Plug Power Monitoring",
