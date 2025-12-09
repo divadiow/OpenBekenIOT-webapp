@@ -251,7 +251,7 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4082772.html"
     },
     {
-      "vendor": "Aimachip",
+      "vendor": "Tmall Genie",
       "bDetailed": "0",
       "name": "XradioTech/AllWinner XR87AT Module + YiChip YC1021 Bluetooth Module",
       "model": "S610",
@@ -261,7 +261,10 @@
       "keywords": [
         "GigaDevice",
         "GD25Q64CSIG",
-        "40-ALIDFM-HFD4H"
+        "40-ALIDFM-HFD4H",
+        "20826d2c-dc08-11ec-bd08-00163e1552d4-40",
+        "Alibaba China Co Ltd",
+        "Ningbo Shunxin Microelectronics"
       ],
       "pins": {},
       "command": "",
