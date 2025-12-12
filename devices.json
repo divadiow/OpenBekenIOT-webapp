@@ -251,6 +251,70 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4082772.html"
     },
     {
+      "vendor": "Sky-Lighting",
+      "bDetailed": "0",
+      "name": "RGB Light Bar",
+      "model": "AM-RGB-LB-5",
+      "chip": "BK7231N",
+      "board": "on PCB",
+      "flags": "2251937252643840",
+      "keywords": [
+        "PBL6231N-5523CD1",
+        "Action",
+        "3207958",
+        "Battletron",
+        "6232000900",
+        "Gaming",
+        "LSC",
+        "8712879162735",
+        "Sailsco",
+        "X00239890H",
+        "Ambient",
+        "LED",
+        "RGBIC",
+        "WS2812B",
+        "Buttons",
+        "IR Receiver",
+        "IR Remote",
+        "Microphone",
+        "USB",
+        "5V",
+        "0.9A"
+      ],
+      "pins": {
+        "8": "AlwaysHigh;0",
+        "16": "SM16703P_DIN;0",
+        "20": "Btn_SmartLED;0",
+        "22": "Btn_ScriptOnly;3",
+        "26": "IRRecv;0",
+        "28": "Btn_ScriptOnly;2"
+      },
+      "command": "PowerSave 1",
+      "image": "https://obrazki.elektroda.pl/9941091200_1753433119.webp",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4131618.html"
+    },
+    {
+      "vendor": "Tmall Genie",
+      "bDetailed": "0",
+      "name": "XradioTech/AllWinner XR87AT + YiChip YC1021 Bluetooth Module",
+      "model": "S610",
+      "chip": "XR872",
+      "board": "AM-01-S610",
+      "flags": "1024",
+      "keywords": [
+        "GigaDevice",
+        "GD25Q64CSIG",
+        "40-ALIDFM-HFD4H",
+        "20826d2c-dc08-11ec-bd08-00163e1552d4-40",
+        "Alibaba China Co Ltd",
+        "Ningbo Shunxin Microelectronics"
+      ],
+      "pins": {},
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6591104600_1751006191.png",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21589985#21589985"
+    },
+    {
       "vendor": "Tuya",
       "bDetailed": "0",
       "name": "Smart Plug Power Monitoring",
@@ -976,6 +1040,28 @@
       "command": "backlog PowerSave 1",
       "image": "https://obrazki.elektroda.pl/4061541000_1708980775.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4038842.html"
+    },
+    {
+      "vendor": "TOMZN",
+      "bDetailed": "0",
+      "name": "WIFI Smart ATS 2P AC Dual Power Automatic Transfer Switch",
+      "model": "TOQ7e-125/2 220V",
+      "chip": "BL602",
+      "board": "SDV-002_V1.2",
+      "keywords": [
+        "ewelink",
+        "relay",
+        "button",
+        "breaker"
+      ],
+      "pins": {
+        "2": "Rel;1",
+        "14": "Btn;1",
+        "12": "LED;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6502478700_1764714096.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4155641.html"
     },
     {
       "vendor": "Feit",
@@ -3852,6 +3938,38 @@
       "command": "",
       "image": "https://obrazki.elektroda.pl/3037550900_1730403348.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21284444#21284444"
+    },
+    {
+      "vendor": "DEMASLED",
+      "bDetailed": "0",
+      "name": "4 Gang Smart Switch WiFi RF 433MHz",
+      "model": "DOMO-18-4G",
+      "chip": "BK7231N",
+      "board": "FL-M168-V1.1",
+      "flags": "0",
+      "keywords": [
+        "4-gang",
+        "breaker",
+        "e1ktojl0",
+        "S229-4L通断器",
+        "keyjnuy4s3kre7m7",
+        "xwxu0op4dnzunh1a"
+      ],
+      "pins": {
+        "6": "TglChanOnTgl;4",
+        "9": "Rel;1",
+        "10": "Btn_Tgl_All;0",
+        "11": "WifiLED_n;0",
+        "15": "Rel;4",
+        "17": "TglChanOnTgl;1",
+        "22": "TglChanOnTgl;3",
+        "23": "Rel;2",
+        "24": "TglChanOnTgl;2",
+        "26": "Rel;3"
+      },
+      "command": "PowerSave 1",
+      "image": "https://obrazki.elektroda.pl/8679351100_1765239328.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4156506.html"
     },
     {
       "vendor": "Tuya",
