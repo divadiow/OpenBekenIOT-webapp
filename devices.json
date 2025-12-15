@@ -14220,6 +14220,33 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic3970248.html"
     },
     {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Generic 16A Mini Switch DIY Breaker",
+      "model": "WIFI+RF433",
+      "chip": "BK7231N",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "JIEYING",
+        "JY3FF-SH-DC5V-A(K)",
+        "H3308 H0744",
+        "L15-07",
+        "7nrdtldu4vlimndp",
+        "keyjnuy4s3kre7m7"
+      ],
+      "pins": {
+        "6": "TglChanOnTgl;1",
+        "7": "Rel;1",
+        "8": "RCRecv;0",
+        "23": "Btn_Tgl_All;0",
+        "26": "WifiLED_n;0"
+      },
+      "command": "startdriver rc",
+      "image": "https://obrazki.elektroda.pl/5081148700_1765829028.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21781676#21781676"
+    },
+    {
       "vendor": "Tuya UNSH",
       "bDetailed": "0",
       "name": "Smart Mini Smart Switch",
