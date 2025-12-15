@@ -8333,7 +8333,7 @@
     {
       "vendor": "BSEED/Bingoelec",
       "bDetailed": "0",
-      "name": "Single Gang 1G Switch 100-240V AC 3-300W 120x72mm",
+      "name": "Single Gang 1G Switch WIFI+RF433Mhz 100-240V AC 3-300W 120x72mm",
       "model": "W601",
       "chip": "BK7231N",
       "board": "T34",
@@ -8344,9 +8344,11 @@
         "rectangle",
         "Tangwo Electric Technology Co",
         "Danquan",
-        "WIFI120"
+        "WIFI120",
+        "WF 480RA RF"
       ],
       "pins": {
+        "6": "RCRecv;2",
         "8": "WifiLED_n;0",
         "10": "Btn;1",
         "23": "TglChanOnTgl;1",
