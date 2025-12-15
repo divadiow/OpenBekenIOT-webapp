@@ -147,6 +147,12 @@ function processJSON_UserParamKeyStyle(js,user_param_key) {
         scr += "backlog setPinRole "+value+" IRSend"+"; ";
         tmpl.pins[""+value] = "IRSend;0";
     }
+    value = user_param_key.remote_io;
+    if(value != undefined) {
+        desc += "- RF Pin on P"+value+"\n";
+        scr += "backlog setPinRole "+value+" RCRecv"+"; ";
+        tmpl.pins[""+value] = "RCRecv;0";
+    }
     value = user_param_key.r_pin;
     if(value != undefined) {
         let ch = 1;
