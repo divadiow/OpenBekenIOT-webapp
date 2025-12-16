@@ -3957,6 +3957,7 @@
       ],
       "pins": {
         "6": "TglChanOnTgl;4",
+        "8": "RCRecv;5",
         "9": "Rel;1",
         "10": "Btn_Tgl_All;0",
         "11": "WifiLED_n;0",
@@ -3967,7 +3968,7 @@
         "24": "TglChanOnTgl;2",
         "26": "Rel;3"
       },
-      "command": "PowerSave 1",
+      "command": "powersave 1",
       "image": "https://obrazki.elektroda.pl/8679351100_1765239328.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4156506.html"
     },
