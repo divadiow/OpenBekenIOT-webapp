@@ -8360,6 +8360,29 @@
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21117203#21117203"
     },
     {
+      "vendor": "TOMZN",
+      "bDetailed": "0",
+      "name": "1P+N WIFI Smart Metering Monitoring Circuit Breaker/MCB + Power Metering",
+      "model": "TOB9-63M",
+      "chip": "BK7238",
+      "board": "T1-U-HL",
+      "flags": "1024",
+      "keywords": [
+        "switch",
+        "kwh",
+        "relay"
+      ],
+      "pins": {
+        "6": "BridgeREV;1",
+        "8": "BridgeFWD;1",
+        "15": "WifiLED_n;0",
+        "21": "LED;1"
+      },
+      "command": "startdriver bl0942",
+      "image": "https://obrazki.elektroda.pl/9758411200_1765994014.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4157516.html"
+    },
+    {
       "vendor": "Tuya",
       "bDetailed": "0",
       "name": "Circuit breaker with bridge relay",
