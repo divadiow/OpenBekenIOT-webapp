@@ -9126,6 +9126,30 @@
       "product": ""
     },
     {
+      "vendor": "MOES",
+      "bDetailed": "0",
+      "name": "Tuya Wi-Fi Smart Garage Door Opener",
+      "model": "MS-102",
+      "chip": "BK7231T",
+      "board": "WB2S",
+      "flags": "1024",
+      "keywords": [
+        "axkmay3av5h3zh9y",
+        "NH-HG-102 车库门控制器 蓝牙双模升级版",
+        "000002ilv4",
+        "90-250v",
+        "keymxkctp9ukgcvg"
+      ],
+      "pins": {
+        "6": "Btn;1",
+        "7": "WifiLED_n;0",
+        "24": "Rel;1"
+      },
+      "command": "powersave 1",
+      "image": "https://obrazki.elektroda.pl/9040843000_1765928778.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4157492.html"
+    },
+    {
       "vendor": "Tuya",
       "bDetailed": "1",
       "name": "Smart Garage Door Opener",
