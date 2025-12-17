@@ -9193,6 +9193,19 @@
       "wiki": "https://www.elektroda.pl/rtvforum/topic4120403.html"
     },
     {
+      "vendor": "RMshebei",
+      "bDetailed": "1",
+      "name": "WiFi Circuit Breaker 2P 63A Automatic Reclosing Protector",
+      "model": "WTDZW-63A2",
+      "chip": "BK7238",
+      "board": "T1-3S",
+      "keywords": ["WT113", "TM1621B", "CMS32L051", "GPD-102", "TuyaMCU", "double", "breaker", "overvoltage"],
+      "pins": {},
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/1162457500_1766002850.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4157607.html"
+    },    
+    {
       "vendor": "Sonoff",
       "bDetailed": "1",
       "name": "Battery-powered PIR Sensor",
