@@ -9167,7 +9167,8 @@
       "pins": {
         "6": "Btn;1",
         "7": "WifiLED_n;0",
-        "24": "Rel;1"
+        "24": "Rel;1",
+        "26": "dInput;0"
       },
       "command": "powersave 1",
       "image": "https://obrazki.elektroda.pl/9040843000_1765928778.jpg",
