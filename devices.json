@@ -3957,7 +3957,7 @@
       ],
       "pins": {
         "6": "TglChanOnTgl;4",
-        "8": "RCRecv;5",
+        "8": "RCRecv;0",
         "9": "Rel;1",
         "10": "Btn_Tgl_All;0",
         "11": "WifiLED_n;0",
@@ -8349,7 +8349,7 @@
         "WF 480RA RF"
       ],
       "pins": {
-        "6": "RCRecv;2",
+        "6": "RCRecv;0",
         "8": "WifiLED_n;0",
         "10": "Btn;1",
         "23": "TglChanOnTgl;1",
