@@ -8376,6 +8376,7 @@
         "6": "BridgeREV;1",
         "8": "BridgeFWD;1",
         "15": "WifiLED_n;0",
+        "17": "Btn;1",
         "21": "LED;1"
       },
       "command": "startdriver bl0942",
