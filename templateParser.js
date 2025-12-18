@@ -111,6 +111,12 @@ function processJSON_UserParamKeyStyle(js,user_param_key) {
             tmpl.pins[""+value] = "TglChanOnTgl;"+i+"";
         }
     }
+    value = user_param_key.gate_sensor_pin_pin;
+    if(value != undefined) {
+        desc += "- Door/Gate Sensor on P"+value+"\n";
+        scr += "setPinRole "+value+" dInput"+"\n";
+        tmpl.pins[""+value] = "dInput;0";
+    }
     value = user_param_key.ele_pin;
     if(value != undefined) {
         desc += "- BL0937 ELE on P"+value+"\n";
