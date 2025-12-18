@@ -9219,6 +9219,19 @@
       "product": ""
     },
     {
+      "vendor": "Tuya",
+      "bDetailed": "1",
+      "name": "Clamp Power Meter (Dual channel)",
+      "model": "PJ-1103C",
+      "chip": "BK7238",
+      "board": "on PCB",
+      "keywords": ["2025/8/13", "PJ1103C/V1.2", "TuyaMCU", "116250S_Y231_251011"],
+      "pins": {},
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/5387844400_1765802823.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4157274.html"
+    },     
+    {
       "vendor": "Sonoff",
       "bDetailed": "1",
       "name": "SONOFF BASICZBR3 ZB DIY Smart Switch Controlled Via SmartThing",
@@ -9257,6 +9270,29 @@
       "image": "https://obrazki.elektroda.pl/3542572100_1705042362_thumb.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4027983.html"
     },
+    {
+      "vendor": "STRONG",
+      "bDetailed": "0",
+      "name": "HELO Smart Power Strip 4AC+4USB (222135)",
+      "model": "HELO-POWER-4-EU",
+      "chip": "RTL8710B",
+      "board": "",
+      "keywords": ["extension", "sockets", "plugs"],
+      "pins": {
+        "0": "Rel;0",
+        "1": "BL0937CF;0",
+        "8": "BL0937CF1;0",
+        "9": "Rel;2",
+        "10": "BL0937SEL;0",
+        "11": "Rel;1",
+        "12": "Btn_Tgl_All;0",
+        "13": "Rel;3",
+        "15": "WifiLED;0"
+      },
+      "command": "backlog startDriver BL0937; startDriver NTP; SetupEnergyStats 1 60 60; PowerSave 0",
+      "image": "https://obrazki.elektroda.pl/2415907700_1766090262.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4157661.html"
+    },    
     {
       "vendor": "Tuya",
       "bDetailed": "0",
