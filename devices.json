@@ -3957,6 +3957,7 @@
       ],
       "pins": {
         "6": "TglChanOnTgl;4",
+        "8": "RCRecv;0",
         "9": "Rel;1",
         "10": "Btn_Tgl_All;0",
         "11": "WifiLED_n;0",
@@ -3967,7 +3968,7 @@
         "24": "TglChanOnTgl;2",
         "26": "Rel;3"
       },
-      "command": "PowerSave 1",
+      "command": "powersave 1",
       "image": "https://obrazki.elektroda.pl/8679351100_1765239328.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4156506.html"
     },
@@ -8333,7 +8334,7 @@
     {
       "vendor": "BSEED/Bingoelec",
       "bDetailed": "0",
-      "name": "Single Gang 1G Switch 100-240V AC 3-300W 120x72mm",
+      "name": "Single Gang 1G Switch WIFI+RF433Mhz 100-240V AC 3-300W 120x72mm",
       "model": "W601",
       "chip": "BK7231N",
       "board": "T34",
@@ -8344,9 +8345,11 @@
         "rectangle",
         "Tangwo Electric Technology Co",
         "Danquan",
-        "WIFI120"
+        "WIFI120",
+        "WF 480RA RF"
       ],
       "pins": {
+        "6": "RCRecv;0",
         "8": "WifiLED_n;0",
         "10": "Btn;1",
         "23": "TglChanOnTgl;1",
@@ -8355,6 +8358,30 @@
       "command": "",
       "image": "https://obrazki.elektroda.pl/6286653900_1718226022.png",
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21117203#21117203"
+    },
+    {
+      "vendor": "TOMZN",
+      "bDetailed": "0",
+      "name": "1P+N WIFI Smart Metering Monitoring Circuit Breaker/MCB + Power Metering",
+      "model": "TOB9-63M",
+      "chip": "BK7238",
+      "board": "T1-U-HL",
+      "flags": "1024",
+      "keywords": [
+        "switch",
+        "kwh",
+        "relay"
+      ],
+      "pins": {
+        "6": "BridgeREV;1",
+        "8": "BridgeFWD;1",
+        "15": "WifiLED_n;0",
+        "17": "Btn;1",
+        "21": "LED;1"
+      },
+      "command": "startdriver bl0942",
+      "image": "https://obrazki.elektroda.pl/9758411200_1765994014.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4157516.html"
     },
     {
       "vendor": "Tuya",
@@ -9123,6 +9150,31 @@
       "product": ""
     },
     {
+      "vendor": "MOES",
+      "bDetailed": "0",
+      "name": "Tuya Wi-Fi Smart Garage Door Opener",
+      "model": "MS-102",
+      "chip": "BK7231T",
+      "board": "WB2S",
+      "flags": "1024",
+      "keywords": [
+        "axkmay3av5h3zh9y",
+        "NH-HG-102 车库门控制器 蓝牙双模升级版",
+        "000002ilv4",
+        "90-250v",
+        "keymxkctp9ukgcvg"
+      ],
+      "pins": {
+        "6": "Btn;1",
+        "7": "WifiLED_n;0",
+        "24": "Rel;1",
+        "26": "dInput;0"
+      },
+      "command": "powersave 1",
+      "image": "https://obrazki.elektroda.pl/9040843000_1765928778.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4157492.html"
+    },
+    {
       "vendor": "Tuya",
       "bDetailed": "1",
       "name": "Smart Garage Door Opener",
@@ -9141,6 +9193,19 @@
       "wiki": "https://www.elektroda.pl/rtvforum/topic4120403.html"
     },
     {
+      "vendor": "RMshebei",
+      "bDetailed": "1",
+      "name": "WiFi Circuit Breaker 2P 63A Automatic Reclosing Protector",
+      "model": "WTDZW-63A2",
+      "chip": "BK7238",
+      "board": "T1-3S",
+      "keywords": ["WT113", "TM1621B", "CMS32L051", "GPD-102", "TuyaMCU", "double", "breaker", "overvoltage"],
+      "pins": {},
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/1162457500_1766002850.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4157607.html"
+    },    
+    {
       "vendor": "Sonoff",
       "bDetailed": "1",
       "name": "Battery-powered PIR Sensor",
@@ -9153,6 +9218,19 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4101344.html",
       "product": ""
     },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "1",
+      "name": "Clamp Power Meter (Dual channel)",
+      "model": "PJ-1103C",
+      "chip": "BK7238",
+      "board": "on PCB",
+      "keywords": ["2025/8/13", "PJ1103C/V1.2", "TuyaMCU", "116250S_Y231_251011"],
+      "pins": {},
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/5387844400_1765802823.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4157274.html"
+    },     
     {
       "vendor": "Sonoff",
       "bDetailed": "1",
@@ -9192,6 +9270,29 @@
       "image": "https://obrazki.elektroda.pl/3542572100_1705042362_thumb.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4027983.html"
     },
+    {
+      "vendor": "STRONG",
+      "bDetailed": "0",
+      "name": "HELO Connect Smart Power Strip 4AC+4USB (222135)",
+      "model": "HELO-POWER-4-EU",
+      "chip": "RTL8710B",
+      "board": "",
+      "keywords": ["extension", "sockets", "plugs"],
+      "pins": {
+        "0": "Rel;0",
+        "1": "BL0937CF;0",
+        "8": "BL0937CF1;0",
+        "9": "Rel;2",
+        "10": "BL0937SEL;0",
+        "11": "Rel;1",
+        "12": "Btn_Tgl_All;0",
+        "13": "Rel;3",
+        "15": "WifiLED;0"
+      },
+      "command": "backlog startDriver BL0937; startDriver NTP; SetupEnergyStats 1 60 60; PowerSave 0",
+      "image": "https://obrazki.elektroda.pl/2415907700_1766090262.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4157661.html"
+    },    
     {
       "vendor": "Tuya",
       "bDetailed": "0",
@@ -14218,6 +14319,33 @@
       "command": "",
       "image": "https://obrazki.elektroda.pl/2041437300_1680860410.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic3970248.html"
+    },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Generic 16A Mini Switch DIY Breaker",
+      "model": "WIFI+RF433",
+      "chip": "BK7231N",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "JIEYING",
+        "JY3FF-SH-DC5V-A(K)",
+        "H3308 H0744",
+        "L15-07",
+        "7nrdtldu4vlimndp",
+        "keyjnuy4s3kre7m7"
+      ],
+      "pins": {
+        "6": "TglChanOnTgl;1",
+        "7": "Rel;1",
+        "8": "RCRecv;0",
+        "23": "Btn_Tgl_All;0",
+        "26": "WifiLED_n;0"
+      },
+      "command": "startdriver rc",
+      "image": "https://obrazki.elektroda.pl/5081148700_1765829028.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21781676#21781676"
     },
     {
       "vendor": "Tuya UNSH",
