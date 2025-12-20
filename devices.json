@@ -9271,6 +9271,53 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4027983.html"
     },
     {
+      "vendor": "Sonoff",
+      "bDetailed": "0",
+      "name": "Sonoff S61s 16A Matter over Wi-Fi Smart Plug (EU)",
+      "model": "S61STPF",
+      "chip": "BK7238",
+      "board": "WBBK_01P_V1.3",
+      "flags": "1024",
+      "keywords": [
+        "E355782",
+        "100-240V",
+        "3840W",
+        "EU02C0-V1.2",
+        "20241202"
+      ],
+      "pins": {
+        "0": "LED_n;1",
+        "1": "WifiLED_n;2",
+        "6": "BL0937CF1;0",
+        "8": "BL0937CF;0",
+        "9": "Btn_Tgl_All;1",
+        "24": "BL0937SEL;0",
+        "26": "Rel;1"
+      },
+      "command": "loglevel 0",
+      "image": "https://obrazki.elektroda.pl/9129170400_1766188545.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4157852.html"
+    },
+    {
+      "vendor": "ELEGRP",
+      "bDetailed": "0",
+      "name": "Single Pole 3Way Switch (behaviour preference - see wiki)",
+      "model": "SPN30",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "keywords": [],
+      "pins": {
+        "6": "Btn_ScriptOnly;1",
+        "7": "Rel;1",
+        "8": "dInput_NoPullUp_n;1",
+        "23": "Btn_ScriptOnly;1",
+        "24": "LED;1"
+      },
+      "command": "backlog addEventHandler OnClick 6 Power1 ON; addEventHandler OnClick 23 Power1 OFF",
+      "image": "https://obrazki.elektroda.pl/3724687600_1706678426.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21785283#21785283"
+    },
+    {
       "vendor": "STRONG",
       "bDetailed": "0",
       "name": "HELO Connect Smart Power Strip 4AC+4USB (222135)",
@@ -12900,7 +12947,7 @@
       "vendor": "ELEGRP",
       "bDetailed": "0",
       "name": "Single Pole 3Way Switch",
-      "model": "SPN10",
+      "model": "SPN30",
       "chip": "BK7231N",
       "board": "CB2S",
       "keywords": [],
