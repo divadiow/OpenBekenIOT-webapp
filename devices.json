@@ -9271,6 +9271,25 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4027983.html"
     },
     {
+      "vendor": "ELEGRP",
+      "bDetailed": "0",
+      "name": "Single Pole 3Way Switch (behaviour preference - see wiki)",
+      "model": "SPN30",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "keywords": [],
+      "pins": {
+        "6": "Btn_ScriptOnly;1",
+        "7": "Rel;1",
+        "8": "dInput_NoPullUp_n;1",
+        "23": "Btn_ScriptOnly;1",
+        "24": "LED;1"
+      },
+      "command": "backlog addEventHandler OnClick 6 Power1 ON; addEventHandler OnClick 23 Power1 OFF",
+      "image": "https://obrazki.elektroda.pl/3724687600_1706678426.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21785283#21785283"
+    },
+    {
       "vendor": "STRONG",
       "bDetailed": "0",
       "name": "HELO Connect Smart Power Strip 4AC+4USB (222135)",
@@ -12900,7 +12919,7 @@
       "vendor": "ELEGRP",
       "bDetailed": "0",
       "name": "Single Pole 3Way Switch",
-      "model": "SPN10",
+      "model": "SPN30",
       "chip": "BK7231N",
       "board": "CB2S",
       "keywords": [],
