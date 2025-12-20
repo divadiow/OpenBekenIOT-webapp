@@ -9271,6 +9271,34 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4027983.html"
     },
     {
+      "vendor": "Sonoff",
+      "bDetailed": "0",
+      "name": "Sonoff S61s 16A Matter over Wi-Fi Smart Plug (EU)",
+      "model": "S61STPF",
+      "chip": "BK7238",
+      "board": "WBBK_01P_V1.3",
+      "flags": "1024",
+      "keywords": [
+        "E355782",
+        "100-240V",
+        "3840W",
+        "EU02C0-V1.2",
+        "20241202"
+      ],
+      "pins": {
+        "0": "LED_n;1",
+        "1": "WifiLED_n;2",
+        "6": "BL0937CF1;0",
+        "8": "BL0937CF;0",
+        "9": "Btn_Tgl_All;1",
+        "24": "BL0937SEL;0",
+        "26": "Rel;1"
+      },
+      "command": "loglevel 0",
+      "image": "https://obrazki.elektroda.pl/9129170400_1766188545.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4157852.html"
+    },
+    {
       "vendor": "ELEGRP",
       "bDetailed": "0",
       "name": "Single Pole 3Way Switch (behaviour preference - see wiki)",
