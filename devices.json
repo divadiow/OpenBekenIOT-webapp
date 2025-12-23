@@ -15148,6 +15148,23 @@
       },
       "image": "https://obrazki.elektroda.pl/9156598000_1713616453.webp",
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21053778"
+    },
+    {
+      "vendor": "Cata",
+      "bDetailed": "0",
+      "name": "Cata CT-4010",
+      "model": "CT-4010",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "flags": "1024",
+      "keywords": ["Smart Plug", "BK7231N"],
+      "pins": {
+        "7": "LED_n;1",
+        "24": "Rel;1",
+        "26": "Btn_Tgl_All;0"
+      },
+      "image": "https://obrazki.elektroda.pl/9953248800_1766501806.jpg]",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4158285.html"
     }
   ]
 }
