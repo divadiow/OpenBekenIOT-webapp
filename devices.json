@@ -7783,6 +7783,28 @@
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=20551479#20551479"
     },
     {
+      "vendor": "Cata",
+      "bDetailed": "0",
+      "name": "16A Akilli Priz / Smart Socket (EU)",
+      "model": "CT-4010",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "flags": "1024",
+      "keywords": [
+        "SK524WR-AG1",
+        "20210722",
+        "JQC-12FT 005-H",
+        "plug"
+      ],
+      "pins": {
+        "7": "LED_n;1",
+        "24": "Rel;1",
+        "26": "Btn_Tgl_All;0"
+      },
+      "image": "https://obrazki.elektroda.pl/9953248800_1766501806.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4158285.html"
+    },
+    {
       "vendor": "Tuya",
       "bDetailed": "0",
       "name": "Mini Smart Switch 16A 1 Gang Shunshun Graffiti",
