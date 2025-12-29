@@ -9271,6 +9271,34 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4027983.html"
     },
     {
+      "vendor": "SmartLife",
+      "bDetailed": "0",
+      "name": "Mini Smart Socket EU16/20A Wifi Smart Plug With Power Monitoring",
+      "model": "EU20A",
+      "chip": "LN882H",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "LN882HKI",
+        "BL0937",
+        "socket",
+        "BP2525",
+        "C0003_P9_LN882H_PLUG1",
+        "qsjrrszpjipdyjpy"        
+      ],
+      "pins": {
+        "6": "LED_n;0",
+        "7": "Btn;0",
+        "19": "Rel;0",
+        "20": "BL0937CF;0",
+        "21": "BL0937CF1;0",
+        "22": "BL0937SEL;0"
+      },
+      "command": "setChannelLabel 0 \"Toggle\"",
+      "image": "https://obrazki.elektroda.pl/2870202100_1766419999.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4158181.html"
+    },
+    {
       "vendor": "Sonoff",
       "bDetailed": "0",
       "name": "Sonoff S61s 16A Matter over Wi-Fi Smart Plug (EU)",
@@ -15157,7 +15185,7 @@
       "chip": "BK7231N",
       "board": "CB2S",
       "flags": "1024",
-      "keywords": ["Smart Plug", "BK7231N"],
+      "keywords": ["Smart Plug", "BK7231N", "SK524WR-AG1", "20210722", "JQC-12FT 005-H"],
       "pins": {
         "7": "LED_n;1",
         "24": "Rel;1",
