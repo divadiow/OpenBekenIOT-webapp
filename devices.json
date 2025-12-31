@@ -447,19 +447,19 @@
       "flags": "1024",
       "keywords": ["temperature", "heating", "110-240v", "timer", "BL0942SPI"],
       "pins": {
-        "6": "LED;1",
+        "6": "LED;2",
         "7": "AlwaysLow;0",
-        "9": "WifiLED_n;0",
-        "14": "LED;2",
-        "15": "LED;3",
-        "16": "LED;4",
-        "17": "LED;5",
+        "9": "WifiLED;0",
+        "14": "LED;5",
+        "15": "LED;8",
+        "16": "LED;1",
+        "17": "LED;4",
         "20": "LED;6",
-        "22": "LED;7",
-        "23": "LED;8",
+        "22": "LED;3",
+        "23": "LED;7",
         "24": "Rel;39",
         "26": "Rel;37",
-        "28": "dInput;35"
+        "28": "ADC;20"
       },
       "command": "backlog startdriver bl0942spi 9600;",
       "image": "https://obrazki.elektroda.pl/4281823900_1708276579.jpg",
@@ -2742,6 +2742,29 @@
       "command": "",
       "image": "https://obrazki.elektroda.pl/7167182000_1753639754.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4131553.html"
+    },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Universal IR Remote Control",
+      "model": "S06 Pro",
+      "chip": "BK7238",
+      "board": "T1-3S",
+      "flags": "525316",
+      "keywords": [
+        "infra-red",
+        "2025-08-20",
+        "S06Pro_T1-3S-V1.1"
+      ],
+      "pins": {
+        "6": "IRSend;0",
+        "9": "Btn;1",
+        "24": "WifiLED;0",
+        "26": "IRRecv;0"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6533250100_1767127537.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4159051.html"
     },
     {
       "vendor": "SurpLife",
