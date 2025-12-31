@@ -2744,6 +2744,29 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4131553.html"
     },
     {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Universal IR Remote Control",
+      "model": "S06 Pro",
+      "chip": "BK7238",
+      "board": "T1-3S",
+      "flags": "525316",
+      "keywords": [
+        "infra-red",
+        "2025-08-20",
+        "S06Pro_T1-3S-V1.1"
+      ],
+      "pins": {
+        "6": "IRSend;0",
+        "9": "Btn;1",
+        "24": "WifiLED;0",
+        "26": "IRRecv;0"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6533250100_1767127537.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4159051.html"
+    },
+    {
       "vendor": "SurpLife",
       "bDetailed": "0",
       "name": "Zengge Symphony Wi-Fi SPI Addressible USB LED Controller w/IR",
