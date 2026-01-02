@@ -536,7 +536,13 @@
            	 console.log('OTA postfix=' + postfix);
                 let options = [];
                 const otaVariant = this.getOtaVariantFromCurrentVersion();
-                const allowVariant = (otaVariant && this.chipSetUsesRBL() && postfix === '.rbl');
+                const allowVariant = (
+                    otaVariant &&
+                    (
+                        (this.chipSetUsesRBL() && postfix === '.rbl') ||
+                        ((this.chipset || '').startsWith('ESP') && postfix === '.img')
+                    )
+                );
                 if (prefix){
                     for (let i = 0; i < data.length; i++){
                         const rel = data[i];
