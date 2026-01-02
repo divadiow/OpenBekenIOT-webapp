@@ -540,7 +540,8 @@
                     otaVariant &&
                     (
                         (this.chipSetUsesRBL() && postfix === '.rbl') ||
-                        ((this.chipset || '').startsWith('ESP') && postfix === '.img')
+                        ((this.chipset || '').startsWith('ESP') && postfix === '.img') ||
+                        (this.chipset === 'BL602' && postfix === '_OTA.bin.xz.ota')
                     )
                 );
                 if (prefix){
