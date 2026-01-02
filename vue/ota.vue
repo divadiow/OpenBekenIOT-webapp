@@ -160,33 +160,59 @@
          */
         getVariantMismatchMessage(fileName){
             if (!this.chipset) return '';
-            if (!this.chipSetUsesRBL()) return '';
 
-            const variant = this.getOtaVariantFromCurrentVersion();
-            if (!variant) return '';
-
+            const deviceVariant = this.getOtaVariantFromCurrentVersion();
             const lowerName = (fileName || '').toLowerCase();
             const chipLower = this.chipset.toLowerCase();
 
-            // Only enforce on Open<chip>_*.rbl selections
+            // Only enforce when the selected file is for this chipset (wrong chipset handled elsewhere)
             const expectedPrefix = 'open' + chipLower + '_';
             if (!lowerName.startsWith(expectedPrefix)) return '';
-            if (!lowerName.endsWith('.rbl')) return '';
 
-            const variantLower = variant.toLowerCase();
-            if (lowerName.endsWith('_' + variantLower + '.rbl')) return ''; // correct
-
-            // Detect selected variant suffix if present
+            // Determine selected variant based on known OTA naming patterns
             let selectedVariant = '';
-            const m = lowerName.match(/^open[a-z0-9]+_\d+\.\d+\.\d+_([^\.]+)\.rbl$/);
-            if (m && m[1]) selectedVariant = m[1];
 
-            if (selectedVariant){
-                return 'Selected OTA file variant "' + selectedVariant + '" does not match this device variant "' + variant + '". Applying it may remove required feature support.';
+            // 1) RBL: Open<chip>_<ver>.rbl  or  Open<chip>_<ver>_<variant>.rbl
+            if (lowerName.endsWith('.rbl')){
+                const m = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?\\.rbl$'));
+                if (m && m[1]) selectedVariant = m[1];
             }
-            return 'Selected OTA file is a generic build for ' + this.chipset + ' and does not include this device variant "' + variant + '". Applying it may remove required feature support.';
-        },
+            // 2) IMG: Open<chip>_<ver>.img  or  Open<chip>_<ver>_<variant>.img
+            else if (lowerName.endsWith('.img')){
+                const m = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?\\.img$'));
+                if (m && m[1]) selectedVariant = m[1];
+            }
+            // 3) BL602-style OTA: Open<chip>_<ver>_OTA.bin.xz.ota  or  Open<chip>_<ver>_<variant>_OTA.bin.xz.ota
+            else if (lowerName.endsWith('_ota.bin.xz.ota')){
+                const m = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^_\\.]+))?_ota\\.bin\\.xz\\.ota$'));
+                if (m && m[1]) selectedVariant = m[1];
+            }
+            else{
+                // Unknown naming: do not enforce variant rules (avoid false positives)
+                return '';
+            }
 
+            const dv = (deviceVariant || '').toLowerCase();
+            const sv = (selectedVariant || '').toLowerCase();
+
+            // No variant on either side -> OK
+            if (!dv && !sv) return '';
+
+            // Same variant -> OK
+            if (dv && sv && dv === sv) return '';
+
+            // Any other transition is blocked:
+            // - variant -> generic
+            // - generic -> variant
+            // - variant A -> variant B
+            if (!dv && sv){
+                return 'Selected OTA file variant "' + selectedVariant + '" does not match this device (generic build).';
+            }
+            if (dv && !sv){
+                return 'Selected OTA file is a generic build but this device variant is "' + deviceVariant + '".';
+            }
+            return 'Selected OTA file variant "' + selectedVariant + '" does not match this device variant "' + deviceVariant + '".';
+        },
         /* Check if the ota fileName matches the chipset */
         fileNameMatchesChipset(fileName){
             if (!this.chipset){     //Accept any file if chipset missing (older firmware)
