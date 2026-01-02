@@ -15216,6 +15216,36 @@
       },
       "image": "https://obrazki.elektroda.pl/9953248800_1766501806.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4158285.html"
+    },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Water Leakage Sensor DYGSM DY-SQ400B",
+      "model": "DYGSM DY-SQ400B",
+      "chip": "BK7238",
+      "board": "T1-U-HL",
+      "flags": "1024",
+      "keywords": [
+        "water",
+        "leakage",
+        "leak",
+        "sensor",
+        "detector",
+        "flood",
+        "CR123A",
+        "buzzer"
+      ],
+      "pins": {
+        "8": "Rel;2",
+        "17": "DoorSnsrWSleep_nPup;1",
+        "20": "BAT_ADC;0",
+        "21": "Btn_ScriptOnly;0",
+        "23": "BAT_Relay;0",
+        "28": "WifiLED_n;0"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/2519862300_1767272667.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4159198.html"
     }
   ]
 }
