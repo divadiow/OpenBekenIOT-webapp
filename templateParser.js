@@ -40,6 +40,10 @@ function processJSON_UserParamKeyStyle(js,user_param_key) {
         if(tmpl.board[0] == 'C') {
             tmpl.chip = "BK7231N";
         }
+        if(tmpl.board[0] == 'T') {
+			// T34
+            tmpl.chip = "BK7231N";
+        }
         if(tmpl.board[0] == 'W') {
             tmpl.chip = "BK7231T";
         }
