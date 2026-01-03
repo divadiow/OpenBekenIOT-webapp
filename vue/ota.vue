@@ -29,10 +29,9 @@
             <br/>
             <span>Select remote OTA file to download to PC:</span>
             <select v-model="selectedfile" @change="remoteotafilechange()">
-                <option v-for="opt in options" v-bind:key="opt.url" v-bind:value="opt.url">{{ opt.name }}<option>
+                <option v-for="opt in options" v-bind:key="opt.url" v-bind:value="opt.url">{{ opt.name }}</option>
             </select>
             <span>Download: </span><a v-bind:href="selectedfile">{{selectedfile}}</a>
-
         </div>
         <br/>
         <div>
