@@ -207,7 +207,7 @@
             // - generic -> variant
             // - variant A -> variant B
             if (!dv && sv){
-                return 'Selected OTA file variant "' + selectedVariant + '" does not match this device (generic build).';
+                return 'Selected OTA file variant "' + selectedVariant + '" does not match the current generic build.';
             }
             if (dv && !sv){
                 return 'Selected OTA file is a generic build but this device variant is "' + deviceVariant + '".';
