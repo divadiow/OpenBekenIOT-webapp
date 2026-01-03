@@ -44,6 +44,9 @@
                 <div class="otatext center" v-html="otatext"></div>
             </div>
             <div v-html="status" :class="{invalid: invalidOTASelected}"></div>
+            <div v-if="variantMismatchSelected" class="invalid">
+                Note: {{ variantMismatchMessage }}
+            </div>
         </div>
     </div>
 </template>
@@ -154,9 +157,8 @@
         },
 
         /*
-         * Optional safety: if a device is running a variant build (e.g. *_hlw8112, *_berry, *_tuyaMCU),
-         * block selecting a generic/wrong-variant .rbl to prevent accidental feature loss.
-         * Note: this is chipset-qualified (Open<chip>_ prefix must match).
+         * If a device is running a variant build (e.g. *_hlw8112, *_berry, *_tuyaMCU),
+         * warn when selecting a generic/different-variant to prevent accidental feature loss.
          */
         getVariantMismatchMessage(fileName){
             if (!this.chipset) return '';
@@ -201,7 +203,7 @@
             // Same variant -> OK
             if (dv && sv && dv === sv) return '';
 
-            // Any other transition is blocked:
+            // Any other transition throws a warning:
             // - variant -> generic
             // - generic -> variant
             // - variant A -> variant B
@@ -262,14 +264,12 @@
                 this.invalidOTASelected = !this.fileNameMatchesChipset(file.name);
             }
 
-            // Optional safety: block generic/wrong-variant OTA selection on a variant device
+            // Warn for generic/different-variant OTA selection on a variant device
             if (!this.invalidOTASelected){
                 const mismatch = this.getVariantMismatchMessage(file.name);
                 if (mismatch){
                     this.variantMismatchSelected = true;
                     this.variantMismatchMessage = mismatch;
-                    this.invalidOTASelected = true; // hard block
-                    this.status = mismatch;
                 }
             }
 
