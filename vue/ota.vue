@@ -216,14 +216,20 @@
             return 'Selected OTA file variant "' + selectedVariant + '" does not match this device variant "' + deviceVariant + '".';
         },
         /* Check if the ota fileName matches the chipset */
-        fileNameMatchesChipset(fileName){
-            if (!this.chipset){     //Accept any file if chipset missing (older firmware)
-                return true; 
+        fileNameMatchesChipset(fileName) {
+            if (!this.chipset) {     //Accept any file if chipset missing (older firmware)
+                return true;
             }
 
             //e.g. OpenW800_1.12.40_ota.img, OpenBK7231N_1.12.40.rbl, OpenW800_1.12.40_ota.img
             var lowerName = fileName.toLowerCase();
-            if (!lowerName.startsWith("open" + this.chipset.toLowerCase() + "_")) return false;
+            var chipLower = this.chipset.toLowerCase();
+            if (!lowerName.startsWith("open" + chipLower + "_")) return false;
+
+            // LN882H: OpenLN882H_<ver>_OTA.bin
+            if (chipLower === "ln882h") {
+                return lowerName.endsWith("_ota.bin");
+            }
 
             var ext = this.chipSetUsesRBL() ? ".rbl" : ".img";
             return lowerName.endsWith(ext);
@@ -256,7 +262,7 @@
             } else if (this.chipset === "BL602"){
                 this.invalidOTASelected = !this.isBL602Image(result);
             } else if (this.chipset === "LN882H"){
-                this.invalidOTASelected = false;
+                this.invalidOTASelected = !this.fileNameMatchesChipset(file.name);
             }
             else{
                 //At this point W800 is the only other chipset with has OTA images e.g. OpenW800_1.12.40_ota.img
