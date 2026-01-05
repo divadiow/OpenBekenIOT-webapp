@@ -412,7 +412,7 @@
             // start with empty data
             this.fullDumpRunning = 1;
             console.log("doFlashDumpInternal started!");
-            this.status += `<br/>reading ${this.getDumpJobLabel()}...`;
+            this.status += `<br/>downloading ${this.getDumpJobLabel()}...`;
             this.fullDumpData = new ArrayBuffer();
             this.fullDumpCurAt = this.fullDumpFlashStart;
             this.fullDumpChunkSize = 4096;
