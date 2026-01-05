@@ -94,6 +94,8 @@
         fullDumpErrors: 0,
         fullDumpRunning:0,
         fullDumpChunkSize: 0,
+        fullDumpJobLabel: '',
+        fullDumpFileTag: '',
         display: '',
         configdata: null,
         build:'unknown',
@@ -266,9 +268,19 @@
             }
             this.downloadArrayBuffer(this.fullDumpData, fileName+".bin");
         },
+        setDumpJob(label, fileTag){
+            this.fullDumpJobLabel = label;
+            this.fullDumpFileTag = fileTag;
+        },
+        getDumpJobLabel(){
+            if(this.fullDumpJobLabel!=undefined && this.fullDumpJobLabel.length>0){
+                return this.fullDumpJobLabel;
+            }
+            return "full dump";
+        },
         onFullDumpReadyForDownload(){
             this.fullDumpRunning = 0;
-            this.status += '<br>Full dump ready!</br>';
+            this.status += `<br>${this.getDumpJobLabel()} ready!</br>`;
             this.generateFullDumpDownloadForBrowser();
         },
         downloadFullDumpFragment(){
@@ -367,6 +379,7 @@
 	        .then(response => response.arrayBuffer())
 	        .then(buffer => {
 	            this.downloadArrayBuffer(buffer, `custom_${offset.toString(16)}-${length}.bin`);
+	            this.status += `<br>custom data ready!</br>`;
 	            if (cb) cb();
 	        })
 	        .catch(err => console.error(err)); 
@@ -386,6 +399,7 @@
                 return;
             }
             this.fullDumpStyle = "QIO";
+            this.setDumpJob("full 2MB dump", "FullDump");
             this.fullDumpFlashStart = 0;
             this.fullDumpFlashSize = 2097152;
             this.doFlashDumpInternal();
@@ -398,7 +412,7 @@
             // start with empty data
             this.fullDumpRunning = 1;
             console.log("doFlashDumpInternal started!");
-            this.status += '<br/>reading full dump...';
+            this.status += `<br/>reading ${this.getDumpJobLabel()}...`;
             this.fullDumpData = new ArrayBuffer();
             this.fullDumpCurAt = this.fullDumpFlashStart;
             this.fullDumpChunkSize = 4096;
@@ -459,6 +473,7 @@
             this.fullDumpFlashStart = 0x1EE000;
             this.fullDumpFlashSize = 73728;
             this.fullDumpStyle = "TuyaConfig";
+            this.setDumpJob("Tuya GPIO config", "TuyaConfig");
             // it ends at 2097152 - at 2MB
             this.doFlashDumpInternal();
         },
