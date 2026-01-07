@@ -268,9 +268,14 @@
             }
             this.downloadArrayBuffer(this.fullDumpData, fileName+".bin");
         },
-        setDumpJob(label, fileTag){
+
+        startDumpJob(label, fileTag, flashStart, flashSize, style){
             this.fullDumpJobLabel = label;
             this.fullDumpFileTag = fileTag;
+            this.fullDumpFlashStart = flashStart;
+            this.fullDumpFlashSize = flashSize;
+            this.fullDumpStyle = style;
+            this.doFlashDumpInternal();
         },
         getDumpJobLabel(){
             if(this.fullDumpJobLabel!=undefined && this.fullDumpJobLabel.length>0){
@@ -398,11 +403,7 @@
 			} else {
                 return;
             }
-            this.fullDumpStyle = "QIO";
-            this.setDumpJob("full 2MB dump", "FullDump");
-            this.fullDumpFlashStart = 0;
-            this.fullDumpFlashSize = 2097152;
-            this.doFlashDumpInternal();
+            this.startDumpJob("full 2MB dump", "FullDump", 0, 2097152, "QIO");
         },
         doFlashDumpInternal() {
             if(this.fullDumpRunning!=0){
@@ -470,12 +471,8 @@
                 .catch(err => console.error(err)); // Never forget the final catch!
         },
         downloadTuyaConfig() {
-            this.fullDumpFlashStart = 0x1EE000;
-            this.fullDumpFlashSize = 73728;
-            this.fullDumpStyle = "TuyaConfig";
-            this.setDumpJob("Tuya GPIO config", "TuyaConfig");
             // it ends at 2097152 - at 2MB
-            this.doFlashDumpInternal();
+            this.startDumpJob("Tuya GPIO config", "TuyaConfig", 0x1EE000, 73728, "TuyaConfig");
         },
         config(cb){
             this.status += '<br/>reading config...';
