@@ -17,7 +17,7 @@
                 <td><a :href="rfurl" download="rfdata">Download RF</a></td>
                 <td>
                 </td>
-                <td><button @click="restore_rf(null, $event)">Restore (Recreate) RF Config (N & T)</button></td>
+                <td><button @click="restore_rf(null, $event)">Restore (Recreate) RF Config (N & T)</button><br><button @click="detectRFPartitionBeken(null, $event)">Detect RF partition (Beken)</button></td>
             </tr>
             <tr>
                 <td>  <button @click="config(null, $event)">Read OBK Config</button></td>
@@ -223,6 +223,68 @@
             console.log('getRFAddress is not implemented for '+this.chipset);
 			return '1e0000-1000';
         },
+        async detectRFPartitionBeken(cb){
+            // Beken RF sector detection by scanning backwards for TLV\0 header (54 4C 56 00),
+            // as implemented in RFPartitionUtil.getRFFromBackup(). fileciteturn0file0
+            if(this.chipset == null || this.chipset.toLowerCase().indexOf("bk") == -1){
+                this.status += '<br/>RF auto-detect is intended for Beken devices only.';
+                return;
+            }
+
+            let s = prompt("Flash size in hex (e.g. 0x200000 for 2MB). Leave blank for 0x200000:", "0x200000");
+            if(s == null){
+                return;
+            }
+            s = s.trim();
+
+            let flashSize = 0x200000;
+            if(s.length > 0){
+                if(s.toLowerCase().startsWith("0x")){
+                    flashSize = parseInt(s, 16);
+                } else {
+                    flashSize = parseInt(s, 16);
+                }
+                if(!Number.isFinite(flashSize) || flashSize < 0x1000){
+                    alert("Invalid flash size.");
+                    return;
+                }
+            }
+
+            this.status += `<br/>scanning for RF TLV header (TLV\0) from end of flash (0x${flashSize.toString(16)})...`;
+
+            for(let addr = (flashSize - 0x1000); addr >= 0; addr -= 0x1000){
+                let url = window.device + '/api/flash/' + addr.toString(16) + '-1000';
+                try{
+                    const resp = await fetch(url);
+                    const buf = await resp.arrayBuffer();
+                    const b = new Uint8Array(buf);
+
+                    if(b.length >= 4 && b[0] == 0x54 && b[1] == 0x4c && b[2] == 0x56 && b[3] == 0x00){
+                        this.status += `<br/>RF TLV header found at 0x${addr.toString(16)} (size 0x1000).`;
+
+                        // As in RFPartitionUtil.getMACFromQio(), MAC is at offset +36. fileciteturn0file0
+                        if(b.length >= (36 + 6)){
+                            let mac = [];
+                            for(let i = 0; i < 6; i++){
+                                mac.push(b[36 + i].toString(16).padStart(2,'0'));
+                            }
+                            this.status += `<br/>MAC at +36: ${mac.join(':')}`;
+                        }
+
+                        // Point the RF download link at the detected sector for convenience.
+                        this.rfurl = window.device + '/api/flash/' + addr.toString(16) + '-1000';
+
+                        if (cb) cb();
+                        return;
+                    }
+                }catch(e){
+                    console.error(e);
+                }
+            }
+
+            this.status += `<br/>RF TLV header not found.`;
+        },
+
         getConfigAddress(){
             if(this.chipset === "BK7231T") {
 				return '1e1000-1000';
