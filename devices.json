@@ -1577,6 +1577,60 @@
       "product": ""
     },
     {
+      "vendor": "Deltaco",
+      "bDetailed": "0",
+      "name": "10A 240V SMART HOME strömbrytare Plug (EU)",
+      "model": "SH-P01",
+      "chip": "BK7231T",
+      "board": "WB2S",
+      "flags": "1024",
+      "keywords": [
+        "SA-P302A",
+        "PO194180",
+        "2400W",
+        "0000038caa",
+        "keya4gvchmtapm8n",
+        "4r94tdtavlfeiwvp"
+      ],
+      "pins": {
+        "6": "Btn;57",
+        "8": "WifiLED_n;55",
+        "24": "Rel;39"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7185170100_1767728961.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4160008.html"
+    },
+    {
+      "vendor": "AESSY",
+      "bDetailed": "0",
+      "name": "Smart Plug 20A",
+      "model": "BSD69+",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "flags": "1024",
+      "keywords": [
+        "brazil",
+        "portugal",
+        "BP20V4",
+        "000004ii7s",
+        "keyjup78v54myhan",
+        "o7ve1lp3gfjvsvyo"
+      ],
+      "pins": {
+        "6": "BL0937CF1;0",
+        "7": "BL0937CF;0",
+        "8": "WifiLED;0",
+        "10": "Btn;1",
+        "23": "LED;1",
+        "24": "BL0937SEL;0",
+        "26": "Rel;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6052062400_1767893361.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4160275.html"
+    },
+    {
       "vendor": "eWelink",
       "bDetailed": "0",
       "name": "WiFi Smart Valve Water Gas Shutoff Automated Ball Valve",
