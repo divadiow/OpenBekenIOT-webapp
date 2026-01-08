@@ -1577,6 +1577,31 @@
       "product": ""
     },
     {
+      "vendor": "eWelink",
+      "bDetailed": "0",
+      "name": "WiFi Smart Valve Water Gas Shutoff Automated Ball Valve",
+      "model": "CZC20",
+      "chip": "BL602",
+      "board": "SDV-002_V1.2",
+      "keywords": [
+        "relay",
+        "button",
+        "wifi_led",
+        "DN15/DN20/DN25",
+        "FWSW-CKBL602-SWITCH-BL602L_v1.3.1",
+        "CK-BL602-4SW-HS-03",
+        "CZC20S"
+      ],
+      "pins": {
+        "2": "Rel;1",
+        "12": "LED;1",
+        "14": "Btn;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7722669700_1767815835.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4160158.html"
+    },
+    {
       "vendor": "TreatLife",
       "bDetailed": "1",
       "name": "Treatlife Intertek DS03 Fan/Light Dimmer Tutorial",
