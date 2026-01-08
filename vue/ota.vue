@@ -175,12 +175,12 @@
 
             // 1) RBL: Open<chip>_<ver>.rbl  or  Open<chip>_<ver>_<variant>.rbl  or  Open<chip>_<variant>_<ver>.rbl
             if (lowerName.endsWith('.rbl')){
-                let m = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?\\.rbl$'));
-                if (m && m[1]) selectedVariant = m[1];
+                const mA = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?\\.rbl$'));
+                if (mA && mA[1]) selectedVariant = mA[1];
 
                 if (!selectedVariant){
-                    m = lowerName.match(new RegExp('^open' + chipLower + '_([^_\\.]+)_\\d+\\.\\d+\\.\\d+\\.rbl$'));
-                    if (m && m[1]) selectedVariant = m[1];
+                    const mB = lowerName.match(new RegExp('^open' + chipLower + '_([^_\\.]+)_\\d+\\.\\d+\\.\\d+\\.rbl$'));
+                    if (mB && mB[1]) selectedVariant = mB[1];
                 }
             }
             // 2) IMG: Open<chip>_<ver>.img  or  Open<chip>_<ver>_<variant>.img
