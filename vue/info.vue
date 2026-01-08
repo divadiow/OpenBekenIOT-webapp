@@ -6,31 +6,31 @@
     </div>
     <div class="item">
       <h4>Current Device:</h4>
-      <p>UpTime: {{uptime_s}}s</p>
+      <p>Uptime: {{uptime_s}}s</p>
       <p>Build: {{build}}</p>
-      <p>IP Address: {{ip}}</p>
-      <p>MAC Address: {{mac}}</p>
+      <p>IP address: {{ip}}</p>
+      <p>MAC address: {{mac}}</p>
       <p>MQTT Server: {{mqtthost}}</p>
       <p>MQTT Topic: {{mqtttopic}}</p>
-      <p>Device Short Name: {{shortName}}</p>
-      <p>WEBAPP Url root: {{webapp}}</p>
+      <p>Device short name: {{shortName}}</p>
+      <p>Web app URL root: {{webapp}}</p>
       <p>Chipset: {{chipset}}</p>
       <p>Flags: {{flags}}</p>
       <p>Version: {{currentversion}} <span v-html="lateststr"></span></p>
       <p v-if="error">Error: {{error}}</p>
       <h4>Export Current Template</h4>
-      <p>Please fill all fields before submitting.</p>
+      <p>Please fill in all missing details before submitting a new template.</p>
 	  <textarea id="deviceTemplate"  placeholder="qqq" style="vertical-align: top; width: 300px; height:500px"></textarea>
     <br>
-          <button @click="getTemplateAsFile">Download template as file</button>
-          <button @click="getTemplateAsClipboard">Copy To Clipboard</button>
+          <button @click="getTemplateAsFile">Download template</button>
+          <button @click="getTemplateAsClipboard">Copy to clipboard</button>
 
     </div>
 
     <div class="item" v-if="supportsClientDeviceDB" style="width: 300px;">
-      <h4>Devices:</h4>
-	  <p>Here you can apply an existing template (configuration) to your device. The following Templates List is loaded from <a href="https://openbekeniot.github.io/webapp/devicesList.html">here</a>. </p>
-	  <p>If you have any questions, ask on our forum <a href="https://www.elektroda.com/">here</a>. </p>
+      <h4>Devices</h4>
+	  <p>Here you can apply an existing template (configuration) to your device. The template list is loaded from <a href="https://openbekeniot.github.io/webapp/devicesList.html">here</a>. </p>
+	  <p>If you have questions, please ask on our forum<a href="https://www.elektroda.com/">here</a>. </p>
       Chipset:
       <select v-model="selectedChipset">
         <option v-for="chip in chipsets" :value="chip" :key="chip">{{chip}}</option>
@@ -47,13 +47,13 @@
         <div v-if="selectedDevice">
           <button @click="useDevice">Copy Device Settings</button>
         </div>
-        <div v-else>Pick a device from the dropdown.</div>
+        <div v-else>Select a device from the drop-down list.</div>
       </div>
     </div>
 
     <div class="item" style="width: 300px;">
       <h4>Pin Settings:</h4>
-	  <p>Here you can configure your device. Remember that some pin roles require second channel field, which is only available on native interface right now. Also remember that the expected channel order for LEDs is R G B C W (first channel is Red, second Green, etc...)</p>
+	  <p>Here you can configure your device. Remember that some pin roles require second channel field, which is currently only available in the native UI. Also note that the expected channel order for LEDs is R G B C W (first channel is Red, second Green, etc...)</p>
       <div v-for="(role, index) in pins.roles" :key="index">
         <span class="pin-index">{{index}}</span>
         <select v-model="pins.roles[index]">
@@ -68,12 +68,12 @@
 
       <button @click="savePins">Save Pins</button>
       <br/>
-	  NOTE: You might need to reboot your device in order to apply all changes.
+	  NOTE: You may need to reboot the device for changes to take effect..
     </div>
     <div class="item" style="width: 300px;">
       <h4>Channel Types:</h4>
 	  <p>Channel types/roles are used mostly with TuyaMCU devices. They are for more advanced users. Channel types/roles can be also used while making advanced scriptable devices and for testing.</p>
-	  <p>Setting a type for given channel may cause a special control to appear on main native WWW page. For example, a slider for dimmer channel or a radio selection box for a fan speed channel.</p>
+	  <p>Setting a type for given channel may cause a special control to appear on the main web UI page. For example, a slider for dimmer channel or a radio selection box for a fan speed channel.</p>
 	  <p>Do not edit unless you know what you're doing.</p>
       <div v-for="(role, index) in channelTypes.types" :key="index">
         <span class="channel-index">{{index}}</span>
@@ -122,7 +122,7 @@
         devices: null,
         selectedDevice: null,
         chipsets:[
-          "All","BK7231N","BK7231S","BK7231T","BL602", "XR809", "W800", "W600"
+          "All","BK7231N","T34","BK7231M","BK7231T","BK7238","BK7252N","BK7252","BL602","XR809","XR806","XR872","W800","W600","BL2028N","ESP32","ESP32C2","ESP32C3","ESP8266","ESP8285","RTL8710AM","RTL8710B","RTL87X0C","LN882H","TR6260","ECR6600","TXW81X","RDA5981"
         ],
         selectedChipset: "All",
         pinRoleNames_Old: [
@@ -311,7 +311,7 @@
                 if (!this.releases.length){
                   this.getReleases();
                 }
-                //Only if chip supplied supportsSSDP=true or did not supply it at all (backward compatibility)
+                //Only if chip supplied supports SSDP=true or did not supply it at all (backward compatibility)
                 if (res.supportsSSDP === undefined || res.supportsSSDP === 1){
                   this.getPeers();
                 }
