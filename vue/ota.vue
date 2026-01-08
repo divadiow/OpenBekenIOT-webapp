@@ -648,9 +648,13 @@
 }    .otatext {
     }
     .invalid{
-        font-weight: bold;
-        color: red;
-    }
+    font-weight: bold;
+    color: #b91c1c;
+    background: #fef2f2;
+    border-left: 4px solid #ef4444;
+    padding: 6px 10px;
+    margin-top: 6px;
+}
     .center {
         margin: 0;
         position: absolute;
