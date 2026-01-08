@@ -43,7 +43,7 @@
                 <div class="otatext center" v-html="otatext"></div>
             </div>
             <div v-html="status" :class="{invalid: invalidOTASelected}"></div>
-            <div v-if="variantMismatchSelected" class="invalid">
+            <div v-if="variantMismatchSelected" class="warning">
                 Note: {{ variantMismatchMessage }}
             </div>
         </div>
@@ -638,8 +638,14 @@
         position: relative;
         vertical-align: center;
     }
-
-    .otatext {
+    .warning{
+    font-weight: bold;
+    color: #b45309;
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+    padding: 6px 10px;
+    margin-top: 6px;
+}    .otatext {
     }
     .invalid{
         font-weight: bold;
