@@ -44,7 +44,7 @@
             </div>
             <div v-html="status" :class="{invalid: invalidOTASelected}"></div>
             <div v-if="variantMismatchSelected" class="warning">
-                Note: {{ variantMismatchMessage }}
+                {{ variantMismatchMessage }}
             </div>
         </div>
     </div>
