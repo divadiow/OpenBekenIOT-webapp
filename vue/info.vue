@@ -1,17 +1,17 @@
 <template>
   <div class="container">
     <div class="item">
-      <h4 v-if="peers.length">SSDP Devices:</h4>
+      <h4 v-if="peers.length">SSDP Devices</h4>
       <p v-for="peer in peers" v-bind:key="peer.url"><a target="_blank" v-bind:href="peer.url">{{peer.name}}</a></p>
     </div>
     <div class="item">
-      <h4>Current Device:</h4>
-      <p>Uptime: {{uptime_s}}s</p>
+      <h4>Current Device</h4>
+      <p>Uptime: {{ formattedUptime }}</p>
       <p>Build: {{build}}</p>
       <p>IP address: {{ip}}</p>
       <p>MAC address: {{mac}}</p>
-      <p>MQTT Server: {{mqtthost}}</p>
-      <p>MQTT Topic: {{mqtttopic}}</p>
+      <p>MQTT server: {{mqtthost}}</p>
+      <p>MQTT topic: {{mqtttopic}}</p>
       <p>Device short name: {{shortName}}</p>
       <p>Web app URL root: {{webapp}}</p>
       <p>Chipset: {{chipset}}</p>
@@ -19,8 +19,8 @@
       <p>Version: {{currentversion}} <span v-html="lateststr"></span></p>
       <p v-if="error">Error: {{error}}</p>
       <h4>Export Current Template</h4>
-      <p>Please fill in all missing details before submitting a new template.</p>
-	  <textarea id="deviceTemplate"  placeholder="qqq" style="vertical-align: top; width: 300px; height:500px"></textarea>
+      <p>Please complete all missing details before submitting a new template to <a href="https://www.elektroda.com/rtvforum/forum390.html" target="_blank" rel="noopener noreferrer">Elektroda</a>.</p>
+	  <textarea id="deviceTemplate"  placeholder="Template will appear here. If this box is empty, template generation may have failed." style="vertical-align: top; width: 300px; height:500px"></textarea>
     <br>
           <button @click="getTemplateAsFile">Download template</button>
           <button @click="getTemplateAsClipboard">Copy to clipboard</button>
@@ -28,9 +28,9 @@
     </div>
 
     <div class="item" v-if="supportsClientDeviceDB" style="width: 300px;">
-      <h4>Devices</h4>
+      <h4>Device Templates</h4>
 	  <p>Here you can apply an existing template (configuration) to your device. The template list is loaded from <a href="https://openbekeniot.github.io/webapp/devicesList.html">here</a>. </p>
-	  <p>If you have questions, please ask on our forum<a href="https://www.elektroda.com/">here</a>. </p>
+	  <p>If you have questions, please ask on our forum <a href="https://www.elektroda.com/rtvforum/forum390.html">here</a>. </p>
       Chipset:
       <select v-model="selectedChipset">
         <option v-for="chip in chipsets" :value="chip" :key="chip">{{chip}}</option>
@@ -52,8 +52,8 @@
     </div>
 
     <div class="item" style="width: 300px;">
-      <h4>Pin Settings:</h4>
-	  <p>Here you can configure your device. Remember that some pin roles require second channel field, which is currently only available in the native UI. Also note that the expected channel order for LEDs is R G B C W (first channel is Red, second Green, etc...)</p>
+      <h4>Pin Settings</h4>
+	  <p>Configure your device pins here. Note that some pin roles require a second channel field, which is currently only available in the native UI. LED channel order is R, G, B, C, W (first channel is Red, second is Green, etc.).</p>
       <div v-for="(role, index) in pins.roles" :key="index">
         <span class="pin-index">{{index}}</span>
         <select v-model="pins.roles[index]">
@@ -63,18 +63,18 @@
       </div>
 
       <br/>
-      <label for="deviceFlag" style="width:75px; display: inline-block;">Flag:</label>&nbsp;<input id="deviceFlag" v-model="deviceFlag" /><br/>
+      <label for="deviceFlag" style="width:75px; display: inline-block;">Flags:</label>&nbsp;<input id="deviceFlag" v-model="deviceFlag" /><br/>
       <label for="deviceCommand" style="width:75px; display: inline-block;">Command:</label>&nbsp;<input id="deviceCommand" v-model="deviceCommand" placeholder="Startup command"/><br/>
 
-      <button @click="savePins">Save Pins</button>
+      <button @click="savePins">Save pin settings</button>
       <br/>
-	  NOTE: You may need to reboot the device for changes to take effect..
+	  You may need to reboot the device for changes to take effect.
     </div>
     <div class="item" style="width: 300px;">
-      <h4>Channel Types:</h4>
-	  <p>Channel types/roles are used mostly with TuyaMCU devices. They are for more advanced users. Channel types/roles can be also used while making advanced scriptable devices and for testing.</p>
+      <h4>Channel Types</h4>
+	  <p>Channel types/roles are primarily used with TuyaMCU devices and are intended for advanced users. They are also useful for creating advanced scriptable devices and for testing.</p>
 	  <p>Setting a type for given channel may cause a special control to appear on the main web UI page. For example, a slider for dimmer channel or a radio selection box for a fan speed channel.</p>
-	  <p>Do not edit unless you know what you're doing.</p>
+	  <p>Do not change these settings unless you understand the implications.</p>
       <div v-for="(role, index) in channelTypes.types" :key="index">
         <span class="channel-index">{{index}}</span>
         <select v-model="channelTypes.types[index]">
@@ -83,7 +83,7 @@
       </div>
 
       <br/>
-      <button @click="saveChannelTypes">Save Types</button>
+      <button @click="saveChannelTypes">Save channel types</button>
       <br/>
     </div>
   </div>
@@ -284,6 +284,9 @@
         //The first value is empty value
         var list = this.devices.filter(item => item === null || item.chip === this.selectedChipset);
         return list;
+      },
+      formattedUptime(){
+        return this.formatUptime(this.uptime_s);
       }
     },
     methods:{
@@ -579,6 +582,33 @@
               this.error = err.toString();
               console.error(err)
             });
+      },
+      formatUptime(totalSeconds){
+        let s = Math.max(0, Math.floor(Number(totalSeconds) || 0));
+
+        // Note: months/years are approximate (30-day months, 365-day years)
+        const units = [
+          ["year",   365 * 24 * 3600],
+          ["month",   30 * 24 * 3600],
+          ["week",     7 * 24 * 3600],
+          ["day",          24 * 3600],
+          ["hour",             3600],
+          ["minute",             60],
+          ["second",              1],
+        ];
+
+        const parts = [];
+        for (const [name, size] of units) {
+          const value = Math.floor(s / size);
+          s -= value * size;
+
+          // Omit zero units, but always show seconds if nothing else is present
+          if (value === 0 && !(name === "second" && parts.length === 0)) continue;
+
+          parts.push(`${value} ${name}${value === 1 ? "" : "s"}`);
+        }
+
+        return parts.join(", ");
       },
       getDeviceDisplayName(dev){
         //The first option is a placeholder with null value
