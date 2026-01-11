@@ -256,6 +256,8 @@
             }
 
             var ext = this.chipSetUsesRBL() ? ".rbl" : ".img";
+            if (this.chipset === "W600") ext = "_gz.img";
+            if (this.chipset === "W800") ext = "_ota.img";            
             return lowerName.endsWith(ext);
         },
 
@@ -282,7 +284,7 @@
                 }
             }
             else if (this.chipset === "W600" || this.chipset === "W800"){
-                this.invalidOTASelected = !this.isWinnerMicroImage(result);
+                this.invalidOTASelected = !this.isWinnerMicroImage(result) || !this.fileNameMatchesChipset(file.name);
             } else if (this.chipset === "BL602"){
                 this.invalidOTASelected = !this.isBL602Image(result);
             } else if (this.chipset === "LN882H"){
