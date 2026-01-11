@@ -584,6 +584,10 @@
                         prefix = 'OpenRDA5981_';
                         postfix = '_ota.img';
                         break;
+                    case 'TXW81X': 
+                        prefix = 'OpenTXW81X_';
+                        postfix = '_ota.img';
+                        break;                        
 		    default:
 			prefix = 'Open' + this.chipset + '_';
                         postfix = '.img';
