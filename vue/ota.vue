@@ -263,42 +263,42 @@
 
             // 1) RBL: Open<chip>_<ver>.rbl  or  Open<chip>_<ver>_<variant>.rbl  or  Open<chip>_<variant>_<ver>.rbl
             if (lowerName.endsWith('.rbl')){
-                const mA = fileNameRaw.match(new RegExp('^open' + chipRe + '_\d+\.\d+\.\d+(?:_([^\.]+))?\.rbl$', 'i'));
+                const mA = fileNameRaw.match(new RegExp('^open' + chipRe + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?\\.rbl$', 'i'));
                 if (mA && mA[1]) selectedVariant = mA[1];
 
                 if (!selectedVariant){
-                    const mB = fileNameRaw.match(new RegExp('^open' + chipRe + '_([^_\.]+)_\d+\.\d+\.\d+\.rbl$', 'i'));
+                    const mB = fileNameRaw.match(new RegExp('^open' + chipRe + '_([^_\\.]+)_\\d+\\.\\d+\\.\\d+\\.rbl$', 'i'));
                     if (mB && mB[1]) selectedVariant = mB[1];
                 }
             }
             // 2) IMG with OTA marker: Open<chip>_<ver>_ota.img  or  Open<chip>_<ver>_<variant>_ota.img  or  Open<chip>_<variant>_<ver>_ota.img
             else if (lowerName.endsWith('_ota.img')){
-                const mA = fileNameRaw.match(new RegExp('^open' + chipRe + '_\d+\.\d+\.\d+(?:_([^\.]+))?_ota\.img$', 'i'));
+                const mA = fileNameRaw.match(new RegExp('^open' + chipRe + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?_ota\\.img$', 'i'));
                 if (mA && mA[1]) selectedVariant = mA[1];
 
                 if (!selectedVariant){
-                    const mB = fileNameRaw.match(new RegExp('^open' + chipRe + '_(.+)_\d+\.\d+\.\d+_ota\.img$', 'i'));
+                    const mB = fileNameRaw.match(new RegExp('^open' + chipRe + '_(.+)_\\d+\\.\\d+\\.\\d+_ota\\.img$', 'i'));
                     if (mB && mB[1]) selectedVariant = mB[1];
                 }
             }
             // 3) IMG with GZ marker: Open<chip>_<ver>_gz.img  or  Open<chip>_<ver>_<variant>_gz.img  or  Open<chip>_<variant>_<ver>_gz.img
             else if (lowerName.endsWith('_gz.img')){
-                const mA = fileNameRaw.match(new RegExp('^open' + chipRe + '_\d+\.\d+\.\d+(?:_([^\.]+))?_gz\.img$', 'i'));
+                const mA = fileNameRaw.match(new RegExp('^open' + chipRe + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?_gz\\.img$', 'i'));
                 if (mA && mA[1]) selectedVariant = mA[1];
 
                 if (!selectedVariant){
-                    const mB = fileNameRaw.match(new RegExp('^open' + chipRe + '_(.+)_\d+\.\d+\.\d+_gz\.img$', 'i'));
+                    const mB = fileNameRaw.match(new RegExp('^open' + chipRe + '_(.+)_\\d+\\.\\d+\\.\\d+_gz\\.img$', 'i'));
                     if (mB && mB[1]) selectedVariant = mB[1];
                 }
             }
             // 4) IMG (plain): Open<chip>_<ver>.img  or  Open<chip>_<ver>_<token>.img
             else if (lowerName.endsWith('.img')){
-                const m = fileNameRaw.match(new RegExp('^open' + chipRe + '_\d+\.\d+\.\d+(?:_([^\.]+))?\.img$', 'i'));
+                const m = fileNameRaw.match(new RegExp('^open' + chipRe + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?\\.img$', 'i'));
                 if (m && m[1]) selectedVariant = m[1];
             }
             // 5) BL602-style OTA: Open<chip>_<ver>_OTA.bin.xz.ota  or  Open<chip>_<ver>_<variant>_OTA.bin.xz.ota
             else if (lowerName.endsWith('_ota.bin.xz.ota')){
-                const m = fileNameRaw.match(new RegExp('^open' + chipRe + '_\d+\.\d+\.\d+(?:_([^_\.]+))?_ota\.bin\.xz\.ota$', 'i'));
+                const m = fileNameRaw.match(new RegExp('^open' + chipRe + '_\\d+\\.\\d+\\.\\d+(?:_([^_\\.]+))?_ota\\.bin\\.xz\\.ota$', 'i'));
                 if (m && m[1]) selectedVariant = m[1];
             }
             else{
