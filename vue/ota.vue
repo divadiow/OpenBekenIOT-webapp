@@ -150,6 +150,8 @@
             const r = this.getChipsetOtaRule();
             const p = (r.postfix || '').toLowerCase();
             if (p === '.rbl') return '.rbl';
+            // BL602 ships *.bin.xz.ota; keeping this more specific helps file picking.
+            if (p.endsWith('.bin.xz.ota')) return '.bin.xz.ota';
             if (p.endsWith('.ota')) return '.ota';
             if (p.endsWith('.bin')) return '.bin';
             if (p.endsWith('.img')) return '.img';
@@ -178,21 +180,12 @@
                     }
 
                     if (this.chipset){
-                        if(this.chipset=="BL602") {
-                             this.otaFileExtension = ".bin.xz.ota";
-                        } else if(this.chipset=="LN882H") {
-                             this.otaFileExtension = ".bin";
-                        } else if(this.chipSetUsesRBL()) {
-                             this.otaFileExtension = ".rbl";
-                        } else {
-                             this.otaFileExtension = ".img";
-                        }
-                        
-                        //These chips don't support litte FS
-                        if (",W600,W800,XR809,BL602".indexOf(`,${this.chipset},`) !== -1)
-                        {
-                            this.supportsLittleFS = false;
-                        }
+                        const rule = this.getChipsetOtaRule();
+                        // Keep the file picker aligned with chipset OTA naming.
+                        this.otaFileExtension = this.getOtaFilePickerAccept();
+                        // Controls whether "safe OTA" (backup/restore fsblock) UI is shown.
+                        // OTA itself is still available via the v-else path.
+                        this.supportsLittleFS = !!rule.supportsLittleFS;
                     }
                 })
                 .catch(err => {
