@@ -255,9 +255,7 @@
                 return lowerName.endsWith("_ota.bin");
             }
 
-            var ext = this.chipSetUsesRBL() ? ".rbl" : ".img";
-            if (this.chipset === "W600") ext = "_gz.img";
-            if (this.chipset === "W800") ext = "_ota.img";            
+            var ext = this.chipSetUsesRBL() ? ".rbl" : ".img";       
             return lowerName.endsWith(ext);
         },
 
