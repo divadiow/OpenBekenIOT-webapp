@@ -44,13 +44,61 @@
             </div>
             <div v-html="status" :class="{invalid: invalidOTASelected}"></div>
             <div v-if="variantMismatchSelected" class="warning">
-                Note: {{ variantMismatchMessage }}
+                {{ variantMismatchMessage }}
             </div>
         </div>
     </div>
 </template>
 
 <script>
+
+  // Centralised OTA naming/behaviour rules per chipset.
+  // Keep this as the single source of truth for:
+  // - GitHub Releases asset selection (prefix/postfix)
+  // - Local file-name validation (postfix)
+  // - File picker accept filter
+  // - LittleFS support UI
+  const CHIPSET_OTA_RULES = {
+    BK7231T:  { prefix: 'OpenBK7231T_',  postfix: '.rbl',           allowVariant: true,  supportsLittleFS: true  },
+    BK7231N:  { prefix: 'OpenBK7231N_',  postfix: '.rbl',           allowVariant: true,  supportsLittleFS: true  },
+    BK7231U:  { prefix: 'OpenBK7231U_',  postfix: '.rbl',           allowVariant: true,  supportsLittleFS: true  },
+    BK7238:   { prefix: 'OpenBK7238_',   postfix: '.rbl',           allowVariant: true,  supportsLittleFS: true  },
+    BK7252:   { prefix: 'OpenBK7252_',   postfix: '.rbl',           allowVariant: true,  supportsLittleFS: true  },
+    BK7252N:  { prefix: 'OpenBK7252N_',  postfix: '.rbl',           allowVariant: true,  supportsLittleFS: true  },
+
+    XR809:    { prefix: 'OpenXR809_',    postfix: '.img',           allowVariant: false, supportsLittleFS: false },
+
+    // These platforms publish OTA-specific images with an explicit suffix marker.
+    XR872:    { prefix: 'OpenXR872_',    postfix: '_ota.img',       allowVariant: false, supportsLittleFS: true  },
+    XR806:    { prefix: 'OpenXR806_',    postfix: '_ota.img',       allowVariant: false, supportsLittleFS: true  },
+    ECR6600:  { prefix: 'OpenECR6600_',  postfix: '_ota.img',       allowVariant: false, supportsLittleFS: true  },
+    RDA5981:  { prefix: 'OpenRDA5981_',  postfix: '_ota.img',       allowVariant: false, supportsLittleFS: true  },
+
+    BL602:    { prefix: 'OpenBL602_',    postfix: '_OTA.bin.xz.ota',allowVariant: true,  supportsLittleFS: false },
+
+    W800:     { prefix: 'OpenW800_',     postfix: '_ota.img',       allowVariant: false, supportsLittleFS: false },
+    W600:     { prefix: 'OpenW600_',     postfix: '_gz.img',        allowVariant: false, supportsLittleFS: false },
+
+    LN882H:   { prefix: 'OpenLN882H_',   postfix: '_OTA.bin',       allowVariant: false, supportsLittleFS: true  },
+
+    RTL87X0C: { prefix: 'OpenRTL87X0C_', postfix: '_ota.img',       allowVariant: false, supportsLittleFS: true  },
+    RTL8710B: { prefix: 'OpenRTL8710B_', postfix: '_ota.img',       allowVariant: false, supportsLittleFS: true  },
+    RTL8710A: { prefix: 'OpenRTL8710A_', postfix: '_ota.img',       allowVariant: false, supportsLittleFS: true  },
+    RTL8720D: { prefix: 'OpenRTL8720D_', postfix: '_ota.img',       allowVariant: false, supportsLittleFS: true  },
+    RTL8720E: { prefix: 'OpenRTL8720E_', postfix: '_ota.img',       allowVariant: false, supportsLittleFS: true  },
+    RTL8721DA:{ prefix: 'OpenRTL8721DA_',postfix: '_ota.img',       allowVariant: false, supportsLittleFS: true  },
+
+    ESP32:    { prefix: 'OpenESP32_',    postfix: '.img',           allowVariant: true,  supportsLittleFS: true  },
+    ESP32C2:  { prefix: 'OpenESP32C2_',  postfix: '.img',           allowVariant: true,  supportsLittleFS: true  },
+    ESP32C3:  { prefix: 'OpenESP32C3_',  postfix: '.img',           allowVariant: true,  supportsLittleFS: true  },
+    ESP32C5:  { prefix: 'OpenESP32C5_',  postfix: '.img',           allowVariant: true,  supportsLittleFS: true  },
+    ESP32C6:  { prefix: 'OpenESP32C6_',  postfix: '.img',           allowVariant: true,  supportsLittleFS: true  },
+    ESP32C61: { prefix: 'OpenESP32C61_', postfix: '.img',           allowVariant: true,  supportsLittleFS: true  },
+    ESP32S2:  { prefix: 'OpenESP32S2_',  postfix: '.img',           allowVariant: true,  supportsLittleFS: true  },
+    ESP32S3:  { prefix: 'OpenESP32S3_',  postfix: '.img',           allowVariant: true,  supportsLittleFS: true  },
+    ESP8266:  { prefix: 'OpenESP8266_',  postfix: '.img',           allowVariant: false, supportsLittleFS: true  },
+  };
+
   module.exports = {
 
     data: ()=>{
@@ -74,12 +122,49 @@
         options: [],
         selectedfile: '',
         supportsLittleFS: false,
-      }
+              debug: false,
+}
     },
     methods:{
+
+        dbg(...args){
+            if (this.debug){
+                console.log(...args);
+            }
+        },
+
+        getChipsetOtaRule(){
+            const chip = this.chipset;
+            if (chip && CHIPSET_OTA_RULES[chip]){
+                return CHIPSET_OTA_RULES[chip];
+            }
+            // Conservative fallback: keep behaviour similar to older firmware.
+            const chipSetUsesRBL = this.chipSetUsesRBL && this.chipSetUsesRBL();
+            const prefix = chip ? ('Open' + chip + '_') : 'Open';
+            const postfix = chipSetUsesRBL ? '.rbl' : '.img';
+            return { prefix, postfix, allowVariant: false, supportsLittleFS: true };
+        },
+
+        getOtaFilePickerAccept(){
+            // HTML file input accept filter: keep coarse but useful.
+            const r = this.getChipsetOtaRule();
+            const p = (r.postfix || '').toLowerCase();
+            if (p === '.rbl') return '.rbl';
+            if (p.endsWith('.ota')) return '.ota';
+            if (p.endsWith('.bin')) return '.bin';
+            if (p.endsWith('.img')) return '.img';
+            return '.img';
+        },
+
+        getOtaBaseFromCurrentVersion(){
+            if (!this.currentversion) return '';
+            const parts = String(this.currentversion).split('_');
+            return parts[0] || '';
+        },
+
         getinfo(){
             let url = window.device+'/api/info';
-            console.log('getinfo from ota');
+            this.dbg('getinfo from ota');
             fetch(url)
                 .then(response => response.json())
                 .then(res => {
@@ -120,7 +205,7 @@
         isRBL(arrayBuffer){
             let view = new DataView(arrayBuffer);
             if (view.byteLength < 30)return false;
-            console.log(view);
+            this.dbg(view);
             return view.getUint8(0) === 82 && view.getUint8(1) === 66 && view.getUint8(2) === 76
                ;
         },
@@ -129,14 +214,14 @@
         isWinnerMicroImage(arrayBuffer){
             let view = new DataView(arrayBuffer);
             if (view.byteLength < 4) return false;
-            console.log(view);
+            this.dbg(view);
             return view.getUint8(0) === 0x9f && view.getUint8(1) === 0xff && view.getUint8(2) === 0xff && view.getUint8(3) === 0xa0;
         },
 
         isBL602Image(arrayBuffer){
             let view = new DataView(arrayBuffer);
             if (view.byteLength < 8) return false;
-            console.log(view);
+            this.dbg(view);
             return view.getUint8(0) === 0x42 && view.getUint8(1) === 0x4C && view.getUint8(2) === 0x36 && view.getUint8(3) === 0x30 && view.getUint8(4) === 0x58 && view.getUint8(5) === 0x5F && view.getUint8(6) === 0x4F;
         },
         remoteotafilechange(){
@@ -183,12 +268,32 @@
                     if (mB && mB[1]) selectedVariant = mB[1];
                 }
             }
-            // 2) IMG: Open<chip>_<ver>.img  or  Open<chip>_<ver>_<variant>.img
+            // 2) IMG with OTA marker: Open<chip>_<ver>_ota.img  or  Open<chip>_<ver>_<variant>_ota.img  or  Open<chip>_<variant>_<ver>_ota.img
+            else if (lowerName.endsWith('_ota.img')){
+                const mA = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?_ota\\.img$'));
+                if (mA && mA[1]) selectedVariant = mA[1];
+
+                if (!selectedVariant){
+                    const mB = lowerName.match(new RegExp('^open' + chipLower + '_(.+)_\\d+\\.\\d+\\.\\d+_ota\\.img$'));
+                    if (mB && mB[1]) selectedVariant = mB[1];
+                }
+            }
+            // 3) IMG with GZ marker: Open<chip>_<ver>_gz.img  or  Open<chip>_<ver>_<variant>_gz.img  or  Open<chip>_<variant>_<ver>_gz.img
+            else if (lowerName.endsWith('_gz.img')){
+                const mA = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?_gz\\.img$'));
+                if (mA && mA[1]) selectedVariant = mA[1];
+
+                if (!selectedVariant){
+                    const mB = lowerName.match(new RegExp('^open' + chipLower + '_(.+)_\\d+\\.\\d+\\.\\d+_gz\\.img$'));
+                    if (mB && mB[1]) selectedVariant = mB[1];
+                }
+            }
+            // 4) IMG (plain): Open<chip>_<ver>.img  or  Open<chip>_<ver>_<token>.img
             else if (lowerName.endsWith('.img')){
                 const m = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?\\.img$'));
                 if (m && m[1]) selectedVariant = m[1];
             }
-            // 3) BL602-style OTA: Open<chip>_<ver>_OTA.bin.xz.ota  or  Open<chip>_<ver>_<variant>_OTA.bin.xz.ota
+            // 5) BL602-style OTA: Open<chip>_<ver>_OTA.bin.xz.ota  or  Open<chip>_<ver>_<variant>_OTA.bin.xz.ota
             else if (lowerName.endsWith('_ota.bin.xz.ota')){
                 const m = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^_\\.]+))?_ota\\.bin\\.xz\\.ota$'));
                 if (m && m[1]) selectedVariant = m[1];
@@ -198,13 +303,29 @@
                 return '';
             }
 
-            const dv = (deviceVariant || '').toLowerCase();
-            const sv = (selectedVariant || '').toLowerCase();
+            const dvRaw = (deviceVariant || '');
+            const svRaw = (selectedVariant || '');
 
-            // No variant on either side -> OK
+            let dv = dvRaw.toLowerCase();
+            let sv = svRaw.toLowerCase();
+
+            // ESP flash-size suffixes (e.g. _2M/_4M) are qualifiers, not feature variants.
+            // They should not trigger the variant-mismatch warning on their own.
+            const isEsp = chipLower.startsWith('esp');
+            const sizeRe = /^\d+m$/i;
+            const dvIsSize = isEsp && sizeRe.test(dvRaw);
+            const svIsSize = isEsp && sizeRe.test(svRaw);
+
+            // If both sides are size tags and they differ, warn explicitly about size mismatch.
+            if (dvIsSize && svIsSize && dv !== sv){
+                return 'Selected OTA file size "' + svRaw + '" does not match this device size "' + dvRaw + '".';
+            }
+
+            // Otherwise ignore size tag for variant-mismatch purposes.
+            if (dvIsSize) dv = '';
+            if (svIsSize) sv = '';
+
             if (!dv && !sv) return '';
-
-            // Same variant -> OK
             if (dv && sv && dv === sv) return '';
 
             // Any other transition throws a warning:
@@ -212,12 +333,12 @@
             // - generic -> variant
             // - variant A -> variant B
             if (!dv && sv){
-                return 'Selected OTA file variant "' + selectedVariant + '" does not match the current generic build.';
+                return 'Selected OTA file variant "' + svRaw + '" does not match the current generic build.';
             }
             if (dv && !sv){
-                return 'Selected OTA file is a generic build but this device variant is "' + deviceVariant + '".';
+                return 'Selected OTA file is a generic build but this device variant is "' + dvRaw + '".';
             }
-            return 'Selected OTA file variant "' + selectedVariant + '" does not match this device variant "' + deviceVariant + '".';
+            return 'Selected OTA file variant "' + svRaw + '" does not match this device variant "' + dvRaw + '".';
         },
         /* Check if the ota fileName matches the chipset */
         fileNameMatchesChipset(fileName) {
@@ -225,16 +346,20 @@
                 return true;
             }
 
-            //e.g. OpenW800_1.12.40_ota.img, OpenBK7231N_1.12.40.rbl, OpenW800_1.12.40_ota.img
+            // e.g. OpenW800_1.12.40_ota.img, OpenBK7231N_1.12.40.rbl, OpenW600_1.14.116_gz.img
             var lowerName = fileName.toLowerCase();
             var chipLower = this.chipset.toLowerCase();
             if (!lowerName.startsWith("open" + chipLower + "_")) return false;
 
-            // LN882H: OpenLN882H_<ver>_OTA.bin
-            if (chipLower === "ln882h") {
-                return lowerName.endsWith("_ota.bin");
+            const rule = this.getChipsetOtaRule();
+            const postfix = (rule.postfix || '').toLowerCase();
+
+            // Prefer the OTA-specific postfix for this chipset (prevents selecting UART-flash .img when OTA requires _ota.img, etc.)
+            if (postfix){
+                return lowerName.endsWith(postfix);
             }
 
+            // Fallback
             var ext = this.chipSetUsesRBL() ? ".rbl" : ".img";
             return lowerName.endsWith(ext);
         },
@@ -246,10 +371,9 @@
             this.variantMismatchMessage = '';
             
             var result = event.target.result;   //ArrayBuffer
-            console.log('chipset=' + this.chipset);
-            console.log("Checking ota data");
-            console.log(result);
-            console.log('otadata len:' + result.byteLength);
+            this.dbg('chipset=' + this.chipset);
+            this.dbg('Checking ota data');
+            this.dbg('otadata len:' + result.byteLength);
             this.otatext = file.name + ' len:' + result.byteLength;
 
             if (this.chipSetUsesRBL()){
@@ -262,9 +386,9 @@
                 }
             }
             else if (this.chipset === "W600" || this.chipset === "W800"){
-                this.invalidOTASelected = !this.isWinnerMicroImage(result);
+                this.invalidOTASelected = !this.isWinnerMicroImage(result) || !this.fileNameMatchesChipset(file.name);
             } else if (this.chipset === "BL602"){
-                this.invalidOTASelected = !this.isBL602Image(result);
+                this.invalidOTASelected = !this.isBL602Image(result) || !this.fileNameMatchesChipset(file.name);
             } else if (this.chipset === "LN882H"){
                 this.invalidOTASelected = !this.fileNameMatchesChipset(file.name);
             }
@@ -294,14 +418,14 @@
             }
         },
         fileSelected(ev){
-            console.log("File selected");
+            this.dbg('File selected');
             this.invalidOTASelected = false; //Reset status style
             this.variantMismatchSelected = false;
             this.variantMismatchMessage = '';
 
             var file = ev.target.files[0];  //There should be only one file
             if (file){
-                console.log('... fileName = ' + file.name);
+                this.dbg('... fileName = ' + file.name);
                 var reader = new FileReader();
                 reader.onload = (event) => this.checkOTAData(event, file, "selected");
                 reader.readAsArrayBuffer(file);
@@ -310,18 +434,18 @@
         dropHandler(ev){
             ev.preventDefault();
             if (ev.dataTransfer.items) {
-                console.log('Dropped ' + ev.dataTransfer.items.length + ' items');
+                this.dbg('Dropped ' + ev.dataTransfer.items.length + ' items');
 
                 // Use DataTransferItemList interface to access the file(s)
                 for (var i = 0; i < ev.dataTransfer.items.length; i++) {
                     // If dropped items aren't files, reject them
                     if (ev.dataTransfer.items[i].kind === 'file') {
                         var file = ev.dataTransfer.items[i].getAsFile();
-                        console.log('... file[' + i + '].name = ' + file.name);
+                        this.dbg('... file[' + i + '].name = ' + file.name);
                         var reader = new FileReader();
                         reader.onload = (event) => this.checkOTAData(event, file, "dropped");
                         
-                        console.log(file);
+                        this.dbg(file);
                         reader.readAsArrayBuffer(file);
                     }
                 }
@@ -329,7 +453,7 @@
         },
 
         dragOverHandler(ev){
-            //console.log('File(s) in drop zone');
+            //this.dbg('File(s) in drop zone');
             // Prevent default behavior (Prevent file from being opened)
             ev.preventDefault();
         },
@@ -378,7 +502,7 @@
                 .then(response => response.arrayBuffer())
                 .then(buffer => {
                     this.backupdata = buffer; 
-                    console.log('received '+buffer.byteLength);
+                    this.dbg('received '+buffer.byteLength);
                     this.status += '..backup done...';
                     if(cb) cb();
                 })
@@ -392,7 +516,7 @@
             }
             this.bOTAstarted = true;
             this.status += '<br/>starting OTA...';
-            console.log('start ota ');
+            this.dbg('start ota ');
             let url = window.device+'/api/ota';
             if (this.otadata){
                 fetch(url, { 
@@ -401,7 +525,7 @@
                     })
                     .then(response => response.text())
                     .then(text => {
-                        console.log('received '+text);
+                        this.dbg('received '+text);
                         this.otatext += ' finished:'+text;
                         this.status += '<br/>rebooting...';
                         this.bOTAstarted = false;
@@ -422,7 +546,7 @@
                     })
                     .then(response => response.text())
                     .then(text => {
-                        console.log('received '+text);
+                        this.dbg('received '+text);
                         this.status += 'Restore complete...';
                         if(cb) cb();
                     })
@@ -437,154 +561,31 @@
             .then(data => {
                 this.releases = data;
 
-                let prefix;
-                let ext;
-                // you can use it for testing
-				//this.chipset = "BL602";
-                switch(this.chipset){
-                    case 'BK7231T':
-                        prefix = 'OpenBK7231T_';
-                        postfix = '.rbl';
-                        break;
-                    case 'BK7231N':
-                        prefix = 'OpenBK7231N_';
-                        postfix = '.rbl';
-                        break;
-                    case 'BK7231U':
-                        prefix = 'OpenBK7231U_';
-                        postfix = '.rbl';
-                        break;
-                    case 'BK7238':
-                        prefix = 'OpenBK7238_';
-                        postfix = '.rbl';
-                        break;
-                    case 'BK7252':
-                        prefix = 'OpenBK7252_';
-                        postfix = '.rbl';
-                        break;
-                    case 'BK7252N':
-                        prefix = 'OpenBK7252N_';
-                        postfix = '.rbl';
-                        break;
-                    case 'XR809':
-                        prefix = 'OpenXR809_';
-                        postfix = '.img';
-                        break;
-                    case 'XR872':
-                        prefix = 'OpenXR872_';
-                        postfix = '_ota.img';
-                        break;
-                    case 'XR806':
-                        prefix = 'OpenXR806_';
-                        postfix = '_ota.img';
-                        break;                        
-                    case 'ECR6600':
-                        prefix = 'OpenECR6600_';
-                        postfix = '_ota.img';                        
-                        break;                        
-                    case 'BL602':
-                        prefix = 'OpenBL602_';
-                        postfix = '_OTA.bin.xz.ota';
-                        break;
-                    case 'W800': //OpenW800_1.14.116_ota.img
-                        prefix = 'OpenW800_';
-                        postfix = '_ota.img';
-                        break; 
-                    case 'W600': //OpenW600_1.14.116_gz.img
-                        prefix = 'OpenW600_';
-                        postfix = '_gz.img';
-                        break;
-                    case 'LN882H': //OpenLN882H_1.17.546_OTA.bin
-                        prefix = 'OpenLN882H_';
-                        postfix = '_OTA.bin';
-                        break;      
-                    case 'RTL87X0C': 
-                        prefix = 'OpenRTL87X0C_';
-                        postfix = '_ota.img';
-                        break;
-                    case 'RTL8710B': 
-                        prefix = 'OpenRTL8710B_';
-                        postfix = '_ota.img';
-                        break;
-                    case 'RTL8710A': 
-                        prefix = 'OpenRTL8710A_';
-                        postfix = '_ota.img';
-                        break;
-                    case 'RTL8720D': 
-                        prefix = 'OpenRTL8720D_';
-                        postfix = '_ota.img';
-                        break;
-                    case 'RTL8720E': 
-                        prefix = 'OpenRTL8720E_';
-                        postfix = '_ota.img';
-                        break;
-                    case 'RTL8721DA': 
-                        prefix = 'OpenRTL8721DA_';
-                        postfix = '_ota.img';
-                        break; 
-                    case 'ESP32': 
-                        prefix = 'OpenESP32_';
-                        postfix = '.img';
-                        break;
-                    case 'ESP32C2': 
-                        prefix = 'OpenESP32C2_';
-                        postfix = '.img';
-                        break;
-                    case 'ESP32C3': 
-                        prefix = 'OpenESP32C3_';
-                        postfix = '.img';
-                        break;
-                    case 'ESP32C5': 
-                        prefix = 'OpenESP32C5_';
-                        postfix = '.img';
-                        break;
-                    case 'ESP32C6': 
-                        prefix = 'OpenESP32C6_';
-                        postfix = '.img';
-                        break;
-                    case 'ESP32C61': 
-                        prefix = 'OpenESP32C61_';
-                        postfix = '.img';
-                        break;
-                    case 'ESP32S2': 
-                        prefix = 'OpenESP32S2_';
-                        postfix = '.img';
-                        break;
-                    case 'ESP32S3': 
-                        prefix = 'OpenESP32S3_';
-                        postfix = '.img';
-                        break;
-                    case 'ESP8266': 
-                        prefix = 'OpenESP8266_';
-                        postfix = '.img';
-                        break;
-                    case 'RDA5981': 
-                        prefix = 'OpenRDA5981_';
-                        postfix = '_ota.img';
-                        break;
-		    default:
-			prefix = 'Open' + this.chipset + '_';
-                        postfix = '.img';
-			break;
-                }
+                const rule = this.getChipsetOtaRule();
+                const prefix = rule.prefix;
+                const postfix = rule.postfix;
 
-           	 console.log('OTA prefix=' + prefix);
-           	 console.log('OTA postfix=' + postfix);
-                let options = [];
+                this.dbg('OTA prefix=' + prefix);
+                this.dbg('OTA postfix=' + postfix);
+
                 const otaVariant = this.getOtaVariantFromCurrentVersion();
-                const allowVariant = (
-                    otaVariant &&
-                    (
-                        (this.chipSetUsesRBL() && postfix === '.rbl') ||
-                        ((this.chipset || '').startsWith('ESP') && postfix === '.img') ||
-                        (this.chipset === 'BL602' && postfix === '_OTA.bin.xz.ota')
-                    )
-                );
+                const allowVariant = !!(otaVariant && rule.allowVariant);
+
+                const options = [];
                 if (prefix){
                     for (let i = 0; i < data.length; i++){
                         const rel = data[i];
+                        const assets = (rel && rel.assets) ? rel.assets : [];
 
-                        // Prefer variant-specific assets first (e.g. OpenBK7231N_1.18.233_hlw8112.rbl), then fall back to generic.
+                        const assetByName = new Map();
+                        for (let j = 0; j < assets.length; j++){
+                            const a = assets[j];
+                            if (a && a.name){
+                                assetByName.set(a.name, a.browser_download_url);
+                            }
+                        }
+
+                        // Prefer variant-specific assets first (if allowed), then fall back to generic.
                         const candidates = [];
                         if (allowVariant){
                             candidates.push(prefix + rel.name + '_' + otaVariant + postfix);
@@ -596,16 +597,14 @@
                         let downloadurl = null;
 
                         for (const cand of candidates){
-                            for (let j = 0; j < rel.assets.length; j++){
-                                if (rel.assets[j].name === cand){
-                                    fname = cand;
-                                    downloadurl = rel.assets[j].browser_download_url;
-                                    break;
-                                }
+                            const url = assetByName.get(cand);
+                            if (url){
+                                fname = cand;
+                                downloadurl = url;
+                                break;
                             }
-                            if (downloadurl) break;
                         }
-                        // https://github.com/openshwprojects/OpenBK7231T_App/releases/download/1.14.116/OpenBK7231T_1.14.116.rbl
+
                         if (downloadurl){
                             options.push({ name: fname, url:downloadurl });
                         }
@@ -613,10 +612,13 @@
                 }
                 this.options = options;
 
-                // find latest release
+                // find latest release (base version only; ignore device variant suffix)
                 this.latest = data[0].name;
-                if (this.latest !== this.currentversion){
-                this.lateststr = `(<a href="${data[0].html_url}" target="_blank">${this.latest}</a> available)`;
+                const currentBase = this.getOtaBaseFromCurrentVersion();
+                if (this.latest !== currentBase){
+                    this.lateststr = `(<a href="${data[0].html_url}" target="_blank">${this.latest}</a> available)`;
+                } else {
+                    this.lateststr = '';
                 }
             })
             .catch(err => {
@@ -629,7 +631,7 @@
     mounted (){
         this.msg = 'fred';
         this.getinfo();
-        console.log('mounted ota!');
+        this.dbg('mounted ota!');
     }
   }
 //@ sourceURL=/vue/controller.vue
