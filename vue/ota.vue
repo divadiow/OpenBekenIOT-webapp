@@ -248,8 +248,11 @@
             if (!this.chipset) return '';
 
             const deviceVariant = this.getOtaVariantFromCurrentVersion();
-            const lowerName = (fileName || '').toLowerCase();
+
+            const fileNameRaw = (fileName || '');
+            const lowerName = fileNameRaw.toLowerCase();
             const chipLower = this.chipset.toLowerCase();
+            const chipRe = chipLower.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
             // Only enforce when the selected file is for this chipset (wrong chipset handled elsewhere)
             const expectedPrefix = 'open' + chipLower + '_';
@@ -260,42 +263,42 @@
 
             // 1) RBL: Open<chip>_<ver>.rbl  or  Open<chip>_<ver>_<variant>.rbl  or  Open<chip>_<variant>_<ver>.rbl
             if (lowerName.endsWith('.rbl')){
-                const mA = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?\\.rbl$'));
+                const mA = fileNameRaw.match(new RegExp('^open' + chipRe + '_\d+\.\d+\.\d+(?:_([^\.]+))?\.rbl$', 'i'));
                 if (mA && mA[1]) selectedVariant = mA[1];
 
                 if (!selectedVariant){
-                    const mB = lowerName.match(new RegExp('^open' + chipLower + '_([^_\\.]+)_\\d+\\.\\d+\\.\\d+\\.rbl$'));
+                    const mB = fileNameRaw.match(new RegExp('^open' + chipRe + '_([^_\.]+)_\d+\.\d+\.\d+\.rbl$', 'i'));
                     if (mB && mB[1]) selectedVariant = mB[1];
                 }
             }
             // 2) IMG with OTA marker: Open<chip>_<ver>_ota.img  or  Open<chip>_<ver>_<variant>_ota.img  or  Open<chip>_<variant>_<ver>_ota.img
             else if (lowerName.endsWith('_ota.img')){
-                const mA = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?_ota\\.img$'));
+                const mA = fileNameRaw.match(new RegExp('^open' + chipRe + '_\d+\.\d+\.\d+(?:_([^\.]+))?_ota\.img$', 'i'));
                 if (mA && mA[1]) selectedVariant = mA[1];
 
                 if (!selectedVariant){
-                    const mB = lowerName.match(new RegExp('^open' + chipLower + '_(.+)_\\d+\\.\\d+\\.\\d+_ota\\.img$'));
+                    const mB = fileNameRaw.match(new RegExp('^open' + chipRe + '_(.+)_\d+\.\d+\.\d+_ota\.img$', 'i'));
                     if (mB && mB[1]) selectedVariant = mB[1];
                 }
             }
             // 3) IMG with GZ marker: Open<chip>_<ver>_gz.img  or  Open<chip>_<ver>_<variant>_gz.img  or  Open<chip>_<variant>_<ver>_gz.img
             else if (lowerName.endsWith('_gz.img')){
-                const mA = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?_gz\\.img$'));
+                const mA = fileNameRaw.match(new RegExp('^open' + chipRe + '_\d+\.\d+\.\d+(?:_([^\.]+))?_gz\.img$', 'i'));
                 if (mA && mA[1]) selectedVariant = mA[1];
 
                 if (!selectedVariant){
-                    const mB = lowerName.match(new RegExp('^open' + chipLower + '_(.+)_\\d+\\.\\d+\\.\\d+_gz\\.img$'));
+                    const mB = fileNameRaw.match(new RegExp('^open' + chipRe + '_(.+)_\d+\.\d+\.\d+_gz\.img$', 'i'));
                     if (mB && mB[1]) selectedVariant = mB[1];
                 }
             }
             // 4) IMG (plain): Open<chip>_<ver>.img  or  Open<chip>_<ver>_<token>.img
             else if (lowerName.endsWith('.img')){
-                const m = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?\\.img$'));
+                const m = fileNameRaw.match(new RegExp('^open' + chipRe + '_\d+\.\d+\.\d+(?:_([^\.]+))?\.img$', 'i'));
                 if (m && m[1]) selectedVariant = m[1];
             }
             // 5) BL602-style OTA: Open<chip>_<ver>_OTA.bin.xz.ota  or  Open<chip>_<ver>_<variant>_OTA.bin.xz.ota
             else if (lowerName.endsWith('_ota.bin.xz.ota')){
-                const m = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^_\\.]+))?_ota\\.bin\\.xz\\.ota$'));
+                const m = fileNameRaw.match(new RegExp('^open' + chipRe + '_\d+\.\d+\.\d+(?:_([^_\.]+))?_ota\.bin\.xz\.ota$', 'i'));
                 if (m && m[1]) selectedVariant = m[1];
             }
             else{
