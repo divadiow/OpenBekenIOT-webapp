@@ -270,7 +270,9 @@
         ],
         releases: [],
         latest: "", // read from github
+        latest_base: "", // numeric version extracted from latest
         currentversion: "", // extracted from build
+        currentversion_base: "", // numeric version extracted from currentversion
         lateststr: "",
 
         peers:[],
@@ -310,6 +312,7 @@
                 this.supportsClientDeviceDB = res.supportsClientDeviceDB;
 
                 this.currentversion = this.build.split(' ').pop();
+                this.currentversion_base = this.extractBaseVersion(this.currentversion);
                 // only get releases the first time.
                 if (!this.releases.length){
                   this.getReleases();
@@ -566,16 +569,61 @@
               console.error(err)
             });
       },
+      extractBaseVersion(input){
+        if (input === undefined || input === null) return "";
+        const s = String(input);
+
+        // Extract the first dotted numeric sequence (e.g. 1.18.245) from:
+        // "1.18.245_hlw8112", "v1.18.245", "Release 1.18.245", etc.
+        const m = s.match(/(\d+(?:\.\d+){1,4})/);
+        return m ? m[1] : "";
+      },
+      compareVersions(a, b){
+        const pa = String(a).split('.').map(x => parseInt(x, 10));
+        const pb = String(b).split('.').map(x => parseInt(x, 10));
+
+        const len = Math.max(pa.length, pb.length);
+        for (let i = 0; i < len; i++){
+          const av = (pa[i] || 0);
+          const bv = (pb[i] || 0);
+          if (av > bv) return 1;
+          if (av < bv) return -1;
+        }
+        return 0;
+      },
       getReleases(){
         let base = "https://api.github.com/repos/openshwprojects/OpenBK7231T_App/releases";
         fetch(base)
           .then(response => response.json())
           .then(data => {
+
+            // If GitHub returns an error object (rate limit, etc.), do not break the UI
+            if (!Array.isArray(data) || !data.length){
+              this.lateststr = "";
+              return;
+            }
+
             this.releases = data;
-            // find latest release
-            this.latest = data[0].name;
-            if (this.latest !== this.currentversion){
-              this.lateststr = `(<a href="${data[0].html_url}" target="_blank">${this.latest}</a> available)`;
+
+            // Prefer the newest non-draft, non-prerelease
+            const rel = data.find(r => r && !r.draft && !r.prerelease) || data[0];
+
+            this.latest = rel.name || "";
+            this.latest_base = this.extractBaseVersion(this.latest);
+
+            // Always clear, then set only if a real numeric version increase exists
+            this.lateststr = "";
+
+            if (this.latest_base && this.currentversion_base){
+              if (this.compareVersions(this.latest_base, this.currentversion_base) > 0){
+                this.lateststr = `(<a href="${rel.html_url}" target="_blank" rel="noopener noreferrer">${this.latest_base}</a> available)`;
+              }
+              return;
+            }
+
+            // Fallback to old behaviour if we couldn't extract versions
+            if (this.latest && this.latest !== this.currentversion){
+              this.lateststr = `(<a href="${rel.html_url}" target="_blank" rel="noopener noreferrer">${this.latest}</a> available)`;
             }
           })
           .catch(err => {
