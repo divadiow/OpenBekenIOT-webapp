@@ -1577,6 +1577,60 @@
       "product": ""
     },
     {
+      "vendor": "Deltaco",
+      "bDetailed": "0",
+      "name": "10A 240V SMART HOME strömbrytare Plug (EU)",
+      "model": "SH-P01",
+      "chip": "BK7231T",
+      "board": "WB2S",
+      "flags": "1024",
+      "keywords": [
+        "SA-P302A",
+        "PO194180",
+        "2400W",
+        "0000038caa",
+        "keya4gvchmtapm8n",
+        "4r94tdtavlfeiwvp"
+      ],
+      "pins": {
+        "6": "Btn;57",
+        "8": "WifiLED_n;55",
+        "24": "Rel;39"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7185170100_1767728961.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4160008.html"
+    },
+    {
+      "vendor": "AESSY",
+      "bDetailed": "0",
+      "name": "Smart Plug 20A",
+      "model": "BSD69+",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "flags": "1024",
+      "keywords": [
+        "brazil",
+        "portugal",
+        "BP20V4",
+        "000004ii7s",
+        "keyjup78v54myhan",
+        "o7ve1lp3gfjvsvyo"
+      ],
+      "pins": {
+        "6": "BL0937CF1;0",
+        "7": "BL0937CF;0",
+        "8": "WifiLED;0",
+        "10": "Btn;1",
+        "23": "LED;1",
+        "24": "BL0937SEL;0",
+        "26": "Rel;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6052062400_1767893361.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4160275.html"
+    },
+    {
       "vendor": "eWelink",
       "bDetailed": "0",
       "name": "WiFi Smart Valve Water Gas Shutoff Automated Ball Valve",
@@ -2873,7 +2927,7 @@
       "bDetailed": "0",
       "name": "Della Mini Split Air Conditioner Optima Series",
       "model": "048-TP-9K2V-23S-IN/048-TP-9K2V-23S-OUT",
-      "chip": "RTL8720CF",
+      "chip": "RTL87X0C",
       "board": "WBR3",
       "flags": "1024",
       "keywords": ["TCWBRCU1", "115V", "9000 BTU", "TCL", "TuyaMCU"],
@@ -2887,7 +2941,7 @@
       "bDetailed": "0",
       "name": "Della Mini Split Air Conditioner",
       "model": "",
-      "chip": "RTL8720CF",
+      "chip": "RTL87X0C",
       "board": "WBR1",
       "flags": "1024",
       "keywords": [
@@ -3670,7 +3724,7 @@
       "vendor": "Nous",
       "bDetailed": "1",
       "name": "Smart Breaker Nous L6",
-      "chip": "W701-VA2-CG",
+      "chip": "RTL87X0C",
       "board": "WBR2",
       "pins": {},
       "keywords": ["W701-VA2-CG", "W700", "BP2905", "AMS1117", "1AM"],
@@ -5175,7 +5229,7 @@
       "bDetailed": "0",
       "name": "Tapo 10A Smart Plug Socket (UK)",
       "model": "P100",
-      "chip": "RTL8720CF",
+      "chip": "RTL87X0C",
       "board": "on PCB",
       "flags": "1024",
       "keywords": ["realtek"],
@@ -5820,7 +5874,7 @@
       "bDetailed": "0",
       "name": "Mini Smart Switch",
       "model": "SmartSwitch",
-      "chip": "T34_2135K9WY2_Unmarked",
+      "chip": "T34",
       "board": "on PCB",
       "flags": "0",
       "keywords": ["switch", "relay", "T34 2135K9WY2 Unmarked"],
@@ -9816,7 +9870,7 @@
       "name": "3gang WiFi switch with RF",
       "model": "TY-86-3W",
       "chip": "BK7231N",
-      "board": "T34-3",
+      "board": "T34",
       "keywords": ["Wifi W6B", "WF480RA"],
       "pins": {
         "7": "WifiLED_n;0",
@@ -11782,7 +11836,7 @@
       "bDetailed": "0",
       "name": "Smart Socket (EU)",
       "model": "SP22",
-      "chip": "RTL8710BN",
+      "chip": "RTL8710B",
       "board": "T112_V1.1",
       "flags": "1024",
       "keywords": [

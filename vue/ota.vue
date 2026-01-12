@@ -44,7 +44,7 @@
             </div>
             <div v-html="status" :class="{invalid: invalidOTASelected}"></div>
             <div v-if="variantMismatchSelected" class="warning">
-                Note: {{ variantMismatchMessage }}
+                {{ variantMismatchMessage }}
             </div>
         </div>
     </div>
@@ -183,12 +183,32 @@
                     if (mB && mB[1]) selectedVariant = mB[1];
                 }
             }
-            // 2) IMG: Open<chip>_<ver>.img  or  Open<chip>_<ver>_<variant>.img
+            // 2) IMG (plain): Open<chip>_<ver>.img  or  Open<chip>_<ver>_<variant>.img
+            // 3) IMG with OTA marker: Open<chip>_<ver>_ota.img  or  Open<chip>_<ver>_<variant>_ota.img  or  Open<chip>_<variant>_<ver>_ota.img
+            // 4) IMG with GZ marker:  Open<chip>_<ver>_gz.img   or  Open<chip>_<ver>_<variant>_gz.img   or  Open<chip>_<variant>_<ver>_gz.img
+            else if (lowerName.endsWith('_ota.img')){
+                const mA = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?_ota\\.img$'));
+                if (mA && mA[1]) selectedVariant = mA[1];
+
+                if (!selectedVariant){
+                    const mB = lowerName.match(new RegExp('^open' + chipLower + '_(.+)_\\d+\\.\\d+\\.\\d+_ota\\.img$'));
+                    if (mB && mB[1]) selectedVariant = mB[1];
+                }
+            }
+            else if (lowerName.endsWith('_gz.img')){
+                const mA = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?_gz\\.img$'));
+                if (mA && mA[1]) selectedVariant = mA[1];
+
+                if (!selectedVariant){
+                    const mB = lowerName.match(new RegExp('^open' + chipLower + '_(.+)_\\d+\\.\\d+\\.\\d+_gz\\.img$'));
+                    if (mB && mB[1]) selectedVariant = mB[1];
+                }
+            }
             else if (lowerName.endsWith('.img')){
                 const m = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^\\.]+))?\\.img$'));
                 if (m && m[1]) selectedVariant = m[1];
             }
-            // 3) BL602-style OTA: Open<chip>_<ver>_OTA.bin.xz.ota  or  Open<chip>_<ver>_<variant>_OTA.bin.xz.ota
+            // 5) BL602-style OTA: Open<chip>_<ver>_OTA.bin.xz.ota  or  Open<chip>_<ver>_<variant>_OTA.bin.xz.ota
             else if (lowerName.endsWith('_ota.bin.xz.ota')){
                 const m = lowerName.match(new RegExp('^open' + chipLower + '_\\d+\\.\\d+\\.\\d+(?:_([^_\\.]+))?_ota\\.bin\\.xz\\.ota$'));
                 if (m && m[1]) selectedVariant = m[1];
@@ -235,7 +255,7 @@
                 return lowerName.endsWith("_ota.bin");
             }
 
-            var ext = this.chipSetUsesRBL() ? ".rbl" : ".img";
+            var ext = this.chipSetUsesRBL() ? ".rbl" : ".img";       
             return lowerName.endsWith(ext);
         },
 
@@ -262,7 +282,7 @@
                 }
             }
             else if (this.chipset === "W600" || this.chipset === "W800"){
-                this.invalidOTASelected = !this.isWinnerMicroImage(result);
+                this.invalidOTASelected = !this.isWinnerMicroImage(result) || !this.fileNameMatchesChipset(file.name);
             } else if (this.chipset === "BL602"){
                 this.invalidOTASelected = !this.isBL602Image(result);
             } else if (this.chipset === "LN882H"){
@@ -562,6 +582,10 @@
                         prefix = 'OpenRDA5981_';
                         postfix = '_ota.img';
                         break;
+                    case 'TXW81X': 
+                        prefix = 'OpenTXW81X_';
+                        postfix = '_ota.img';
+                        break;                        
 		    default:
 			prefix = 'Open' + this.chipset + '_';
                         postfix = '.img';
