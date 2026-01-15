@@ -6692,6 +6692,31 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4149530.html"
     },
     {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Nedis WiFi Smart Switch Module",
+      "model": "WIFIWMS10WT",
+      "chip": "TR6260",
+      "board": "XY-WE2S-A V1.1",
+      "flags": "1024",
+      "keywords": [
+        "TR6260S1",
+        "86-TDQ-WIFI",
+        "INNOV2.0",
+        "2020.12.23",
+        "20220812"
+      ],
+      "pins": {
+        "0": "TglChanOnTgl;1",
+        "2": "Btn;1",
+        "4": "LED_n;1",
+        "13": "Rel;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7516197700_1738412765.png",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21405320#21405320"
+    },    
+    {
       "vendor": "Sinotimer",
       "bDetailed": "0",
       "name": "Home Smart 18mm 1P Circuit Breaker Timing Switch Staircase Din Rail",
