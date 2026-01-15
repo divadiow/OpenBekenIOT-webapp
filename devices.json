@@ -6670,6 +6670,28 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic3989796.html"
     },
     {
+      "vendor": "STATUS",
+      "bDetailed": "0",
+      "name": "Wi-Fi LED RGB Tape Controller",
+      "model": "23S5MTRGB",
+      "chip": "TR6260",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "Home Bargains",
+        "TR6260S1",
+        "ST-9"
+      ],
+      "pins": {
+        "0": "PWM;1",
+        "1": "PWM;2",
+        "2": "PWM;3"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/5172306300_1761411236.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4149530.html"
+    },
+    {
       "vendor": "Sinotimer",
       "bDetailed": "0",
       "name": "Home Smart 18mm 1P Circuit Breaker Timing Switch Staircase Din Rail",
