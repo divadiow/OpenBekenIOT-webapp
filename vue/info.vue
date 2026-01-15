@@ -7,7 +7,7 @@
     <div class="item">
       <h4>Current Device</h4>
       <p>Uptime: {{ formattedUptime }}</p>
-      <p>Build: {{build}}</p>
+      <p>Version: {{build}}</p>
       <p>IP address: {{ip}}</p>
       <p>MAC address: {{mac}}</p>
       <p>MQTT server: {{mqtthost}}</p>
