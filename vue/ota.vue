@@ -585,7 +585,11 @@
                     case 'TXW81X': 
                         prefix = 'OpenTXW81X_';
                         postfix = '_ota.img';
-                        break;                        
+                        break;
+                    case 'LN8825': 
+                        prefix = 'OpenLN8825_';
+                        postfix = '_ota.img';
+                        break;
 		    default:
 			prefix = 'Open' + this.chipset + '_';
                         postfix = '.img';
