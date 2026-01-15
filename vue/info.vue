@@ -628,13 +628,11 @@
 
             this.releases = data;
 
-            // Prefer the newest non-draft, non-prerelease
             const rel = data.find(r => r && !r.draft && !r.prerelease) || data[0];
 
             this.latest = rel.name || "";
             this.latest_base = this.extractBaseVersion(this.latest);
 
-            // Always clear, then set only if a real numeric version increase exists
             this.lateststr = "";
 
             if (this.latest_base && this.currentversion_base){
