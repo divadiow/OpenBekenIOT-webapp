@@ -11103,6 +11103,20 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4112667.html"
     },
     {
+      "vendor": "LSC",
+      "bDetailed": "0",
+      "name": "Smart Connect Wall Dimmer",
+      "model": "3207304",
+      "chip": "ECR6600",
+      "board": "AXY2S",
+      "flags": "1024",
+      "keywords": ["TuyaMCU"],
+      "pins": {},
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/1054052800_1736069551.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4097544.html"
+    },    
+    {
       "vendor": "Farylink",
       "bDetailed": "0",
       "name": "Tuya Smart Socket 16A 3840W (EU)",
