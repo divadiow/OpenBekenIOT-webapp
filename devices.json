@@ -226,6 +226,30 @@
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21615836#21615836"
     },
     {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "RGB 3-Pin LED Strip Controller with IR",
+      "model": "单键小方盒三路灯",
+      "chip": "LN8825",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "FTY-LN8825B",
+        "zfbdpln1ynr6p3um",
+        "000003kxvp",
+        "infra-red"
+      ],
+      "pins": {
+        "7": "PWM;3",
+        "8": "PWM;2",
+        "9": "IRRecv;0",
+        "11": "PWM;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/1378527100_1703166124.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4023264.html"
+    },
+    {
       "vendor": "GIRIER",
       "bDetailed": "0",
       "name": "20A EU Power Monitoring Plug",
