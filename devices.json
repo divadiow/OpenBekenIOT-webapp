@@ -129,6 +129,33 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4129469.html"
     },
     {
+      "vendor": "Milfra",
+      "bDetailed": "0",
+      "name": "3-Channel Light Switch",
+      "model": "TB23",
+      "chip": "BK7231N",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "Physical",
+        "tri-gang",
+        "TB21_BK_V01",
+        "triple"
+      ],
+      "pins": {
+        "14": "Btn;1",
+        "15": "Btn;3",
+        "16": "Btn;2",
+        "17": "WifiLED_n;0",
+        "22": "Rel;1",
+        "24": "Rel;2",
+        "26": "Rel;3"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7617012000_1768565858.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4161256.html"
+    },
+    {
       "vendor": "Moes",
       "bDetailed": "0",
       "name": "Tuya Matter RGBCW 9W E27 Bulb",
