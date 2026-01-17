@@ -5351,6 +5351,26 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4105277.html"
     },
     {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "1CH Mini Smart Switch",
+      "model": "FL-S190-V1.1",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "keywords": ["bl0937", "switch", "power metering", "Farylink"],
+      "pins": {
+        "6": "Rel;1",
+        "7": "BL0937CF;0",
+        "8": "BL0937CF1;0",
+        "23": "BL0937SEL;0",
+        "24": "Btn;1",
+        "26": "WifiLED_n;0"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/2964643400_1768633801.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4161338.html"
+    },
+    {
       "vendor": "AQIA",
       "bDetailed": "0",
       "name": "Microcenter Smart outdoor plug",
