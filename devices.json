@@ -191,6 +191,41 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4124254.html"
     },
     {
+      "vendor": "Zsviot",
+      "bDetailed": "0",
+      "name": "Tuya SmartLife 3-Gang Light Switch",
+      "model": "MCL-Y10-L-03W",
+      "chip": "ECR6600",
+      "board": "AXYU",
+      "flags": "1024",
+      "keywords": [
+        "Y10Q-T-T-V2.4.2.1",
+        "3-channel",
+        "triple",
+        "keysceeymg7xqvk7",
+        "edgai1jqxoiyx0ti",
+        "e1kqcga4",
+        "Y10 Wi-Fi Smart Switch 3 Gang"
+      ],
+      "pins": {
+        "0": "Btn;1",
+        "2": "Btn;2",
+        "14": "BridgeFWD;1",
+        "15": "BridgeREV;1",
+        "16": "LED;2",
+        "17": "Btn;3",
+        "20": "LED;3",
+        "21": "LED;1",
+        "22": "BridgeFWD;2",
+        "23": "BridgeREV;2",
+        "24": "BridgeFWD;3",
+        "25": "BridgeREV;3"                
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/5092305300_1753364135.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21615836#21615836"
+    },
+    {
       "vendor": "GIRIER",
       "bDetailed": "0",
       "name": "20A EU Power Monitoring Plug",
