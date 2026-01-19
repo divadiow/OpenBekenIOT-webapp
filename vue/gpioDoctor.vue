@@ -33,7 +33,7 @@
          {{ pins.states[index] ? 'Set Output Low' : 'Set Output High' }}
          </button>
         <button @click="setInput(index,'dInput')">Set Input P-up</button>
-        <button @click="setInput(index,'dInput_NoPullUp')">Set Input (no p-up)</button>
+        <button @click="setInput(index,'dInput_NoPullUp')">Set Input (no P-up)</button>
         <button @click="clearPin(index)">Clear</button>
         <hr>
       </div>
