@@ -9,7 +9,7 @@
             <li><strong>Reset scripts</strong> stops all running script threads without rebooting the device.</li>
             <li>Use <strong>Save, reset SVM, and run</strong> to test changes with a clean scripting state.</li>
         </ul>
-        <p>You can access LittleFS files via <code>http://&lt;device-ip&gt;/api/lfs/&lt;filename&gt;</code>. For details, see the <a href="https://www.elektroda.com/rtvforum/topic3971355.html">OpenBeken/Tasmota REST tutorial</a>.</p>
+        <p>You can access LittleFS files via <code>{{ deviceBase }}/api/lfs/&lt;filename&gt;</code>. For details, see the <a href="https://www.elektroda.com/rtvforum/topic3971355.html">OpenBeken/Tasmota REST tutorial</a>.</p>
         <div class="top">
             <button @click="backup(null, $event)">Read FS block</button>
             <button @click="restore(null, $event)">Restore FS block</button>
@@ -81,6 +81,7 @@
         otatext:'Drop file(s) or a .tar archive here',
         shortName:'',
         mqtttopic:'',
+        deviceBase: '',
         output: '',
         showUrlModal: false,
         urlInput: '',
@@ -1000,6 +1001,9 @@
     },
     mounted (){
         this.msg = 'fred';
+
+        this.deviceBase = (window.device || '').toString().replace(/\/+$/, '');
+        if (!this.deviceBase) this.deviceBase = 'http://<device-ip>';
 
         // construct tarball class
         this.tar = this.tarball();
