@@ -10,7 +10,7 @@
       <button :class="'tablinks '+Toolsclass" @click="open($event, 'Tools')">Tools</button>
       <button :class="'tablinks '+Importclass" @click="open($event, 'Import')">Import</button>
       <button :class="'tablinks '+Filesystemclass" @click="open($event, 'Filesystem')">Filesystem</button>
-      <button :class="'tablinks '+GPIODoctorclass" @click="open($event, 'GPIODoctor')">GPIO Finder</button> 
+      <button :class="'tablinks '+GPIODoctorclass" @click="open($event, 'GPIODoctor')">GPIO Doctor</button> 
       <button :class="'tablinks '+Aboutclass" @click="open($event, 'About')">About</button>
     </div>
     
@@ -32,10 +32,9 @@
 
     <div class="tabcontent" v-if="tab === 'About'">
       <h3>About</h3>
-      <p><a v-bind:href="nativeurl" target="_blank">Native UI on this device {{nativeurl}}</a></p>
-      <p>A simple web app to go with OpenBekenIOT equipped devices by <a href="https://github.com/btsimonh">btsimonh</a></p>
-      <p>This app is a pure javascript application written in VueJS as an SFC .vue component, and dynamically loaded from the device via a simple webpage.  The intent here is to be able to provide a rich UI and allow the device UI to remain simple (and small).</p>
-      <p>Currently, it supports displaying logging from the device</p>
+      <p><a v-bind:href="nativeurl" target="_blank">Open the native device UI ({{nativeurl}})</a></p>
+      <p>A simple companion web app for OpenBekenIOT-equipped devices by <a href="https://github.com/btsimonh">btsimonh</a>.</p>
+      <p>This is a lightweight JavaScript web app built with Vue.js as a single-file component (.vue) and loaded directly from the device. The intent is to provide a richer UI while keeping the device UI simple and small.</p>
     </div>
 
     <div class="tabcontent" v-if="tab === 'OTA'">
@@ -60,8 +59,8 @@
     </div>
 
     <div class="tabcontent" v-if="tab === 'GPIODoctor'">
-      <h3>GPIO Doctor - easily find GPIO roles for your relays, PWMs, and buttons</h3>
-      <h6>Please also UPDATE OBK to latest version to get best experience, otherwise reading values won't work</h6>
+      <h3>GPIO Doctor: find GPIO roles for relays, PWM outputs, and buttons</h3>
+      <h6>For best results, update OpenBeken to the latest version. Otherwise, some values may not display correctly.</h6>
       <gpio-controller></gpio-controller>
     </div>
     </div>
