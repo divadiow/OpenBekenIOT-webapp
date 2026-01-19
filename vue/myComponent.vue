@@ -43,7 +43,7 @@
       <ota-controller></ota-controller>
     </div>
     <div class="tabcontent" v-if="tab === 'Tools'">
-      <h3>Tools (WORK IN PROGRESS, SOME BUTTONS MAY NOT BE READY)</h3>
+      <h3>Tools</h3>
       <tools-controller></tools-controller>
     </div>
     <div class="tabcontent" v-if="tab === 'Flash'">
@@ -60,7 +60,7 @@
     </div>
 
     <div class="tabcontent" v-if="tab === 'GPIODoctor'">
-      <h3>GPIO Doctor - easily find GPIO roles for your relays, PWMs, and buttons (Work In Progress)</h3>
+      <h3>GPIO Doctor - easily find GPIO roles for your relays, PWMs, and buttons</h3>
       <h6>Please also UPDATE OBK to latest version to get best experience, otherwise reading values won't work</h6>
       <gpio-controller></gpio-controller>
     </div>
