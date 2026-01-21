@@ -11817,7 +11817,8 @@
       "pins": {
         "6": "LED_n;1",
         "7": "Btn_Tgl_All;0",
-        "24": "Rel;1"
+        "24": "Rel;1",
+        "26": "TglChanOnTgl;1"
       },
       "command": "",
       "image": "https://obrazki.elektroda.pl/1790643400_1762454021.png",
