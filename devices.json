@@ -9201,14 +9201,16 @@
     {
       "vendor": "Action",
       "bDetailed": "0",
-      "name": "LSC RGBCW Ceiling Lamp",
-      "model": "??",
+      "name": "LSC Smart Connect RGBCW Ceiling Lamp 1800lm",
+      "model": "3218147",
       "chip": "BK7231N",
       "board": "CBU",
       "flags": "138434323",
       "keywords": [
         "LGLPCB646",
-        "??-2AN2-DB-DI-SM2289EM"
+        "LMF22AN2-DB-DI-SM2289EM",
+        "Plafoniera",
+        "light"
       ],
       "pins": {
         "6": "PWM;1",
@@ -9219,9 +9221,9 @@
         "26": "PWM;2"
       },
       "command": "",
-      "image": "???",
-      "wiki": "https://www.elektroda.com/rtvforum/topic4160870.html"
-    },    
+      "image": "https://obrazki.elektroda.pl/6739741800_1769098083.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4162084.html"
+    },
     {
       "vendor": "AVATTO",
       "bDetailed": "1",
