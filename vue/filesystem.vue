@@ -36,7 +36,13 @@
   <button @click="showUrlModal = false">Cancel</button>
 </div>
             <div class="left">
-                <input type="text" v-model="folder">
+                <div class="folderBox">
+                    <label for="folderInput"><strong>Target Folder (Optional)</strong></label><br/>
+                    <input id="folderInput" class="folderInput" type="text" v-model="folder" placeholder="e.g., www">
+                    <div class="folderHelp">
+                        Used for uploads and newly created files. Leave blank to save to the LittleFS root.
+                    </div>
+                </div>
                 <div class="drop" @drop="dropHandler($event)" @dragover="dragOverHandler($event)">
                     <div class="otatext center" v-html="otatext"></div>
                 </div>
@@ -1026,6 +1032,24 @@
         text-align: center;
         position: relative;
         vertical-align: center;
+    }
+
+    .folderBox {
+        margin: 0 0 10px 0;
+        width: 200px;
+    }
+
+    .folderInput {
+        width: 200px;
+        box-sizing: border-box;
+        padding: 2px 4px;
+    }
+
+    .folderHelp {
+        margin-top: 4px;
+        font-size: 0.9em;
+        line-height: 1.2em;
+        word-break: break-word;
     }
 
     .otatext {
