@@ -1,7 +1,7 @@
 
 <template>
   <div class="importPage">
-    <p class="importIntro">You can import configuration from a template. Both OpenBeken templates and Cloudcutter profiles are supported. Applying the import will overwrite your current pin/channel assignments and startup command, and it will clear LittleFS (including <code>autoexec.bat</code>).</p>
+    <p class="importIntro">Here you can import configuration from a template. Both OpenBeken templates and Cloudcutter profiles are supported. Applying the import will overwrite your current pin/channel assignments and startup command, and it will clear LittleFS (including <code>autoexec.bat</code>).</p>
     <div class="importContainer">
       <div class="importItem"  style="width: 300px;">
         <h3>1. Paste a template or profile</h3>
@@ -10,7 +10,7 @@
         placeholder="Paste (or drag and drop) an OpenBeken template, Tuya JSON, or Cloudcutter JSON here" style="vertical-align: top; width: 280px; height:500px" @input="handleImportTemplateChange" v-model="importTemplateText"></textarea>
        <br/>
                <br>
-              <div class="importExamplesTitle">Examples (advanced):</div>
+              <div class="importExamplesTitle">Developer testing examples:</div>
        <div class="importExamples">
          <button @click="loadDemo('https://raw.githubusercontent.com/tuya-cloudcutter/tuya-cloudcutter.github.io/a8a6539aad21a03d5db41e4d27e9d5516c62fe23/devices/lenovo-se-242dc-rgbct-bulb-v1.2.21.json')">RGBCW LED</button>
          <button @click="loadDemo('https://raw.githubusercontent.com/tuya-cloudcutter/tuya-cloudcutter.github.io/a8a6539aad21a03d5db41e4d27e9d5516c62fe23/devices/nous-p4-e14-rgbct-bulb.json')">BP5758 LED</button>
