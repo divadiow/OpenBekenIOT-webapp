@@ -10,7 +10,7 @@
       <button :class="'tablinks '+Toolsclass" @click="open($event, 'Tools')">Tools</button>
       <button :class="'tablinks '+Importclass" @click="open($event, 'Import')">Import</button>
       <button :class="'tablinks '+Filesystemclass" @click="open($event, 'Filesystem')">Filesystem</button>
-      <button :class="'tablinks '+GPIODoctorclass" @click="open($event, 'GPIODoctor')">GPIO Doctor</button> 
+      <button :class="'tablinks '+GPIODoctorclass" @click="open($event, 'GPIOFinder')">GPIO Finder</button> 
       <button :class="'tablinks '+Aboutclass" @click="open($event, 'About')">About</button>
     </div>
     
@@ -58,9 +58,9 @@
       <filesystem-controller></filesystem-controller>
     </div>
 
-    <div class="tabcontent" v-if="tab === 'GPIODoctor'">
-      <h3>GPIO Doctor: find GPIO roles for relays, PWM outputs, and buttons</h3>
-      <h6>For best results, update OpenBeken to the latest version. Otherwise, some values may not display correctly.</h6>
+    <div class="tabcontent" v-if="tab === 'GPIOFinder'">
+      <h3>GPIO Doctor - easily find GPIO roles for your relays, PWMs, and buttons</h3>
+      <p class="helperNote">For best results, update OpenBeken to the latest version. Otherwise, some values may not display correctly.</p>
       <gpio-controller></gpio-controller>
     </div>
     </div>
@@ -136,6 +136,12 @@
 
     .example {
         color: v-bind('color');
+    }
+
+    .helperNote {
+      margin: 6px 0 18px 0;
+      font-size: 0.8em;
+      color: #444;
     }
 
     /* Style the tab */
