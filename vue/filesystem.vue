@@ -20,7 +20,7 @@
             <button @click="showUrlModal = true">Fetch from URLs</button>
             <button @click="resetSVM(null, $event)">Reset scripts</button>
             <br/>
-            <button @click="getTar(null, $event)">Download filesystem backup (tar)</button>
+            <button @click="getTar(null, $event)">Download filesystem backup (.tar)</button>
 
         </div>
         <div class="bottom">
@@ -1026,7 +1026,11 @@
 
 <style scoped>
     .drop {
-        border: 5px solid blue;
+        border: 4px solid #3b82f6;
+        background: #eff6ff;
+        color: #1e40af;
+        margin-top: 20px;
+        margin-bottom: 20px;
         width:  200px;
         height: 100px;
         text-align: center;
