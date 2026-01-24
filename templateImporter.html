@@ -189,7 +189,19 @@
         });
 
     }
-    function refreshFields() {
+    function refreshFields(keepLog = false) {
+      if (!keepLog) {
+        logOutput.textContent = '';
+      }
+      // Clear outputs
+      outputText_desc.value = '';
+      outputText_script.value = '';
+      outputText_template.value = '';
+
+      if (!inputText.value || inputText.value.trim() === "") {
+        return;
+      }
+
       log("Starting text parsing...", 'info');
       try {
         let res = processJSON(inputText.value);
@@ -265,6 +277,13 @@
         const dt = e.dataTransfer;
         const files = dt.files;
         if (files && files.length > 0) {
+          // Clear logs and fields for a fresh start
+          if (logOutput) logOutput.textContent = '';
+          outputText_desc.value = '';
+          outputText_script.value = '';
+          outputText_template.value = '';
+          inputText.value = '';
+
           const file = files[0];
           if (file.name.toLowerCase().endsWith('.bin')) {
             log(`Processing dropped file: ${file.name}`, 'info');
@@ -273,15 +292,17 @@
               const arrayBuffer = evt.target.result;
               const uint8Array = new Uint8Array(arrayBuffer);
               try {
+                // Pass log callback
                 const result = TuyaExporter.extractConfig(uint8Array, log);
                 if (result) {
                   if (typeof result === 'object') {
                     inputText.value = JSON.stringify(result, null, 2);
-                    refreshFields();
+                    // Keep logs from extraction
+                    refreshFields(true);
                     log('Config extracted and loaded successfully.', 'success');
                   } else {
                     inputText.value = result;
-                    refreshFields();
+                    refreshFields(true);
                     log('Config extracted but parsing had issues. Raw/Repaired text loaded.', 'warning');
                   }
                 } else {
@@ -298,7 +319,11 @@
             const reader = new FileReader();
             reader.onload = (evt) => {
               inputText.value = evt.target.result;
-              refreshFields();
+              // Text load - logs are already cleared at start of handleDrop
+              // But we logged "Dropped file..." just now. 
+              // If we run refreshFields(false), we lose that warning.
+              // So refreshFields(true).
+              refreshFields(true);
               log("Loaded text file content.", 'success');
             };
             reader.readAsText(file);
