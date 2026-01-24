@@ -269,6 +269,15 @@
         this.progressTextElem = document.getElementById("progressTextID");
         this.generateTextElem = document.getElementById("generateTextID");
         this.generateTextElem.innerHTML = "Waiting.";
+
+        const cryptoScript = document.createElement("script");
+        cryptoScript.setAttribute(
+          "src",
+          "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"
+        );
+        cryptoScript.async = true;
+        document.head.appendChild(cryptoScript);
+
         const plugin = document.createElement("script");
         plugin.setAttribute(
           "src",
