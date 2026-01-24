@@ -129,6 +129,33 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4129469.html"
     },
     {
+      "vendor": "Milfra",
+      "bDetailed": "0",
+      "name": "3-Channel Light Switch",
+      "model": "TB23",
+      "chip": "BK7231N",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "Physical",
+        "tri-gang",
+        "TB21_BK_V01",
+        "triple"
+      ],
+      "pins": {
+        "14": "Btn;1",
+        "15": "Btn;3",
+        "16": "Btn;2",
+        "17": "WifiLED_n;0",
+        "22": "Rel;1",
+        "24": "Rel;2",
+        "26": "Rel;3"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7617012000_1768565858.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4161256.html"
+    },
+    {
       "vendor": "Moes",
       "bDetailed": "0",
       "name": "Tuya Matter RGBCW 9W E27 Bulb",
@@ -162,6 +189,65 @@
       "command": "",
       "image": "https://obrazki.elektroda.pl/2020894000_1748350960.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4124254.html"
+    },
+    {
+      "vendor": "Zsviot",
+      "bDetailed": "0",
+      "name": "Tuya SmartLife 3-Gang Light Switch",
+      "model": "MCL-Y10-L-03W",
+      "chip": "ECR6600",
+      "board": "AXYU",
+      "flags": "1024",
+      "keywords": [
+        "Y10Q-T-T-V2.4.2.1",
+        "3-channel",
+        "triple",
+        "keysceeymg7xqvk7",
+        "edgai1jqxoiyx0ti",
+        "e1kqcga4",
+        "Y10 Wi-Fi Smart Switch 3 Gang"
+      ],
+      "pins": {
+        "0": "Btn;1",
+        "2": "Btn;2",
+        "14": "Rel;1",
+        "15": "Rel_n;1",
+        "16": "LED_n;2",
+        "17": "Btn;3",
+        "20": "LED_n;3",
+        "21": "LED_n;1",
+        "22": "Rel;2",
+        "23": "Rel_n;2",
+        "24": "Rel;3",
+        "25": "Rel_n;3"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/5092305300_1753364135.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21615836#21615836"
+    },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "RGB 3-Pin LED Strip Controller with IR",
+      "model": "单键小方盒三路灯",
+      "chip": "LN8825",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "FTY-LN8825B",
+        "zfbdpln1ynr6p3um",
+        "000003kxvp",
+        "infra-red"
+      ],
+      "pins": {
+        "7": "PWM;3",
+        "8": "PWM;2",
+        "9": "IRRecv;0",
+        "11": "PWM;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/1378527100_1703166124.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4023264.html"
     },
     {
       "vendor": "GIRIER",
@@ -1577,6 +1663,85 @@
       "product": ""
     },
     {
+      "vendor": "Deltaco",
+      "bDetailed": "0",
+      "name": "10A 240V SMART HOME strömbrytare Plug (EU)",
+      "model": "SH-P01",
+      "chip": "BK7231T",
+      "board": "WB2S",
+      "flags": "1024",
+      "keywords": [
+        "SA-P302A",
+        "PO194180",
+        "2400W",
+        "0000038caa",
+        "keya4gvchmtapm8n",
+        "4r94tdtavlfeiwvp"
+      ],
+      "pins": {
+        "6": "Btn;57",
+        "8": "WifiLED_n;55",
+        "24": "Rel;39"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7185170100_1767728961.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4160008.html"
+    },
+    {
+      "vendor": "AESSY",
+      "bDetailed": "0",
+      "name": "Smart Plug 20A",
+      "model": "BSD69+",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "flags": "1024",
+      "keywords": [
+        "brazil",
+        "portugal",
+        "BP20V4",
+        "000004ii7s",
+        "keyjup78v54myhan",
+        "o7ve1lp3gfjvsvyo"
+      ],
+      "pins": {
+        "6": "BL0937CF1;0",
+        "7": "BL0937CF;0",
+        "8": "WifiLED;0",
+        "10": "Btn;1",
+        "23": "LED;1",
+        "24": "BL0937SEL;0",
+        "26": "Rel;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6052062400_1767893361.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4160275.html"
+    },
+    {
+      "vendor": "eWelink",
+      "bDetailed": "0",
+      "name": "WiFi Smart Valve Water Gas Shutoff Automated Ball Valve",
+      "model": "CZC20",
+      "chip": "BL602",
+      "board": "SDV-002_V1.2",
+      "keywords": [
+        "relay",
+        "button",
+        "wifi_led",
+        "DN15/DN20/DN25",
+        "FWSW-CKBL602-SWITCH-BL602L_v1.3.1",
+        "CK-BL602-4SW-HS-03",
+        "CZC20S"
+      ],
+      "pins": {
+        "2": "Rel;1",
+        "12": "LED;1",
+        "14": "Btn;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7722669700_1767815835.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4160158.html"
+    },
+    {
       "vendor": "TreatLife",
       "bDetailed": "1",
       "name": "Treatlife Intertek DS03 Fan/Light Dimmer Tutorial",
@@ -2848,7 +3013,7 @@
       "bDetailed": "0",
       "name": "Della Mini Split Air Conditioner Optima Series",
       "model": "048-TP-9K2V-23S-IN/048-TP-9K2V-23S-OUT",
-      "chip": "RTL8720CF",
+      "chip": "RTL87X0C",
       "board": "WBR3",
       "flags": "1024",
       "keywords": ["TCWBRCU1", "115V", "9000 BTU", "TCL", "TuyaMCU"],
@@ -2862,7 +3027,7 @@
       "bDetailed": "0",
       "name": "Della Mini Split Air Conditioner",
       "model": "",
-      "chip": "RTL8720CF",
+      "chip": "RTL87X0C",
       "board": "WBR1",
       "flags": "1024",
       "keywords": [
@@ -3645,7 +3810,7 @@
       "vendor": "Nous",
       "bDetailed": "1",
       "name": "Smart Breaker Nous L6",
-      "chip": "W701-VA2-CG",
+      "chip": "RTL87X0C",
       "board": "WBR2",
       "pins": {},
       "keywords": ["W701-VA2-CG", "W700", "BP2905", "AMS1117", "1AM"],
@@ -5150,7 +5315,7 @@
       "bDetailed": "0",
       "name": "Tapo 10A Smart Plug Socket (UK)",
       "model": "P100",
-      "chip": "RTL8720CF",
+      "chip": "RTL87X0C",
       "board": "on PCB",
       "flags": "1024",
       "keywords": ["realtek"],
@@ -5184,6 +5349,26 @@
       "command": "",
       "image": "https://obrazki.elektroda.pl/5911139000_1739135470.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4105277.html"
+    },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "1CH Mini Smart Switch",
+      "model": "FL-S190-V1.1",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "keywords": ["bl0937", "switch", "power metering", "Farylink"],
+      "pins": {
+        "6": "Rel;1",
+        "7": "BL0937CF;0",
+        "8": "BL0937CF1;0",
+        "23": "BL0937SEL;0",
+        "24": "Btn;1",
+        "26": "WifiLED_n;0"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/2964643400_1768633801.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4161338.html"
     },
     {
       "vendor": "AQIA",
@@ -5795,7 +5980,7 @@
       "bDetailed": "0",
       "name": "Mini Smart Switch",
       "model": "SmartSwitch",
-      "chip": "T34_2135K9WY2_Unmarked",
+      "chip": "T34",
       "board": "on PCB",
       "flags": "0",
       "keywords": ["switch", "relay", "T34 2135K9WY2 Unmarked"],
@@ -6590,6 +6775,53 @@
       "image": "https://obrazki.elektroda.pl/6004957700_1686239706.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic3989796.html"
     },
+    {
+      "vendor": "STATUS",
+      "bDetailed": "0",
+      "name": "Wi-Fi LED RGB Tape Controller",
+      "model": "23S5MTRGB",
+      "chip": "TR6260",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "Home Bargains",
+        "TR6260S1",
+        "ST-9"
+      ],
+      "pins": {
+        "0": "PWM;1",
+        "1": "PWM;2",
+        "2": "PWM;3"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/5172306300_1761411236.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4149530.html"
+    },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Nedis WiFi Smart Switch Module",
+      "model": "WIFIWMS10WT",
+      "chip": "TR6260",
+      "board": "XY-WE2S-A V1.1",
+      "flags": "1024",
+      "keywords": [
+        "TR6260S1",
+        "86-TDQ-WIFI",
+        "INNOV2.0",
+        "2020.12.23",
+        "20220812"
+      ],
+      "pins": {
+        "0": "TglChanOnTgl;1",
+        "2": "Btn;1",
+        "4": "LED_n;1",
+        "13": "Rel;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7516197700_1738412765.png",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21405320#21405320"
+    },    
     {
       "vendor": "Sinotimer",
       "bDetailed": "0",
@@ -8336,6 +8568,45 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4020767.html"
     },
     {
+      "vendor": "Action",
+      "bDetailed": "0",
+      "name": "LSC Smart Plug (with Energy Meter)",
+      "model": "3202087.1",
+      "chip": "BK7238",
+      "board": "T1-2S-NL",
+      "keywords": ["power metering", "3680W", "FS 125634"],
+      "pins": {
+        "0": "WifiLED;0",
+        "7": "BL0937CF;0",
+        "8": "BL0937CF1;0",
+        "9": "LED_n;0",
+        "11": "BL0937SEL;0",
+        "24": "Rel;0",
+        "26": "Btn;0"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/5533322700_1769036509.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4161922.html"
+    },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Generic 16A Mini Switch",
+      "model": "",
+      "chip": "BK7238",
+      "board": "on PCB",
+      "keywords": ["T1-CHL", "AU5101XA", "e1n6c5uw", "keyfxuj3d5wg53wx", "cwpezmgx7zbylz3a"],
+      "pins": {
+        "6": "TglChanOnTgl;1",
+        "15": "Btn_Tgl_All;1",
+        "17": "LED;1",
+        "26": "Rel;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/3995604400_1769061470.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4161841.html"
+    },      
+    {
       "vendor": "Tuya",
       "bDetailed": "0",
       "name": "Mini Smart Switch",
@@ -8926,6 +9197,32 @@
       "command": "PowerSave 1",
       "image": "https://obrazki.elektroda.pl/6578369000_1699868581.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4014350.html"
+    },
+    {
+      "vendor": "Action",
+      "bDetailed": "0",
+      "name": "LSC Smart Connect RGBCW Ceiling Lamp 1800lm",
+      "model": "3218147",
+      "chip": "BK7231N",
+      "board": "CBU",
+      "flags": "138434323",
+      "keywords": [
+        "LGLPCB646",
+        "LMF22AN2-DB-DI-SM2289EM",
+        "Plafoniera",
+        "light"
+      ],
+      "pins": {
+        "6": "PWM;1",
+        "7": "PWM;5",
+        "8": "PWM;4",
+        "15": "IRRecv;0",        
+        "24": "PWM;3",
+        "26": "PWM;2"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6739741800_1769098083.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4162084.html"
     },
     {
       "vendor": "AVATTO",
@@ -9791,7 +10088,7 @@
       "name": "3gang WiFi switch with RF",
       "model": "TY-86-3W",
       "chip": "BK7231N",
-      "board": "T34-3",
+      "board": "T34",
       "keywords": ["Wifi W6B", "WF480RA"],
       "pins": {
         "7": "WifiLED_n;0",
@@ -10690,11 +10987,11 @@
         "8": "BAT_Relay;3",
         "14": "DoorSnsrWSleep;4",
         "16": "WifiLED_n;0",
-        "20": "CHT8305_SCK;0",
-        "22": "CHT8305_SDA;0;1",
+        "20": "CHT83XX_SCK;0",
+        "22": "CHT83XX_SDA;0;1",
         "23": "BAT_ADC;2"
       },
-      "command": "backlog PowerSave 1; startDriver battery; startDriver NTP; startDriver CHT8305",
+      "command": "backlog PowerSave 1; startDriver battery; startDriver NTP; startDriver CHT83XX",
       "image": "https://obrazki.elektroda.pl/5743076800_1701986603.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4019974.html"
     },
@@ -10976,6 +11273,20 @@
       "image": "https://obrazki.elektroda.pl/8078197200_1742321566.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4112667.html"
     },
+    {
+      "vendor": "LSC",
+      "bDetailed": "0",
+      "name": "Smart Connect Wall Dimmer",
+      "model": "3207304",
+      "chip": "ECR6600",
+      "board": "AXY2S",
+      "flags": "1024",
+      "keywords": ["TuyaMCU"],
+      "pins": {},
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/1054052800_1736069551.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4097544.html"
+    },    
     {
       "vendor": "Farylink",
       "bDetailed": "0",
@@ -11571,7 +11882,8 @@
       "pins": {
         "6": "LED_n;1",
         "7": "Btn_Tgl_All;0",
-        "24": "Rel;1"
+        "24": "Rel;1",
+        "26": "TglChanOnTgl;1"
       },
       "command": "",
       "image": "https://obrazki.elektroda.pl/1790643400_1762454021.png",
@@ -11757,7 +12069,7 @@
       "bDetailed": "0",
       "name": "Smart Socket (EU)",
       "model": "SP22",
-      "chip": "RTL8710BN",
+      "chip": "RTL8710B",
       "board": "T112_V1.1",
       "flags": "1024",
       "keywords": [
@@ -14300,8 +14612,8 @@
         "14": "Btn;4",
         "15": "GN6932_DAT;3",
         "17": "GN6932_CLK;3",
-        "20": "CHT8305_SCK;0",
-        "22": "CHT8305_SDA;1;0",
+        "20": "CHT83XX_SCK;0",
+        "22": "CHT83XX_SDA;1;0",
         "28": "GN6932_STB;3"
       },
       "command": "",
