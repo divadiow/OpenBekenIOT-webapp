@@ -211,6 +211,7 @@
         event.preventDefault();
 
         this.clearLog();
+        this.importTemplateText = ""; // Clear old content immediately
         const files = event.dataTransfer.files;
 
         if (files.length > 0) {
