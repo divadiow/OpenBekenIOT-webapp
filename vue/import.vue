@@ -32,7 +32,8 @@
       </div>
 
       <div class="item" style="width: 300px;">
-      <h3> 3. Once you are happy with the script, use button below to apply:</h3>
+      <h3>3. Apply Script</h3>
+      <p>Once you are happy with the script, use button below to apply:</p>
                <br>
        <button @click="applyScript()">Clear OBK and apply new script from above</button>
        <br>
