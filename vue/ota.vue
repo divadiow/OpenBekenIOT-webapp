@@ -2,7 +2,7 @@
     <div>
         <div>
             <p>Chipset: {{chipset}}</p>
-            <p>Build: {{build}}</p>
+            <p>Release: {{build}}</p>
         </div>
         <div>
             <span v-if="supportsLittleFS">
@@ -665,7 +665,7 @@
 <style scoped>
     .drop {
         border: 4px solid #3b82f6;
-        background: #eff6ff;
+        background: #ffffff;
         color: #1e40af;
         margin-bottom: 20px;
         width:  200px;

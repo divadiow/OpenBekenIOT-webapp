@@ -1,17 +1,17 @@
 
 <template>
-  <div class="importPage">
-    <p class="importIntro">Here you can import configuration from a template. Both OpenBeken templates and Cloudcutter profiles are supported. Applying the import will overwrite your current pin/channel assignments and startup command, and it will clear LittleFS (including <code>autoexec.bat</code>).</p>
-    <div class="importContainer">
-      <div class="importItem"  style="width: 300px;">
-        <h3>1. Paste a template or profile</h3>
-        <p>Paste an <a href="https://openbekeniot.github.io/webapp/devicesList.html">OpenBeken template</a> or Cloudcutter JSON. You can find Cloudcutter device profiles <a href="https://github.com/tuya-cloudcutter/tuya-cloudcutter.github.io/tree/master/devices">here</a>.</p>
+  <div class="container">
+    Here you can import configuration from a template. Both OBK templates and Cloudcutter profiles are supported. Importing a profile may ovewrite your current pins/channels/startup command configuration, it will also clear LFS (autoexec.bat). 
+    <div class="container">
+      <div class="item"  style="width: 300px;">
+        <h3>1. Enter template or drag and drop Tuya firmware</h3>
+        <p>Here you can enter an  <a href="https://openbekeniot.github.io/webapp/devicesList.html">OBK template</a>/JSON text from Cloudcutter. <a href="https://github.com/tuya-cloudcutter/tuya-cloudcutter.github.io/tree/master/devices"> Here </a> is a list of cloudcutter devices. Just open one and copy-paste config below.</p>
+        <p><b>New:</b> You can also drag and drop a 2MB binary full device dump or just the Tuya config partition to automatically extract keys and JSON configuration.</p>
         <textarea id="importTemplate" 
-        placeholder="Paste (or drag and drop) an OpenBeken template, Tuya JSON, or Cloudcutter JSON here" style="vertical-align: top; width: 280px; height:500px" @input="handleImportTemplateChange" v-model="importTemplateText"></textarea>
+        placeholder="Paste (or drag and drop) OBK template, Tuya JSON or cloudcutter json here" style="vertical-align: top; width: 280px; height:500px" @input="handleImportTemplateChange" v-model="importTemplateText"></textarea>
        <br/>
                <br>
-              <div class="importExamplesTitle">Developer testing examples:</div>
-       <div class="importExamples">
+       Some examples for developer testing:        <br>
          <button @click="loadDemo('https://raw.githubusercontent.com/tuya-cloudcutter/tuya-cloudcutter.github.io/a8a6539aad21a03d5db41e4d27e9d5516c62fe23/devices/lenovo-se-242dc-rgbct-bulb-v1.2.21.json')">RGBCW LED</button>
          <button @click="loadDemo('https://raw.githubusercontent.com/tuya-cloudcutter/tuya-cloudcutter.github.io/a8a6539aad21a03d5db41e4d27e9d5516c62fe23/devices/nous-p4-e14-rgbct-bulb.json')">BP5758 LED</button>
          <button @click="loadDemo('https://raw.githubusercontent.com/tuya-cloudcutter/tuya-cloudcutter.github.io/b04e860fe0bb1c8bed417ab36c57e6759ec08510/devices/spectrum-woj14415-rgbct-gu10-bulb.json')">SM2135 LED</button>
@@ -20,26 +20,34 @@
           <button @click="loadDemo('https://raw.githubusercontent.com/tuya-cloudcutter/tuya-cloudcutter.github.io/43a341ef1dd8eec8514e1d435563bd9008ff2835/devices/hombli-hbss-0209-smart-socket-b2030248-energy-plug.json')">BL0937 plug</button>
           <button @click="loadDemo('https://raw.githubusercontent.com/tuya-cloudcutter/tuya-cloudcutter.github.io/a8a6539aad21a03d5db41e4d27e9d5516c62fe23/devices/athom-garage-door-opener.json')">Garage switch</button>
           <button @click="loadDemo('https://raw.githubusercontent.com/tuya-cloudcutter/tuya-cloudcutter.github.io/a8a6539aad21a03d5db41e4d27e9d5516c62fe23/devices/aldi-casalux-wifi-led-rgb-light-strip.json')">RGB LED</button>
-       </div>
-</div>
+    
+      </div>
 
-      <div class="importItem"  style="width: 300px;">
-        <h3>2. Review the generated script (edit if needed)</h3>
+      <div class="item"  style="width: 300px;">
+        <h3>2. Check generated script (modify if you want)</h3>
                <br>
         <p id ="generateTextID" v-text="generateText"></p>
-        <textarea id="generatedScriptField" placeholder="The generated script will appear here" style="vertical-align: top; width: 280px; height:500px"  v-model="generatedScriptText"></textarea>
+        <textarea id="generatedScriptField" placeholder="Here script will appear" style="vertical-align: top; width: 280px; height:500px"  v-model="generatedScriptText"></textarea>
        <br>
       </div>
 
-      <div class="importItem" style="width: 300px;">
-      <h3> 3. Apply the script to the device</h3>
+      <div class="item" style="width: 300px;">
+      <h3>3. Apply Script</h3>
+      <p>Once you are happy with the script, use button below to apply:</p>
                <br>
-       <button @click="applyScript()">Apply script (clears current configuration)</button>
+       <button @click="applyScript()">Clear OBK and apply new script from above</button>
        <br>
        <br>
-       <div class="importExecTitle">Execution log:</div>
+       Script execution log:
         <p id ="progressTextID" v-text="progressText"> </p>
       </div>
+      
+      <div class="item" style="width: 300px;">
+        <h3> 4. If something fails, check the log</h3>
+         <br>
+         <div id="debugLog" style="width: 280px; height: 500px; border: 1px solid #999; overflow-y: scroll; padding: 5px; background: white; white-space: pre-wrap;" v-html="logHtml"></div>
+         <button @click="clearLog()">Clear Log</button>
+       </div>
     </div>
   </div>
 </template>
@@ -59,9 +67,30 @@
         progressText: "",
         generateTextElem:undefined,
         progressTextElem:undefined,
+        logHtml: "",
       }
     },
     methods:{
+      log(msg, type = 'info') {
+          let color = 'black';
+          if(type === 'error') color = 'red';
+          if(type === 'warning') color = 'orange';
+          if(type === 'success') color = 'green';
+          if(type === 'info') color = 'blue';
+          
+          const time = new Date().toLocaleTimeString();
+          const html = `<div style="color:${color}">[${time}] ${msg}</div>`;
+          this.logHtml += html;
+          
+          this.$nextTick(() => {
+             const elem = document.getElementById('debugLog');
+             if(elem) elem.scrollTop = elem.scrollHeight;
+          });
+          console.log(`[${type}] ${msg}`);
+      },
+      clearLog(){
+        this.logHtml = "";
+      },
       getinfo(){
        
 
@@ -69,25 +98,25 @@
       onSendFailed(response,line) {
         //alert('Send failed!');
         if(response.status == 501 || response.status == 400) {
-           this.progressTextElem.innerHTML += "<span style='color:red;'>Failed: invalid command \""+line+"\".</span>";
+           this.progressTextElem.innerHTML += "<span style='color:red;'>FAILED! Invalid command \""+line+"\".</span>";
         } else {
-           this.progressTextElem.innerHTML += "<span style='color:red;'>Failed. Check your network connection and try again.</span>";
+           this.progressTextElem.innerHTML += "<span style='color:red;'>FAILED! Please check network and retry.</span>";
         }
       },
       async sendLines(lines) {
-        this.progressTextElem.innerHTML = "Sending...";
+        this.progressTextElem.innerHTML = "Send started...";
         let idx = 0;
       for (let line of lines) {
         let dbg = "";
         if(false){
           dbg = " ("+line+")";
         }
-        this.progressTextElem.innerHTML += " Sending "+idx+" of "+lines.length+dbg+"...";
+        this.progressTextElem.innerHTML += " send "+idx+"/"+lines.length+dbg+"...";
         await this.sendLine(line,this.onSendFailed);
         idx++;
       }
-        this.progressTextElem.innerHTML += "<span style='color:green;'> Completed.</span>";
-        this.progressTextElem.innerHTML += "<span style='color:green;'> Restart the device if required.</span>";
+        this.progressTextElem.innerHTML += "<span style='color:green;'> Send done!</span>";
+        this.progressTextElem.innerHTML += "<span style='color:green;'> Please restart device if needed.</span>";
     },
     async sendLine(line, errorHandler) {
       line = line.trim();
@@ -144,33 +173,34 @@
       },
     handleImportTemplateChange(event) {
       console.log("Import template changed!");
+       this.clearLog();
        this.refreshTemplateImport();
     },
     refreshTemplateImport() {
        let res;
        if(processJSON==undefined){
-           this.generateTextElem.innerHTML = "<span style='color:red;'>Template parser is not loaded yet.</span>";
+           this.generateTextElem.innerHTML = "<span style='color:red;'>Failed - processJSON missing.</span>";
           return;
        }
        let jsonText = this.importTemplateText;
        jsonText = jsonText.trim();
        if(jsonText.length < 1) {
-           this.generateTextElem.innerHTML = "<span style='color:yellow;'>No input provided.</span>";
+           this.generateTextElem.innerHTML = "<span style='color:yellow;'>No input text.</span>";
           return;
        }
        try {
            res = processJSON(jsonText);
        } catch (error) {
-           this.generateTextElem.innerHTML = "<span style='color:red;'>Failed: "+error+".</span>";
+           this.generateTextElem.innerHTML = "<span style='color:red;'>Failed - "+error+".</span>";
            return;
        }
         this.generatedScriptText  = "";
          this.generatedScriptText  +=  "ClearIO // clear old GPIO/channels"+"\n";
-         this.generatedScriptText  +=  "lfs_format // clear LittleFS"+"\n";
+         this.generatedScriptText  +=  "lfs_format // clear LFS"+"\n";
          this.generatedScriptText  +=  "StartupCommand \"\"  // clear STARTUP"+"\n";
-         this.generatedScriptText  +=  "stopDriver *  // stop drivers"+"\n";
+         this.generatedScriptText  +=  "stopDriver *  // kill drivers"+"\n";
          this.generatedScriptText  += res.scr;
-           this.generateTextElem.innerHTML = "<span style='color:green;'>OK. Script generated.</span>";
+           this.generateTextElem.innerHTML = "<span style='color:green;'>OK! Generated.</span>";
         
     },
       
@@ -180,16 +210,58 @@
       handleDrop(event) {
         event.preventDefault();
 
+        this.clearLog();
+        this.importTemplateText = ""; // Clear old content immediately
         const files = event.dataTransfer.files;
 
         if (files.length > 0) {
-          const reader = new FileReader();
+          const file = files[0];
+          
+          if (file.name.toLowerCase().endsWith('.bin')) {
+            this.log(`Processing dropped file: ${file.name}`, 'info');
+            const reader = new FileReader();
+            reader.onload = (evt) => {
+              const arrayBuffer = evt.target.result;
+              const uint8Array = new Uint8Array(arrayBuffer);
+              try {
+                if (typeof window.TuyaExporter === 'undefined' || !window.TuyaExporter.extractConfig) {
+                   this.log('TuyaExporter library not loaded correctly.', 'error');
+                   return;
+                }
+                // Pass log callback logic
+                const result = window.TuyaExporter.extractConfig(uint8Array, this.log);
+                if (result) {
+                  if (typeof result === 'object') {
+                    this.importTemplateText = JSON.stringify(result, null, 2);
+                    this.refreshTemplateImport(); // trigger generation
+                    this.log('Config extracted and loaded successfully.', 'success');
+                  } else {
+                    this.importTemplateText = result;
+                    this.refreshTemplateImport(); // trigger generation
+                    this.log('Config extracted but parsing had issues. Raw/Repaired text loaded.', 'warning');
+                  }
+                } else {
+                  this.log('Failed to extract config from binary.', 'error');
+                }
+              } catch (err) {
+                this.log(`Decryption crash: ${err.message}`, 'error');
+                console.error(err);
+              }
+            };
+            reader.readAsArrayBuffer(file);
+          } else {
+             // Text/JSON file
+            this.log(`Dropped file is not .bin, trying text read for ${file.name}`, 'info');
+            const reader = new FileReader();
 
-          reader.onload = (e) => {
-            this.importTemplateText = e.target.result;
-          };
+            reader.onload = (e) => {
+              this.importTemplateText = e.target.result;
+              this.refreshTemplateImport();
+              this.log("Loaded text file content.", 'success');
+            };
 
-          reader.readAsText(files[0]);
+            reader.readAsText(file); 
+          }
         }
       },
 
@@ -198,7 +270,16 @@
         this.msg = 'fred';
         this.progressTextElem = document.getElementById("progressTextID");
         this.generateTextElem = document.getElementById("generateTextID");
-        this.generateTextElem.innerHTML = "Waiting for input.";
+        this.generateTextElem.innerHTML = "Waiting.";
+
+        const cryptoScript = document.createElement("script");
+        cryptoScript.setAttribute(
+          "src",
+          "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"
+        );
+        cryptoScript.async = true;
+        document.head.appendChild(cryptoScript);
+
         const plugin = document.createElement("script");
         plugin.setAttribute(
           "src",
@@ -207,6 +288,15 @@
         );
         plugin.async = true;
         document.head.appendChild(plugin);
+        
+        const plugin2 = document.createElement("script");
+        plugin2.setAttribute(
+          "src",
+            "https://openbekeniot.github.io/webapp/tuyaExporter.js"
+        );
+        plugin2.async = true;
+        document.head.appendChild(plugin2);
+        
       let importTemplateTextarea = document.getElementById("importTemplate");
       importTemplateTextarea.addEventListener('dragover', this.handleDragOver);
       importTemplateTextarea.addEventListener('drop', this.handleDrop);
@@ -220,45 +310,16 @@
 </script>
 
 <style scoped>
-  .importPage {
-    width: 100%;
-  }
-
-  .importIntro {
-    max-width: 940px;
-    margin: 0 auto 36px auto;
-    padding: 0 15px;
-  }
-
-  .importContainer {
+  .container {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    padding-top: 6px;
   }
 
-  .importItem {
+  .item {
     padding: 0 15px;
   }
-
-  .importExamplesTitle {
-    margin: 0 0 6px 0;
-  }
-
-  .importExamples {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .importExecTitle {
-    margin-bottom: 6px;
-  }
-
   .pin-index {
     display: inline-block;
     width: 20px;
   }
 </style>
-
