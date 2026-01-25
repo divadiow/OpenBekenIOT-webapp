@@ -1027,7 +1027,7 @@
 <style scoped>
     .drop {
         border: 4px solid #3b82f6;
-        background: #eff6ff;
+        background: #ffffff;
         color: #1e40af;
         margin-top: 20px;
         margin-bottom: 20px;

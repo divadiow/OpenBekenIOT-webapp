@@ -45,7 +45,7 @@
             </tr>
             <tr>
                 <td></td>
-                <td> <button @click="downloadFullDump(null, $event)">Download full 2 MB flash dump</button></td>
+                <td> <button @click="downloadFullDump(null, $event)">Download full 2MB flash dump</button></td>
                 <td></td>
                 <td></td>
             </tr>
@@ -404,7 +404,7 @@
                 alert("Not available yet.");
                 return;
             }
-			let rep = prompt("Are you certain? This option is slow and may crash OpenBeken on older builds, requiring a manual power-cycle. It may also reboot several times on newer builds. If you only need settings, prefer downloading the configuration partition and a LittleFS backup (tar). Do not flash a full 2 MB dump from one device to another; RF/WiFi calibration is device-specific. Type yes to continue.", "no");
+			let rep = prompt("Are you certain? This option is slow and may crash OpenBeken on older builds, requiring a manual power-cycle. It may also reboot several times on newer builds. If you only need settings, prefer downloading the configuration partition and a LittleFS backup (.tar). Do not flash a full 2MB dump from one device to another; RF/WiFi calibration is device-specific. Type yes to continue.", "no");
 			if (rep != null) {
 				  if(rep[0] == "y") {
 				  } else {
