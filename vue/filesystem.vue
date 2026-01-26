@@ -10,18 +10,21 @@
             <li>Use <strong>Save, reset SVM, and run</strong> to test changes with a clean scripting state.</li>
         </ul>
         <p>You can access LittleFS files via <code>{{ deviceBase }}/api/lfs/&lt;filename&gt;</code>. For details, see the <a href="https://www.elektroda.com/rtvforum/topic3971355.html">OpenBeken/Tasmota REST tutorial</a>.</p>
-        <div class="top">
-            <button @click="backup(null, $event)">Read FS block</button>
-            <button @click="restore(null, $event)">Restore FS block</button>
-            <button @click="read(null, $event)">List filesystem</button>
-            <button @click="create(null, $event)">Create file</button>
-            <button @click="upload(null, $event, false)">Upload file(s)</button>
-            <button @click="upload(null, $event, true)">Upload as gzip (.gz)</button>
-            <button @click="showUrlModal = true">Fetch from URLs</button>
-            <button @click="resetSVM(null, $event)">Reset scripts</button>
-            <br/>
-            <button @click="getTar(null, $event)">Download filesystem backup (.tar)</button>
-
+                <div class="top toolbar">
+            <div class="toolbarRow">
+                <button @click="read(null, $event)">List filesystem</button>
+                <button @click="create(null, $event)">Create file</button>
+                <button @click="upload(null, $event, false)">Upload file(s)</button>
+                <button @click="upload(null, $event, true)">Upload as gzip (.gz)</button>
+                <button @click="showUrlModal = true">Fetch from URLs</button>
+                <button @click="getTar(null, $event)">Download filesystem backup (.tar)</button>
+            </div>
+            <div class="toolbarRow toolbarRowAdvanced">
+                <button @click="backup(null, $event)">Read FS block</button>
+                <button @click="restore(null, $event)">Restore FS block</button>
+                <button @click="resetSVM(null, $event)">Reset scripts</button>
+                <button class="danger" @click="formatLittleFS(null, $event)">Format LittleFS</button>
+            </div>
         </div>
         <div class="bottom">
 <div v-if="showUrlModal" style="position:fixed; top:20%; left:30%; width:40%; background:white; border:1px solid black; padding:1em; z-index:1000;">
@@ -502,6 +505,46 @@
                     });
             }
         },
+        formatLittleFS(cb, event) {
+            const r = confirm("Format LittleFS? This will permanently delete all files on the device.");
+            if (r === false) {
+                this.status += '<br/>LittleFS format canceled.';
+                return;
+            }
+
+            // Close the editor (the file may no longer exist after formatting)
+            this.edittext = '';
+            this.editname = '';
+            const lbl = document.getElementById('fileEditorLabel');
+            const body = document.getElementById('fileEditorBody');
+            if (lbl) lbl.innerHTML = 'File editor: select a file to begin.';
+            if (body) body.style.display = 'none';
+
+            this.status += '<br/>Formatting LittleFS...';
+            const url = window.device + '/api/cmnd';
+            const cmd = 'lfs_format';
+
+            fetch(url, {
+                body: cmd,
+                method: 'POST',
+            })
+                .then(response => response.text())
+                .then(text => {
+                    console.log('lfs_format response:', text);
+                    this.status += ' done.';
+                    if (cb) cb();
+
+                    // The format can take a moment; refresh the listing shortly afterwards.
+                    setTimeout(() => {
+                        this.read();
+                    }, 1500);
+                })
+                .catch(err => {
+                    console.error(err);
+                    this.status += '<br/>LittleFS format failed: ' + err;
+                });
+        },
+
         startScript_simple() {
             this.startScript(null,null,0);
         },
@@ -1090,6 +1133,23 @@
     }
     .top {
         height:10%;
+    }
+    .top.toolbar {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+    .toolbarRow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+    }
+    .toolbarRowAdvanced {
+        margin-top: 2px;
+    }
+    button.danger {
+        border-width: 2px;
     }
     .bottom {
         height:90%;
