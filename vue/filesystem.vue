@@ -1,16 +1,22 @@
 <template>
     <div class="fill">
-        <p>This tab lets you browse and manage files stored on LittleFS:</p>
-        <ul>
-            <li><strong>List filesystem</strong> shows all files and folders on the device.</li>
-            <li>Click a filename to open it in the editor.</li>
-            <li><strong>Create file</strong> creates a new file on the device (for example, <code>autoexec.bat</code>).</li>
-            <li>You can also upload files by dragging and dropping them onto the drop area.</li>
-            <li><strong>Reset scripts</strong> stops all running script threads without rebooting the device.</li>
-            <li>Use <strong>Save, reset SVM, and run</strong> to test changes with a clean scripting state.</li>
-        </ul>
-        <p>You can access LittleFS files via <code>{{ deviceBase }}/api/lfs/&lt;filename&gt;</code>. For details, see the <a href="https://www.elektroda.com/rtvforum/topic3971355.html">OpenBeken/Tasmota REST tutorial</a>.</p>
-                <div class="top toolbar">
+        <div class="helpBox">
+            <div class="helpIntro">This tab lets you browse and manage files stored on LittleFS:</div>
+            <ul class="helpList">
+                <li><strong>List filesystem</strong> shows all files and folders on the device.</li>
+                <li>Click a filename to open it in the editor.</li>
+                <li><strong>Create file</strong> creates a new file on the device (for example, <code>autoexec.bat</code>).</li>
+                <li>You can also upload files by dragging and dropping them onto the drop area.</li>
+                <li><strong>Reset scripts</strong> stops all running script threads without rebooting the device.</li>
+                <li>Use <strong>Save, reset SVM, and run</strong> to test changes with a clean scripting state.</li>
+            </ul>
+            <div class="helpFooter">
+                LittleFS files can also be accessed via <code>{{ deviceBase }}/api/lfs/&lt;filename&gt;</code>.
+                For details, see the <a href="https://www.elektroda.com/rtvforum/topic3971355.html">OpenBeken/Tasmota REST tutorial</a>.
+            </div>
+        </div>
+
+<div class="top toolbar">
             <div class="toolbarRow">
                 <button @click="read(null, $event)">List filesystem</button>
                 <button @click="create(null, $event)">Create file</button>
@@ -27,16 +33,17 @@
             </div>
         </div>
         <div class="bottom">
-<div v-if="showUrlModal" style="position:fixed; top:20%; left:30%; width:40%; background:white; border:1px solid black; padding:1em; z-index:1000;">
-  <h3>Enter URLs (one per line)</h3>
-  The web app will download each URL and save the file to LittleFS.
-  <br>
-  <textarea v-model="urlInput" rows="10" style="width:100%"></textarea>
-  <br>
-  <label><input type="checkbox" v-model="urlGzip"> Compress using gzip (.gz)</label>
-  <br><br>
-  <button @click="fetchFromUrls">Fetch</button>
-  <button @click="showUrlModal = false">Cancel</button>
+<div v-if="showUrlModal" class="modalOverlay" @click.self="showUrlModal = false">
+    <div class="modal">
+        <h3>Fetch from URLs</h3>
+        <p class="modalHelp">The web app will download each URL and save the file to LittleFS.</p>
+        <textarea v-model="urlInput" rows="10"></textarea>
+        <label class="modalOption"><input type="checkbox" v-model="urlGzip"> Compress using gzip (.gz)</label>
+        <div class="modalActions">
+            <button @click="fetchFromUrls">Fetch</button>
+            <button @click="showUrlModal = false">Cancel</button>
+        </div>
+    </div>
 </div>
             <div class="left">
                 <div class="folderBox">
@@ -49,29 +56,31 @@
                 <div class="drop" @drop="dropHandler($event)" @dragover="dragOverHandler($event)">
                     <div class="otatext center" v-html="otatext"></div>
                 </div>
-                <div v-html="status"></div>
-                <div v-html="output"></div>
+                <div class="logText" v-html="status"></div>
+                <div class="logText" v-html="output"></div>
             </div>
             <div class="middle">
                 <div>
-                    <div v-for="file in files" v-bind:key="file.name">
-                        <span v-if="file.type === 1"><button @click="editfile(file.name)">{{file.name}}</button> - {{file.size}}</span>
-                        <br v-if="file.type === 1"/>
+                    <div v-for="file in files" v-bind:key="file.name" v-if="file.type === 1" class="fileRow">
+                        <button class="fileBtn" @click="editfile(file.name)">{{file.name}}</button>
+                        <span class="fileSize">- {{file.size}}</span>
                     </div>
                     <div v-if="files.length > 0">
-                    <strong>Total Size: {{ totalBytes }} bytes</strong>
+                        <strong>Total Size: {{ totalBytes }} bytes</strong>
                     </div>
                 </div>
             </div>
             <div class="right">
-                <h2 id="fileEditorLabel">File editor: select a file to begin.</h2>
-                <div id="fileEditorBody" style="display:none">
-                    <button @click="save(null, $event)">Save</button>
-                    <button @click="save(startScript_simple)">Save and run as script thread</button>
-                    <button @click="save(startScript_firstReset)">Save, reset SVM, and run as script thread</button>         
-                    <button @click="deleteFile(null, $event)">Delete</button>
-                    <button @click="openInBrowser(null, $event)">Open in browser</button>
-                    <textarea v-model="edittext" rows="40" cols="100" style="height:90%"></textarea>
+                <h2 id="fileEditorLabel">File editor: select or create a file to begin.</h2>
+                <div id="fileEditorBody" class="editorBody" style="display:none">
+                    <div class="editorActions">
+                        <button @click="save(null, $event)">Save</button>
+                        <button @click="save(startScript_simple)">Save and run as script thread</button>
+                        <button @click="save(startScript_firstReset)">Save, reset SVM, and run as script thread</button>
+                        <button @click="deleteFile(null, $event)">Delete</button>
+                        <button @click="openInBrowser(null, $event)">Open in browser</button>
+                    </div>
+                    <textarea v-model="edittext" rows="40" cols="100"></textarea>
                 </div>
             </div>
         </div>
@@ -430,7 +439,7 @@
                     this.edittext = text;
                     this.editname = name;
                     document.getElementById("fileEditorLabel").innerHTML = "Editing: "+name;
-                    document.getElementById("fileEditorBody").style.display = "block";
+                    document.getElementById("fileEditorBody").style.display = "flex";
                 });
         },
 
@@ -1068,30 +1077,124 @@
 </script>
 
 <style scoped>
-    .drop {
-        border: 4px solid #3b82f6;
-        background: #ffffff;
-        color: #1e40af;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        width:  200px;
-        height: 100px;
-        text-align: center;
-        position: relative;
-        vertical-align: center;
+    .fill {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        height: 100%;
+        min-height: 0;
     }
 
+        /* Help text: always visible, but compact so actions stay near the top. */
+    .helpBox {
+        font-size: 0.85em;
+        line-height: 1.25em;
+        padding: 8px 10px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 6px;
+        background: rgba(0, 0, 0, 0.02);
+    }
+    .helpIntro {
+        margin: 0 0 6px 0;
+        font-weight: 600;
+    }
+    .helpList {
+        margin: 0 0 6px 18px;
+        padding: 0;
+        columns: 2;
+        column-gap: 26px;
+    }
+    .helpList li {
+        break-inside: avoid;
+        margin: 0 0 2px 0;
+    }
+    .helpFooter {
+        margin: 0;
+    }
+
+
+    /* Action toolbar */
+    .top.toolbar {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+    .toolbarRow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+    }
+    .toolbarRowAdvanced {
+        padding-top: 8px;
+        border-top: 1px solid rgba(0, 0, 0, 0.15);
+    }
+    button.danger {
+        border-width: 2px;
+    }
+
+    /* Main 3-column layout */
+    .bottom {
+        flex: 1 1 auto;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 300px 280px 1fr;
+        gap: 12px;
+        position: relative;
+        padding-top: 10px;
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    .left,
+    .middle,
+    .right {
+        position: static;
+        width: auto;
+        height: auto;
+        min-height: 0;
+        overflow: auto;
+        box-sizing: border-box;
+    }
+
+    .left {
+        padding: 4px 8px 4px 0;
+    }
+    .middle {
+        padding: 4px 8px 4px 12px;
+        border-left: 1px solid rgba(0, 0, 0, 0.15);
+    }
+    .right {
+        padding: 4px 0 4px 12px;
+        border-left: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+
+    /* Middle panel: file list spacing */
+    .fileRow {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin: 0 0 6px 0;
+        flex-wrap: wrap;
+    }
+    .fileBtn {
+        padding: 2px 6px;
+    }
+    .fileSize {
+        white-space: nowrap;
+    }
+
+
+    /* Left panel */
     .folderBox {
         margin: 0 0 10px 0;
-        width: 200px;
+        width: 100%;
     }
-
     .folderInput {
-        width: 200px;
+        width: 100%;
         box-sizing: border-box;
-        padding: 2px 4px;
+        padding: 4px 6px;
     }
-
     .folderHelp {
         margin-top: 4px;
         font-size: 0.9em;
@@ -1099,7 +1202,25 @@
         word-break: break-word;
     }
 
-    .otatext {
+    .logText {
+        font-size: 0.88em;
+        line-height: 1.25em;
+        word-break: break-word;
+    }
+
+
+    .drop {
+        border: 4px solid #3b82f6;
+        background: #ffffff;
+        color: #000000;
+        margin: 10px 0 10px 2px;
+        width: 240px;
+        max-width: 100%;
+        height: 120px;
+        text-align: center;
+        position: relative;
+        vertical-align: center;
+        box-sizing: border-box;
     }
     .center {
         margin: 0;
@@ -1110,49 +1231,90 @@
         transform: translate(-50%, -50%);
     }
 
-    .left {
-        position: absolute;
-        left:0;
-        width:30%;
-        height:100%;
+    /* Right panel: editor */
+    #fileEditorLabel {
+        margin: 0 0 8px 0;
+        font-size: 1.05em;
+        line-height: 1.25em;
     }
-    .middle {
-        position: absolute;
-        left:30%;
-        width:20%;
-        height:100%;
-    }
-    .right {
-        position: absolute;
-        left:50%;
-        width:50%;
-        height:100%;
-    }
-    .fill {
-        height:90%;
-    }
-    .top {
-        height:10%;
-    }
-    .top.toolbar {
-        display: flex;
+    .editorBody {
+        gap: 8px;
         flex-direction: column;
-        gap: 6px;
+        min-height: 0;
     }
-    .toolbarRow {
+    .editorActions {
         display: flex;
         flex-wrap: wrap;
         gap: 6px;
         align-items: center;
     }
-    .toolbarRowAdvanced {
-        margin-top: 2px;
+    .editorBody textarea {
+        width: 100%;
+        box-sizing: border-box;
+        flex: 1 1 auto;
+        min-height: 340px;
+        height: 100%;
     }
-    button.danger {
-        border-width: 2px;
+
+    /* Modal */
+    .modalOverlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.35);
+        z-index: 1000;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 10vh 12px 12px 12px;
+        box-sizing: border-box;
     }
-    .bottom {
-        height:90%;
-        position: relative;
+    .modal {
+        background: #ffffff;
+        border: 1px solid rgba(0, 0, 0, 0.35);
+        padding: 12px;
+        width: min(720px, 92vw);
+        box-sizing: border-box;
+        border-radius: 6px;
+    }
+    .modal h3 {
+        margin: 0 0 8px 0;
+        font-size: 1.05em;
+    }
+    .modalHelp {
+        margin: 0 0 8px 0;
+    }
+    .modal textarea {
+        width: 100%;
+        box-sizing: border-box;
+    }
+    .modalOption {
+        display: inline-flex;
+        gap: 6px;
+        align-items: center;
+        margin-top: 8px;
+    }
+    .modalActions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 6px;
+        margin-top: 10px;
+    }
+
+    /* Responsive: stack columns on narrower screens */
+    @media (max-width: 1000px) {
+        .bottom {
+            grid-template-columns: 1fr;
+        }
+        .helpList {
+            columns: 1;
+        }
+        .left,
+        .middle,
+        .right {
+            overflow: visible;
+        }
+        .editorBody textarea {
+            min-height: 260px;
+        }
     }
 </style>
