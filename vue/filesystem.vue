@@ -1198,7 +1198,7 @@
         align-items: center;
     }
     .toolbarRowAdvanced {
-        padding-top: none;
+        padding-top: 0;
         border-top: none;
     }
     button.danger {
