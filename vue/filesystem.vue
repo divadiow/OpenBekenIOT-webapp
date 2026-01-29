@@ -30,6 +30,7 @@
                 <button @click="restore(null, $event)">Restore FS block</button>
                 <button @click="resetSVM(null, $event)">Reset scripts</button>
                 <button class="danger" @click="formatLittleFS(null, $event)">Format LittleFS</button>
+                <button class="danger" @click="resizeLittleFS(null, $event)">Resize LittleFS</button>
             </div>
         </div>
         <div class="bottom">
@@ -407,7 +408,7 @@
         },
         read(cb) {
             this.files = [];
-            this.readFolder('/');
+            this.readFolder('/', cb);
         },
 
 
@@ -551,6 +552,77 @@
                 .catch(err => {
                     console.error(err);
                     this.status += '<br/>LittleFS format failed: ' + err;
+                });
+        },
+        resizeLittleFS(cb, event) {
+            const input = prompt(
+                "Enter new LittleFS size in bytes (hex like 0x10000 or decimal like 65536):",
+                "0x10000"
+            );
+
+            if (input === null) {
+                this.status += '<br/>LittleFS resize canceled.';
+                return;
+            }
+
+            const raw = input.trim();
+            if (!raw) {
+                alert("Size cannot be empty.");
+                return;
+            }
+
+            // Accept hex (0x...) or decimal
+            let sizeVal = null;
+            if (/^0x[0-9a-fA-F]+$/.test(raw)) {
+                sizeVal = parseInt(raw, 16);
+            } else if (/^[0-9]+$/.test(raw)) {
+                sizeVal = parseInt(raw, 10);
+            } else {
+                alert("Invalid size. Use hex like 0x10000 or decimal like 65536.");
+                return;
+            }
+
+            if (!Number.isFinite(sizeVal) || sizeVal <= 0) {
+                alert("Size must be a positive number.");
+                return;
+            }
+
+            // Normalise to hex for the command (matches your example)
+            const sizeHex = '0x' + sizeVal.toString(16);
+
+            const ok = confirm(
+                `Resize LittleFS to ${sizeHex} (${sizeVal} bytes)?\n\nThis will erase existing files. Reboot to apply.`
+            );
+            if (!ok) {
+                this.status += '<br/>LittleFS resize canceled.';
+                return;
+            }
+
+            // Safer UX: close editor (resizing can invalidate files)
+            this.edittext = '';
+            this.editname = '';
+            const lbl = document.getElementById('fileEditorLabel');
+            const body = document.getElementById('fileEditorBody');
+            if (lbl) lbl.innerHTML = 'File editor: select a file to begin.';
+            if (body) body.style.display = 'none';
+
+            this.status += `<br/>Resizing LittleFS to ${sizeHex}...`;
+            const url = window.device + '/api/cmnd';
+            const cmd = `lfs_size ${sizeHex}`;
+
+            fetch(url, { body: cmd, method: 'POST' })
+                .then(r => r.text())
+                .then(text => {
+                    console.log('lfs_size response:', text);
+                    this.status += ' done.';
+                    if (cb) cb();
+
+                    // Give the device a moment, then refresh file list
+                    setTimeout(() => this.read(), 1500);
+                })
+                .catch(err => {
+                    console.error(err);
+                    this.status += '<br/>LittleFS resize failed: ' + err;
                 });
         },
 
@@ -1126,8 +1198,8 @@
         align-items: center;
     }
     .toolbarRowAdvanced {
-        padding-top: 8px;
-        border-top: 1px solid rgba(0, 0, 0, 0.15);
+        padding-top: none;
+        border-top: none;
     }
     button.danger {
         border-width: 2px;
@@ -1161,11 +1233,11 @@
     }
     .middle {
         padding: 4px 8px 4px 12px;
-        border-left: 1px solid rgba(0, 0, 0, 0.15);
+        border-left: none;
     }
     .right {
         padding: 4px 0 4px 12px;
-        border-left: 1px solid rgba(0, 0, 0, 0.15);
+        border-left: none;
     }
 
 
