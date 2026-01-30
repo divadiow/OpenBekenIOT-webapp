@@ -12600,6 +12600,31 @@
       "wiki": "https://www.elektroda.pl/rtvforum/viewtopic.php?t=3946334&highlight="
     },
     {
+      "vendor": "MOES",
+      "bDetailed": "0",
+      "name": "Matter WiFi 2 Gang Smart Switch Module",
+      "model": "MS-104B",
+      "chip": "BK7231N",
+      "board": "CBU",
+      "flags": "1075840000",
+      "keywords": [
+        "FNHDM20003",
+        "REV 1.0",
+        "PWDSWQ",
+        "DK10008"
+      ],
+      "pins": {
+        "7": "Rel;2",
+        "8": "Rel;1",
+        "14": "dInput_n;2",
+        "16": "dInput_n;1",
+        "24": "LED_n;0"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/3692700000_1769793183.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4163153.html"
+    },
+    {
       "vendor": "LSC",
       "bDetailed": "0",
       "name": "LSC Smart LED E27 806 lumen (RGBCW)",
