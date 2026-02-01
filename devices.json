@@ -819,6 +819,27 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4153643.html"
     },
     {
+      "vendor": "Action",
+      "bDetailed": "0",
+      "name": "LSC Smart Connect GU10 Smart LED Bulbs 3-Pack",
+      "model": "3208076.1",
+      "chip": "BK7231N",
+      "board": "CBLC5",
+      "flags": "1024",
+      "keywords": [
+        "GU10BL-5S2P-RGB-B1",
+        "LDH202502",
+        "390lm"
+      ],
+      "pins": {
+        "24": "SM2235DAT;0",
+        "26": "SM2235CLK;0"
+      },
+      "command": "backlog SM2235_Map 0 1 2 3 4; SoftI2C_SetClkPeriod 50; SM2235_Current 2 2; led_enableAll 1; led_dimmer 100; startDriver DDP",
+      "image": "https://obrazki.elektroda.pl/8981691300_1769904987.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4163315.html"
+    },
+    {
       "vendor": "Ewelink",
       "bDetailed": "0",
       "name": "SMART GU10 RGBWW LED Bulb",
