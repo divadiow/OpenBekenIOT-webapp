@@ -829,7 +829,8 @@
       "keywords": [
         "GU10BL-5S2P-RGB-B1",
         "LDH202502",
-        "390lm"
+        "390lm",
+        "SM2185N"
       ],
       "pins": {
         "24": "SM2235DAT;0",
