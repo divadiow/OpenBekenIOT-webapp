@@ -836,7 +836,7 @@
         "24": "SM2235DAT;0",
         "26": "SM2235CLK;0"
       },
-      "command": "backlog SM2235_Map 0 1 2 3 4; SoftI2C_SetClkPeriod 50; SM2235_Current 2 2; led_enableAll 1; led_dimmer 100; startDriver DDP",
+      "command": "backlog SM2235_Map 0 1 2 3 4; SoftI2C_SetClkPeriod 50; SM2235_Current 2 2",
       "image": "https://obrazki.elektroda.pl/8981691300_1769904987.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4163315.html"
     },
