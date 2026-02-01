@@ -7089,6 +7089,24 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4023251.html"
     },
     {
+      "vendor": "eWeLink",
+      "bDetailed": "0",
+      "name": "10A Mini Smart Switch/Breaker",
+      "model": "ELC-MNEW01",
+      "chip": "BL602",
+      "board": "SM-028_V1.3",
+      "keywords": ["RM-BRK001-MAC2HG","FWSW-WHBL602-SWITCH-BL602L_v1.2.0","CK-BL602-4SW-WH"],
+      "pins": {
+        "3": "TglChanOnTgl;1",
+        "14": "LED_n;1",
+        "20": "Btn;1",
+        "21": "Rel;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7023185600_1769861719.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4163220.html"
+    },
+    {
       "vendor": "Shenzhen Qingning Tongchuang Technology Co.Ltd",
       "bDetailed": "0",
       "name": "EWelink Smart Life Light Switch",
