@@ -8095,11 +8095,11 @@
     {
       "vendor": "SHUNSHUN",
       "bDetailed": "0",
-      "name": "",
-      "model": "16A WIFI Mini Smart Switch",
+      "name": "16A WIFI Mini Smart Switch",
+      "model": "",
       "chip": "BK7231N",
       "board": "CB2S",
-      "keywords": [],
+      "keywords": ["breaker"],
       "pins": {
         "7": "WifiLED_n;0",
         "10": "Btn_Tgl_All;0",
