@@ -887,7 +887,7 @@
     {
       "vendor": "LEDVANCE",
       "bDetailed": "0",
-      "name": "SmartPlus Classic A60 Dimable White Bulb E27 9W 806lm",
+      "name": "SmartPlus Classic A60 Dimmable White Bulb E27 9W 806lm",
       "model": "AC33908",
       "chip": "BK7231T",
       "board": "WB8P",
@@ -6032,7 +6032,7 @@
     {
       "vendor": "Tuya",
       "bDetailed": "0",
-      "name": "Motion Senor Smart Night Light - EU",
+      "name": "Motion Sensor Smart Night Light - EU",
       "model": "TM-YD001W-WIF-EU",
       "chip": "BK7231N",
       "board": "CBU",
@@ -12999,8 +12999,8 @@
     {
       "vendor": "Tuya",
       "bDetailed": "0",
-      "name": "MOES Smart Swich Module WIFI 4gang",
-      "model": "MOES Smart Swich Module WIFI 4gang",
+      "name": "MOES Smart Switch Module WIFI 4gang",
+      "model": "",
       "chip": "BK7231N",
       "board": "CBU",
       "keywords": ["switch", "4 gang"],
