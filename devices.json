@@ -5776,7 +5776,8 @@
     {
       "vendor": "Calex",
       "bDetailed": "0",
-      "name": "UK power strip 900018.1 v1.0 UK",
+      "name": "Power Strip v1.0 (UK)",
+      "model": "900018.1",      
       "chip": "BK7231T",
       "board": "WB3S",
       "pins": {
