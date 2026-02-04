@@ -1070,6 +1070,32 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4046718.html"
     },
     {
+      "vendor": "Hama",
+      "bDetailed": "0",
+      "name": "16A WiFi Socket with Power Metering 3680W (EU)",
+      "model": "00176575",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "flags": "1024",
+      "keywords": [
+        "BHT-DFG-J-V1.0",
+        "e1x608",
+        "keyjup78v54myhan",
+        "reu9feycmeln24g1"
+      ],
+      "pins": {
+        "6": "BL0937CF1;0",
+        "7": "BL0937CF;0",
+        "8": "WifiLED_n;0",
+        "10": "Btn;1",
+        "24": "BL0937SEL;0",
+        "26": "Rel;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6407399300_1769974756.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4163429.html"
+    },    
+    {
       "vendor": "Ai-Thinker",
       "bDetailed": "0",
       "name": "Dev Board",
