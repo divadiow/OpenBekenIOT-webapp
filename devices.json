@@ -12134,13 +12134,13 @@
     {
       "vendor": "Teckin",
       "bDetailed": "0",
-      "name": "Smart Socket (EU)",
+      "name": "Smart Plug (EU)",
       "model": "SP22",
       "chip": "RTL8710B",
       "board": "T112_V1.1",
       "flags": "1024",
       "keywords": [
-        "plug"
+        "TECKINHOME"
       ],
       "pins": {
         "0": "BL0937CF;0",
@@ -12155,6 +12155,30 @@
       "image": "https://obrazki.elektroda.pl/5899965000_1758606802.png",
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21654509#21654509"
     },
+    {
+      "vendor": "Teckin",
+      "bDetailed": "0",
+      "name": "Smart Plug (UK)",
+      "model": "SP23",
+      "chip": "RTL8710B",
+      "board": "T112_V1.1",
+      "flags": "1024",
+      "keywords": [
+        "TECKINHOME",
+        "SP23/SP27-FTY",
+        "0000002x12",
+        "keyaqceqmgp343e7",
+        "twezq8g8ykoaggey"
+      ],
+      "pins": {
+        "12": "Rel;1",
+        "14": "Btn;1",
+        "15": "LED_n;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/1900099200_1770551715.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4163366.html"
+    },    
     {
       "vendor": "Tuya",
       "bDetailed": "0",
