@@ -3,7 +3,7 @@
         <div>
             <div class="flashIntro">
             <p>You can read flash regions directly from the device. RF configuration contains Beken calibration and network data, while OBK configuration contains OpenBeken settings.</p>
-            <p>If your device has an invalid MAC address ending in 00:00:00, use Restore RF configuration. This resets the RF partition and generates a random MAC address. Reboot the device afterward.</p>
+            <p>If your device has an invalid MAC address ending in 00:00:00, use Restore RF configuration (supported on BK7231N, BK7231T, BK7231U, BK7252, BK7231M, BK7258, BK7238, BK7252N, BK7236). This resets the RF partition and generates a random MAC address. Reboot the device afterward.</p>
             </div>
             
 
@@ -47,7 +47,10 @@
                 <td></td>
             </tr>
             <tr v-else-if="chipset !== 'unknown'">
-                <td colspan="4">FlashVars is available only on BK7231N/BK7231T.</td>
+                <td class="flashvarsUnavailable">FlashVars read is available only on BK7231N/BK7231T.</td>
+                <td class="flashvarsUnavailable">FlashVars download is available only on BK7231N/BK7231T.</td>
+                <td></td>
+                <td></td>
             </tr>
             <tr>
                 <td></td>
@@ -884,6 +887,12 @@
   .flashIntro p {
     margin: 0 0 6px 0;
   }
+
+  .flashvarsUnavailable {
+    text-align: center;
+    font-style: italic;
+  }
+
 
 
   
