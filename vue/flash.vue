@@ -4,6 +4,7 @@
             <div class="flashIntro">
             <p>You can read flash regions directly from the device. RF configuration contains Beken calibration and network data, while OBK configuration contains OpenBeken settings.</p>
             <p>If your device has an invalid MAC address ending in 00:00:00, use Restore RF configuration (supported on BK7231N, BK7231T, BK7231U, BK7252, BK7231M, BK7258, BK7238, BK7252N, BK7236). This resets the RF partition and generates a random MAC address. Reboot the device afterward.</p>
+            <p><b>BK7238/T1 recommendation:</b> If you have a backup of your device's factory RF partition (TLV data), restoring it via <i>Write RF data to device</i> is recommended on BK7238. OpenBK7238 stores RF at <code>0x1E0000</code> (length <code>0x1000</code>), while stock Tuya BK7238 firmwares store RF at <code>0x1E3000</code>; writing a known-good backup can reinstate the factory MAC address and may also recover RF calibration data.</p>			
             </div>
             
 
