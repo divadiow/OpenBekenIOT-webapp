@@ -3,10 +3,10 @@
         <div>
             <div class="flashIntro">
             <p>You can read flash regions directly from the device. RF configuration contains Beken calibration and network data, while OBK configuration contains OpenBeken settings.</p>
+            <p><b>BK7238 recommendation:</b> If you have a backup of your device&#39;s factory RF partition (TLV data), restoring it via <i>Write RF data to device</i> is recommended on BK7238. OpenBK7238 stores RF at <code>0x1E0000</code> (length <code>0x1000</code>), while some stock Tuya BK7238 firmwares (T1) store RF at <code>0x1E3000</code>; writing a known-good backup can reinstate the factory MAC address and may also recover RF calibration data.</p>
             <p>If your device has an invalid MAC address ending in 00:00:00, use Restore RF configuration (supported on BK7231N, BK7231T, BK7231U, BK7252, BK7231M, BK7258, BK7238, BK7252N, BK7236). This resets the RF partition and generates a random MAC address. Reboot the device afterward.</p>
-            <p><b>BK7238/T1 recommendation:</b> If you have a backup of your device's factory RF partition (TLV data), restoring it via <i>Write RF data to device</i> is recommended on BK7238. OpenBK7238 stores RF at <code>0x1E0000</code> (length <code>0x1000</code>), while stock Tuya BK7238 firmwares store RF at <code>0x1E3000</code>; writing a known-good backup can reinstate the factory MAC address and may also recover RF calibration data.</p>			
             </div>
-            
+
 
             <table class="my-table">
             <tr>
@@ -79,17 +79,17 @@
 
 
 
-           
-          
-           
+
+
+
             <br/>
-            
+
             <br/>
-            
+
             <br/>
-           
+
             <br/>
-            
+
         </div>
         <div v-html="display" class="display"></div>
     </div>
@@ -200,7 +200,7 @@
                     this.writeCFG_Internal(cb);
                 }
             }
-        },   
+        },
          writeCFG_Internal(cb){
             if(this.invalidCFGSelected )
             {
@@ -210,7 +210,7 @@
             this.cfgStatus += 'Writing OBK configuration...';
             let url = window.device+'/api/flash/'+this.getConfigAddress();
             console.log('Will use URL '+url);
-                fetch(url, { 
+                fetch(url, {
                         method: 'POST',
                         body: this.cfgdata
                     })
@@ -243,7 +243,7 @@
         },
         checkCFGData(event, file, operation){
             this.cfgdata = null;    //Reset otadata
-            
+
             var result = event.target.result;   //ArrayBuffer
             console.log('chipset=' + this.chipset);
             console.log("Checking CFG data");
@@ -439,7 +439,7 @@
             this.status += ''+this.fullDumpCurAt.toString(16)+"...";
             console.log("downloadFullDumpFragment is requesting " + fullAdr + "!");
             let url = window.device+'/api/flash/'+fullAdr;
-            
+
             const retryWithDelay = () => {
                 setTimeout(() => {
                 this.downloadFullDumpFragment();
@@ -488,16 +488,16 @@
 	    let length = prompt("Enter the length (in bytes):", "256");
 	    offset = parseInt(offset, 16);
 	    length = parseInt(length);
-	
+
 	    if (isNaN(offset) || isNaN(length)) {
 	        this.status += '<br/>Invalid offset or length entered.';
 	        return;
 	    }
-	
+
 	    this.status += `<br/>Reading custom data from offset 0x${offset.toString(16)} with length ${length}...`;
 	    let url = window.device + `/api/flash/${offset.toString(16)}-${length.toString(16)}`;
 	    console.log('Will use URL ' + url);
-	
+
 	    fetch(url)
 	        .then(response => response.arrayBuffer())
 	        .then(buffer => {
@@ -509,22 +509,22 @@
 	        })
 	        .catch(err => console.error(err)); // Never forget the final catch!
 	},
-	
+
 	downloadCustom(cb) {
 	    let offset = prompt("Enter the offset (in hex):", "0x0");
 	    let length = prompt("Enter the length (in bytes):", "256");
 	    offset = parseInt(offset, 16);
 	    length = parseInt(length);
-	
+
 	    if (isNaN(offset) || isNaN(length)) {
 	        this.status += '<br/>Invalid offset or length entered.';
 	        return;
 	    }
-	
+
 	    this.status += `<br/>Downloading custom data from offset 0x${offset.toString(16)} with length ${length}...`;
 	    let url = window.device + `/api/flash/${offset.toString(16)}-${length.toString(16)}`;
 	    console.log('Will use URL ' + url);
-	
+
 	    fetch(url)
 	        .then(response => response.arrayBuffer())
 	        .then(buffer => {
@@ -532,8 +532,8 @@
 	            this.status += `<br/>Custom data is ready.`;
 	            if (cb) cb();
 	        })
-	        .catch(err => console.error(err)); 
-	},  
+	        .catch(err => console.error(err));
+	},
         downloadFullDump() {
             if(0){
                 alert("Not available yet.");
@@ -583,7 +583,7 @@
             fetch(url)
                 .then(response => response.arrayBuffer())
                 .then(buffer => {
-                    this.rfdata = buffer; 
+                    this.rfdata = buffer;
                     console.log('received '+buffer.byteLength);
                     this.status += '..received RF configuration...';
                     this.dump(buffer);
@@ -607,7 +607,7 @@
             fetch(url)
                 .then(response => response.arrayBuffer())
                 .then(buffer => {
-                    this.configdata = buffer; 
+                    this.configdata = buffer;
                     console.log('received '+buffer.byteLength);
                     this.status += '..received Tuya GPIO configuration...';
                     this.dump(buffer);
@@ -626,7 +626,7 @@
             fetch(url)
                 .then(response => response.arrayBuffer())
                 .then(buffer => {
-                    this.configdata = buffer; 
+                    this.configdata = buffer;
                     console.log('received '+buffer.byteLength);
                     this.status += '..received OBK configuration...';
                     this.dump(buffer);
@@ -645,7 +645,7 @@
             fetch(url)
                 .then(response => response.arrayBuffer())
                 .then(buffer => {
-                    this.configdata = buffer; 
+                    this.configdata = buffer;
                     console.log('received '+buffer.byteLength);
                     this.status += '..received FlashVars...';
                     this.dump(buffer);
@@ -660,7 +660,7 @@
 					this.restore_rf_internal(cb);
 				  }
 			  }
-			
+
 		},
 		/**
 		 * Returns a random integer between min (inclusive) and max (inclusive).
@@ -825,7 +825,7 @@
             streamData[41] = this.getRandomInt(0,255);
 
             if (streamData){
-                fetch(url, { 
+                fetch(url, {
                         method: 'POST',
                         body: streamData
                     })
@@ -904,8 +904,8 @@
 
 
 
-  
-            .my-table, 
+
+            .my-table,
             .my-table th,
             .my-table td {
                 border: 1px solid black;
