@@ -32,7 +32,7 @@
                 <td> <a :href="configurl" download="configdata">Download OBK configuration</a></td>
                 <td>
                 <div>
-                    <label for="cfgFilePicker">Select a file with a binary CFG header:</label><input id="cfgFilePicker"
+                    <label for="cfgFilePicker">Select a file with a binary CFG header: </label><input id="cfgFilePicker"
                     type="file" @change="cfgFileSelected($event)">
                     <div v-if="cfgStatus" v-html="cfgStatus" :class="{invalid: invalidCFGSelected}"></div>
                     <button @click="writeCFG(null, $event)">Write CFG to device</button>
@@ -41,7 +41,7 @@
                 <td></td>
             </tr>
             <tr v-if="isBekenNT">
-                <td> <button @click="flashvars(null, $event)">Read FlashVars (BK7231N/BK7231T only)</button></td>
+                <td> <button @click="flashvars(null, $event)">Read FlashVars</button></td>
                 <td><a :href="flashvarsurl" download="flashvarsdata">Download FlashVars</a></td>
                 <td></td>
                 <td></td>
@@ -674,9 +674,9 @@
 			return Math.floor(Math.random() * (max - min + 1)) + min;
 		},
         restore_rf_internal(cb){
-            this.status += '<br/>Restoring RF configuration...';
             console.log('restore rf ');
-            let url = window.device+'/api/flash/'+this.getRFAddress();
+            let rfRange = this.getRFAddress();
+            let url = window.device+'/api/flash/'+rfRange;
             console.log('Will use URL '+url);
 			let correct_rf_config;
 
@@ -805,6 +805,14 @@
                 return;
             }
 
+            // Status: show matched chipset + RF flash range being written.
+            let rfParts = (rfRange || '').split('-');
+            let rfStart = (rfParts.length > 0) ? rfParts[0] : '';
+            let rfLen = (rfParts.length > 1) ? rfParts[1] : '';
+            let rfStartFmt = rfStart ? ((rfStart.indexOf('0x') === 0) ? rfStart : ('0x'+rfStart)) : '';
+            let rfLenFmt = rfLen ? ((rfLen.indexOf('0x') === 0) ? rfLen : ('0x'+rfLen)) : '';
+            this.status += '<br/>Restoring RF configuration for ' + this.chipset + ' to ' + rfStartFmt + ' (len ' + rfLenFmt + ')...';
+
             // Pad to full sector so we write deterministic content (device expects 0x1000 RF partition).
             let streamData = new Uint8Array(0x1000);
             streamData.fill(0xFF);
@@ -823,7 +831,7 @@
                     .then(response => response.text())
                     .then(text => {
                         console.log('received '+text);
-                        this.status += '<br/>RF configuration restored. Reboot the device.';
+                        this.status += '<br/>RF configuration restored for ' + this.chipset + ' at ' + rfStartFmt + ' (len ' + rfLenFmt + '). Reboot the device.';
                     })
                     .catch(err => console.error(err)); // Never forget the final catch!
             }
