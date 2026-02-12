@@ -7734,6 +7734,33 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4100731.html"
     },
     {
+      "vendor": "eWeLink",
+      "bDetailed": "0",
+      "name": "WiFi Smart Plug",
+      "model": "RMC003",
+      "chip": "BL602",
+      "board": "SM-028_V1.3",
+      "flags": "1024",
+      "keywords": [
+        "RM-TY012-MAD2HG",
+        "RM-SMART",
+        "CNHZ",
+        "HZ32-1A3S-LH1",
+        "CK-BL602-SWP1-01"
+      ],
+      "pins": {
+        "2": "Rel;1",
+        "3": "BL0937CF1;0",
+        "14": "BL0937CF;0",
+        "20": "LED_n;1",
+        "21": "BL0937SEL;0",
+        "22": "Btn;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/1124713900_1770834644.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4164682.html"
+    },    
+    {
       "vendor": "JSPTECH",
       "bDetailed": "0",
       "name": "Tuya 10A AC110-220V Smart Plug (US)",
