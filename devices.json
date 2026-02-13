@@ -8664,7 +8664,7 @@
     {
       "vendor": "Action",
       "bDetailed": "0",
-      "name": "LSC Smart Plug (with Energy Meter)",
+      "name": "LSC Smart Plug (with Energy Meter) - Variant #1",
       "model": "3202087.1",
       "chip": "BK7238",
       "board": "T1-2S-NL",
@@ -8682,6 +8682,27 @@
       "image": "https://obrazki.elektroda.pl/5533322700_1769036509.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4161922.html"
     },
+    {
+      "vendor": "Action",
+      "bDetailed": "0",
+      "name": "LSC Smart Plug (with Energy Meter) - Variant #2",
+      "model": "3202087.1",
+      "chip": "BK7238",
+      "board": "T1-2S-NL",
+      "keywords": ["power metering", "3680W", "FS 125634"],
+      "pins": {
+        "1": "BL0937SEL;0",
+        "6": "BL0937CF;0",
+        "8": "BL0937CF1;0",
+        "9": "LED_n;0",
+        "11": "WifiLED_n;0",
+        "24": "Rel;0",
+        "26": "Btn;0"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/5533322700_1769036509.png",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21833006#21833006"
+    },    
     {
       "vendor": "Tuya",
       "bDetailed": "0",
