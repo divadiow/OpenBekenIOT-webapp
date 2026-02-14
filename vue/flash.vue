@@ -754,6 +754,13 @@
   .flashIntro p {
     margin: 0 0 6px 0;
   }
+  .flashIntro code {
+    font-family: 'Courier New', Courier, monospace;
+    padding: 0 4px;
+    border-radius: 3px;
+    background: #f2f2f2;
+    border: 1px solid #ddd;
+  }
 
 
 
