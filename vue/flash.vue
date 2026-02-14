@@ -3,8 +3,8 @@
         <div>
             <div class="flashIntro">
             <p>Use this page to read and download flash regions directly from the device, and write RF/CFG partitions. The RF partition contains Beken calibration and network identity data, while the OBK configuration contains OpenBeken settings.</p>
-            <p>If your device has an invalid MAC address ending in <code>00:00:00</code>, use Restore RF configuration (supported on BK7231N/T2/T34, BK7231T, BK7231U, BK7252, BK7231M, BK7258/T5, BK7238/T1, BK7252N/T4, BK7236/T3). This rewrites the RF partition from a built-in template and generates a new MAC address by randomising the last 3 bytes. Reboot the device afterward.</p>
-            <p><b>BK7238/T1 recommendation:</b> If you have a backup of the device's factory RF partition (TLV data), restoring it using <i>Write RF data to device</i> is recommended. The file should be the RF partition only (TLV header; typically <code>0x1000</code> bytes), not a full flash dump. OpenBK7238 stores RF at <code>0x1E0000</code>, while stock Tuya BK7238 firmware typically stores it at <code>0x1E3000</code>. Writing a known-good backup restores the factory MAC address and may also restore RF calibration data.</p>
+            <p>If your device has an invalid MAC address ending in <code>00:00:00</code>, use Restore RF configuration (supported on BK7231N/T2/T34, BK7231T, BK7231U, BK7252, BK7231M, BK7258/T5, BK7238/T1, BK7252N/T4, BK7236/T3). This rewrites the RF partition from a built-in template and generates a new MAC address by randomising the last 3 bytes of the MAC address. Reboot the device afterward.</p>
+            <p><b>BK7238/T1 note:</b> If you have a backup of the device's factory RF partition (TLV data), you can restore it using <i>Write RF data to device</i>. OpenBK7238 stores RF at <code>0x1E0000</code>, while stock Tuya BK7238 firmware typically stores it at <code>0x1E3000</code>. Writing a known-good backup restores the factory MAC address and may also restore RF calibration data.</p>
             </div>
 
 
@@ -19,11 +19,16 @@
                 <td> <button @click="rf(null, $event)">Read RF configuration</button></td>
                 <td><a :href="rfurl" download="rfdata">Download RF data</a></td>
                 <td>
-                    <div>
-                        <label for="RFFilePicker">Select a file with binary RF data (TLV header):</label>
-                        <input id="RFFilePicker" type="file" @change="RFFileSelected($event)">
-                        <div v-if="RFcfgStatus" v-html="RFcfgStatus" :class="{invalid: invalidRFCFGSelected}"></div>
-                        <button @click="writeRFCFG(null, $event)">Write RF data to device</button>
+                    <div class="rfWriteBlock">
+                        <div class="rfWriteLabel">
+                            <label for="RFFilePicker">Select a file with RF TLV data (TLV header), or a full flash dump containing RF TLV:</label>
+                        </div>
+                        <div class="rfWriteFile">
+                            <input id="RFFilePicker" type="file" @change="RFFileSelected($event)">
+                        </div>
+                        <div class="rfWriteButton">
+                            <button @click="writeRFCFG(null, $event)" :disabled="!isWriteRFSupported || invalidRFCFGSelected || !rfCfgData" :title="writeRFTitle">{{ writeRFLabel }}</button>
+                        </div>
                     </div>
                 </td>
                 <td><button @click="restore_rf(null, $event)" :disabled="!isRestoreRFSupported" :title="restoreRFTitle">{{ restoreRFLabel }}</button></td>
@@ -32,11 +37,16 @@
                 <td>  <button @click="config(null, $event)">Read OBK configuration</button></td>
                 <td> <a :href="configurl" download="configdata">Download OBK configuration</a></td>
                 <td>
-                <div>
-                    <label for="cfgFilePicker">Select a file with a binary CFG header: </label><input id="cfgFilePicker"
-                    type="file" @change="cfgFileSelected($event)">
-                    <div v-if="cfgStatus" v-html="cfgStatus" :class="{invalid: invalidCFGSelected}"></div>
-                    <button @click="writeCFG(null, $event)">Write CFG to device</button>
+                <div class="cfgWriteBlock">
+                    <div class="cfgWriteLabel">
+                        <label for="cfgFilePicker">Select a file with a binary CFG header:</label>
+                    </div>
+                    <div class="cfgWriteFile">
+                        <input id="cfgFilePicker" type="file" @change="cfgFileSelected($event)">
+                    </div>
+                    <div class="cfgWriteButton">
+                        <button @click="writeCFG(null, $event)">Write CFG to device</button>
+                    </div>
                 </div>
                 </td>
                 <td><button @click="downloadFullDump(null, $event)">Download full 2MB flash dump</button></td>
@@ -54,35 +64,32 @@
                 <td></td>
             </tr>
             </table>
-                <div>
+                <div class="jobStatus">
                     <h4>Job Status</h4>
-                    <div v-html="status" :class=""></div>
+                    <div class="jobStatusLog" v-html="status"></div>
                 </div>
-
-
-
-
-
-
-            <br/>
-
-            <br/>
-
-            <br/>
-
-            <br/>
-
-        </div>
+</div>
         <div v-html="display" class="display"></div>
     </div>
 </template>
 
 <script>
+const RF_START_BY_CHIPSET = {
+    BK7231T: '1e0000',
+    BK7231U: '1e0000',
+    BK7252:  '1e0000',
+    BK7238:  '1e0000',
+    BK7252N: '1e0000',
+    BK7231N: '1d0000',
+    BK7231M: '1d0000',
+    BK7236:  '3fe000',
+    BK7258:  '7fe000',
+};
+
   module.exports = {
 
     data: ()=>{
       return {
-        msg: 'world!',
         rfdata: null,
         fullDumpData: null,
         fullDumpCurAt: 0,
@@ -92,24 +99,23 @@
         fullDumpRunning:0,
         fullDumpChunkSize: 0,
         fullDumpJobLabel: '',
-        fullDumpFileTag: '',
+        fullDumpStyle: '',
         display: '',
         configdata: null,
+        cfgdata: null,
         build:'unknown',
         chipset:'unknown',
         status:'',
+        error: '',
         shortName:'',
         rfurl: '',
         configurl: '',
-        otatext:'Drop OTA file here',
-        invalidOTASelected: false,
-        cfgtext:'Drop CFG file here',
         invalidCFGSelected: true,
-        cfgStatus: '',
         rfCfgData: null,
-        rfCfgText: '',
         invalidRFCFGSelected: true,
-        RFcfgStatus: '',
+        rfCfgSourceName: '',
+        rfCfgSourceOffset: null,
+        rfCfgSourceWasExtracted: false,
       }
     },
     computed:{
@@ -138,8 +144,71 @@
             }
             return 'Restore RF is supported only on BK7231T/U, BK7231N/M, BK7236, BK7238, BK7252, BK7252N, BK7258.';
         },
+        isWriteRFSupported(){
+            // Keep write-RF enablement aligned with Restore RF support + getRFAddress() mapping.
+            return this.isRestoreRFSupported;
+        },
+        writeRFLabel(){
+            if(!this.chipset || this.chipset === 'unknown'){
+                return 'Write RF data to device (detecting chipset...)';
+            }
+            if(this.isWriteRFSupported){
+                const parts = this.getRFAddress().split('-');
+                const startHex = (parts[0] || '').toUpperCase();
+                return 'Write RF data to device (' + this.chipset + ' @ 0x' + startHex + ')';
+            }
+            return 'Write RF data to device (unsupported: ' + this.chipset + ')';
+        },
+        writeRFTitle(){
+            if(!this.chipset || this.chipset === 'unknown'){
+                return 'Waiting for /api/info to determine chipset.';
+            }
+            if(this.isWriteRFSupported){
+                const parts = this.getRFAddress().split('-');
+                const startHex = (parts[0] || '').toUpperCase();
+                const lenHex = (parts[1] || '').toUpperCase();
+                return 'Writes RF partition at 0x' + startHex + ' (len 0x' + lenHex + ') using the selected file. Accepts RF TLV (TLV\\0 at offset 0) or a dump containing RF TLV. File size limit: 8MB.';
+            }
+            return 'Write RF is supported only on BK7231T/U, BK7231N/M, BK7236, BK7238, BK7252, BK7252N, BK7258.';
+        },
     },
     methods:{
+
+        escapeHtml(s){
+            if(s === null || s === undefined) return '';
+            return ('' + s)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        },
+        buffersEqual(a, b){
+            if(!a || !b) return false;
+            if(a.byteLength !== b.byteLength) return false;
+            const va = new Uint8Array(a);
+            const vb = new Uint8Array(b);
+            for(let i=0;i<va.length;i++){
+                if(va[i] !== vb[i]) return false;
+            }
+            return true;
+        },
+        macPreviewFromRFBlock(arrayBuffer){
+            try{
+                if(!arrayBuffer || arrayBuffer.byteLength < (36 + 6)){
+                    return '(n/a)';
+                }
+                const view = new Uint8Array(arrayBuffer, 36, 6);
+                let parts = [];
+                for(let i=0;i<6;i++){
+                    parts.push(('0' + view[i].toString(16)).slice(-2).toUpperCase());
+                }
+                return parts.join(':');
+            }catch(e){
+                return '(n/a)';
+            }
+        },
+
 
         getinfo(){
             let url = window.device+'/api/info';
@@ -154,57 +223,59 @@
                 })
                 .catch(err => {
                     this.error = err.toString();
-                    console.error(err)
+                    this.status += '<br/>Error fetching /api/info: ' + this.escapeHtml(this.error);
+                    console.error(err);
                 }); // Never forget the final catch!
         },
         writeCFG(cb){
-            if(this.invalidCFGSelected )
-            {
+            if(this.invalidCFGSelected){
                 alert("Invalid CFG file selected.");
                 return;
             }
+
             let confirmationForUser = prompt("Are you sure? This will overwrite your OBK configuration (pins, channels, flags, WiFi, IP, MQTT, short startup command). Type Y to continue.", "N");
-            if(confirmationForUser == null)
-            {
-            }
-            else if(confirmationForUser.length < 1)
-            {
-            }
-            else
-            {
-                if(confirmationForUser[0] == 'Y') {
-                    this.status += '<br/>starting CFG write...';
-                    this.writeCFG_Internal(cb);
-                }
+            if(confirmationForUser != null && confirmationForUser.length > 0 && (confirmationForUser[0] === 'Y' || confirmationForUser[0] === 'y')) {
+                this.status += '<br/>Starting CFG write...';
+                this.writeCFG_Internal(cb);
             }
         },
-         writeCFG_Internal(cb){
-            if(this.invalidCFGSelected )
-            {
-                alert("Invalid CFG file selected.");
-                return;
-            }
-            this.cfgStatus += 'Writing OBK configuration...';
+        writeCFG_Internal(cb){
             let url = window.device+'/api/flash/'+this.getConfigAddress();
             console.log('Will use URL '+url);
-                fetch(url, {
-                        method: 'POST',
-                        body: this.cfgdata
-                    })
-                    .then(response => response.text())
-                    .then(text => {
-                        console.log('received '+text);
-                        this.cfgStatus = 'Write complete. Reboot the device to apply changes.';
-                        if(cb) cb();
-                    })
-                    .catch(err => console.error(err)); // Never forget the final catch!
+
+            const t0 = performance.now();
+            fetch(url, {
+                    method: 'POST',
+                    body: this.cfgdata
+                })
+                .then(async response => {
+                    const text = await response.text();
+                    const dt = Math.round(performance.now() - t0);
+
+                    this.status += '<br/>CFG write: POST returned HTTP ' + response.status + ' in ' + dt + 'ms.';
+                    if(text && text.length){
+                        this.status += '<br/>CFG write: device response: ' + this.escapeHtml(text);
+                    }
+                    if(!response.ok){
+                        throw new Error('HTTP ' + response.status);
+                    }
+
+                    this.status += '<br/>CFG write: complete. Reboot the device to apply changes.';
+                    if(cb) cb();
+                })
+                .catch(err => {
+                    console.error(err);
+                    this.status += '<br/>CFG write: failed: ' + this.escapeHtml(err.toString());
+                }); // Never forget the final catch!
         },
         cfgFileSelected(ev){
             console.log("CFG File selected");
-            this.invalidCFGSelected = false; //Reset status style
+            this.invalidCFGSelected = true; // pessimistic until validated
+            this.cfgdata = null;
 
             var file = ev.target.files[0];  //There should be only one file
             if (file){
+                this.status += '<br/>CFG file selected: <b>' + this.escapeHtml(file.name) + '</b> (' + file.size + ' bytes).';
                 console.log('... CFG fileName = ' + file.name);
                 var reader = new FileReader();
                 reader.onload = (event) => this.checkCFGData(event, file, "selected");
@@ -219,35 +290,37 @@
             return view.getUint8(0) === 0x43 && view.getUint8(1) === 0x46 && view.getUint8(2) === 0x47;
         },
         checkCFGData(event, file, operation){
-            this.cfgdata = null;    //Reset otadata
+            this.cfgdata = null;
 
             var result = event.target.result;   //ArrayBuffer
             console.log('chipset=' + this.chipset);
             console.log("Checking CFG data");
-            console.log(result);
             console.log('cfgdata len:' + result.byteLength);
-            this.cfgtext = file.name + ' len:' + result.byteLength;
 
             this.invalidCFGSelected = !this.isCFGImage(result);
 
             if (this.invalidCFGSelected){
                 console.log("this cfg is incorrect");
-                this.cfgStatus = 'Invalid CFG file (' + operation + ').';
+                this.status += '<br/>CFG file rejected: missing CFG header.';
             }
             else{
                 console.log("this cfg is OK");
-                this.cfgStatus = 'Valid CFG file selected.';
                 this.cfgdata = result;
+                this.status += '<br/>CFG file accepted: valid CFG header.';
             }
         },
 
-        // Write RF partition
+                // Write RF partition
         writeRFCFG(cb){
-            if(this.invalidRFCFGSelected)
-            {
+            if(!this.isWriteRFSupported){
+                alert("Write RF is unsupported on chipset: " + this.chipset);
+                return;
+            }
+            if(this.invalidRFCFGSelected || !this.rfCfgData){
                 alert("Invalid RF data file selected.");
                 return;
             }
+
             let confirmationForUser = prompt("Are you sure? This will overwrite your RF configuration (MAC address and calibration). Type Y to continue.", "N");
             if(confirmationForUser != null && confirmationForUser.length > 0 && (confirmationForUser[0] === 'Y' || confirmationForUser[0] === 'y')) {
                 this.status += '<br/>Starting RF write...';
@@ -255,37 +328,87 @@
             }
         },
         writeRFCFG_Internal(cb){
-            if (this.invalidRFCFGSelected)
-            {
-                alert("Invalid RF data file selected.");
-                return;
+            const rfAdr = this.getRFAddress();
+            const parts = (rfAdr || '').split('-');
+            const startHex = ((parts[0] || '') + '').toUpperCase();
+            const lenHex = ((parts[1] || '') + '').toUpperCase();
+
+            let payload = this.rfCfgData;
+            if(payload && payload.byteLength > 0x1000){
+                this.status += '<br/>RF write: note - RF buffer is larger than <code>0x1000</code>; using first <code>0x1000</code> bytes.';
+                payload = payload.slice(0, 0x1000);
             }
-            this.RFcfgStatus = 'Writing RF data...';
-            let url = window.device+'/api/flash/'+this.getRFAddress();
+
+            const srcName = this.escapeHtml(this.rfCfgSourceName || 'selected file');
+            const srcOff = (this.rfCfgSourceOffset === null || this.rfCfgSourceOffset === undefined) ? null : this.rfCfgSourceOffset;
+            const srcDesc = this.rfCfgSourceWasExtracted && srcOff !== null
+                ? ' (extracted, TLV @ <code>0x' + srcOff.toString(16).toUpperCase() + '</code>)'
+                : ' (direct TLV)';
+            const macPrev = this.macPreviewFromRFBlock(payload);
+
+            this.status += '<br/>RF write: source <b>' + srcName + '</b>' + srcDesc + ', posting ' + payload.byteLength + ' bytes to <code>0x' + startHex + '</code> (len <code>0x' + lenHex + '</code>). MAC preview (offset 36): ' + macPrev + '.';
+
+            let url = window.device+'/api/flash/'+rfAdr;
             console.log('Will use URL '+url);
+
+            const t0 = performance.now();
             fetch(url, {
                 method: 'POST',
-                body: this.rfCfgData
+                body: payload
             })
-            .then(response => response.text())
-            .then(text => {
-                console.log('received '+text);
-                this.RFcfgStatus = 'Write complete. Reboot the device to apply changes.';
+            .then(async response => {
+                const text = await response.text();
+                const dt = Math.round(performance.now() - t0);
+
+                this.status += '<br/>RF write: POST returned HTTP ' + response.status + ' in ' + dt + 'ms.';
+                if(text && text.length){
+                    this.status += '<br/>RF write: device response: ' + this.escapeHtml(text);
+                }
+                if(!response.ok){
+                    throw new Error('HTTP ' + response.status);
+                }
+                return fetch(url);
+            })
+            .then(response => response.arrayBuffer())
+            .then(buffer => {
+                const ok = this.buffersEqual(payload, buffer);
+                const readMac = this.macPreviewFromRFBlock(buffer);
+
+                if(ok){
+                    this.status += '<br/>RF write verify: <b>OK</b> (read-back matches). Read-back MAC preview (offset 36): ' + readMac + '.';
+                } else {
+                    this.status += '<br/>RF write verify: <b>FAILED</b> (read-back mismatch). Read-back MAC preview (offset 36): ' + readMac + '.';
+                }
+
                 if(cb) cb();
             })
             .catch(err => {
                 console.error(err);
-                this.RFcfgStatus = 'Write failed: ' + err.toString();
+                this.status += '<br/>RF write: failed: ' + this.escapeHtml(err.toString());
             }); // Never forget the final catch!
         },
         RFFileSelected(ev){
             console.log("RF file selected");
             this.invalidRFCFGSelected = true; // pessimistic until validated
-            this.RFcfgStatus = '';
             this.rfCfgData = null;
+            this.rfCfgSourceName = '';
+            this.rfCfgSourceOffset = null;
+            this.rfCfgSourceWasExtracted = false;
+
             var file = ev.target.files[0]; //There should be only one file
             if (file){
-                console.log('... RF fileName = ' + file.name);
+                this.rfCfgSourceName = file.name;
+
+                this.status += '<br/>RF file selected: <b>' + this.escapeHtml(file.name) + '</b> (' + file.size + ' bytes).';
+
+                const maxBytes = 8 * 1024 * 1024;
+                if (file.size > maxBytes){
+                    this.invalidRFCFGSelected = true;
+                    this.rfCfgData = null;
+                    this.status += '<br/>RF file rejected: file larger than 8MB. Please choose a smaller dump.';
+                    return;
+                }
+
                 var reader = new FileReader();
                 reader.onload = (event) => this.checkRFCFGData(event, file, "selected");
                 reader.readAsArrayBuffer(file);
@@ -294,65 +417,117 @@
         isRFCFGImage(arrayBuffer){
             let view = new DataView(arrayBuffer);
             if (view.byteLength < 4) return false;
-            console.log("isRFCFGImage sees " +view);
             // TLV\0 header
             return view.getUint8(0) === 0x54 && view.getUint8(1) === 0x4C && view.getUint8(2) === 0x56 && view.getUint8(3) === 0;
         },
+        findTLVHeaderOffset(arrayBuffer){
+            let view = new DataView(arrayBuffer);
+            let len = view.byteLength;
+            if (len < 4) return -1;
+
+            const isTLVAt = (off) => {
+                return view.getUint8(off) === 0x54 && view.getUint8(off+1) === 0x4C && view.getUint8(off+2) === 0x56 && view.getUint8(off+3) === 0;
+            };
+
+            // Try likely offsets first (based on detected chipset).
+            let likely = [];
+            try{
+                let rf = this.getRFAddress();
+                let parts = (rf || '').split('-');
+                if(parts.length > 0){
+                    let start = parseInt(parts[0], 16);
+                    if(Number.isFinite(start)) likely.push(start);
+                }
+            }catch(e){
+            }
+            if(this.chipset === 'BK7238'){
+                // Stock Tuya BK7238 firmwares often place RF at 0x1E3000.
+                likely.push(0x1E3000);
+            }
+
+            let seen = {};
+            for(let i=0;i<likely.length;i++){
+                let off = likely[i];
+                if(off === undefined || off === null) continue;
+                if(seen[off]) continue;
+                seen[off] = true;
+                if(off >= 0 && off + 4 <= len){
+                    if(isTLVAt(off)) return off;
+                }
+            }
+
+            // Scan at 0x1000 alignment (RF partitions are typically 4KB).
+            for(let off=0; off + 4 <= len; off += 0x1000){
+                if(isTLVAt(off)) return off;
+            }
+            return -1;
+        },
         checkRFCFGData(event, file, operation){
-            this.rfCfgData = null; //Reset RF data
+            this.rfCfgData = null;
+
             var result = event.target.result; //ArrayBuffer
             console.log('chipset=' + this.chipset);
             console.log("Checking RF data");
             console.log('rfdata len:' + result.byteLength);
-            this.rfCfgText = file.name + ' len:' + result.byteLength;
-            this.invalidRFCFGSelected = !this.isRFCFGImage(result);
 
-            if (this.invalidRFCFGSelected){
-                console.log("this RF data is incorrect");
-                this.RFcfgStatus = 'Invalid RF data file (' + operation + ').';
+            // 1) Accept raw RF files that start with TLV\0 at offset 0.
+            if(this.isRFCFGImage(result)){
+                this.invalidRFCFGSelected = false;
+                this.rfCfgSourceOffset = 0;
+                this.rfCfgSourceWasExtracted = false;
+
+                // Use first 0x1000 bytes (RF partition size).
+                let block = result;
+                if(block.byteLength > 0x1000){
+                    block = block.slice(0, 0x1000);
+                }
+                this.rfCfgData = block;
+
+                const macPrev = this.macPreviewFromRFBlock(block);
+                this.status += '<br/>RF TLV detected at <code>0x0</code>; using <code>0x1000</code> bytes. MAC preview (offset 36): ' + macPrev + '.';
+                return;
             }
-            else{
-                console.log("this RF data is OK");
-                this.RFcfgStatus = 'Valid RF data file selected.';
-                this.rfCfgData = result;
+
+            // 2) If not TLV-at-0, scan the file for a TLV header and extract a 0x1000 RF block.
+            let off = this.findTLVHeaderOffset(result);
+            if(off >= 0 && (off + 0x1000) <= result.byteLength){
+                let extracted = result.slice(off, off + 0x1000);
+                if(this.isRFCFGImage(extracted)){
+                    this.invalidRFCFGSelected = false;
+                    this.rfCfgSourceOffset = off;
+                    this.rfCfgSourceWasExtracted = true;
+                    this.rfCfgData = extracted;
+
+                    const macPrev = this.macPreviewFromRFBlock(extracted);
+                    this.status += '<br/>RF TLV found inside file at <code>0x' + off.toString(16).toUpperCase() + '</code>; extracted <code>0x1000</code> bytes. MAC preview (offset 36): ' + macPrev + '.';
+                    return;
+                }
             }
+
+            this.invalidRFCFGSelected = true;
+            this.rfCfgData = null;
+            this.rfCfgSourceOffset = null;
+            this.rfCfgSourceWasExtracted = false;
+            this.status += '<br/>RF file rejected: no TLV header found at offset 0 or at expected dump offsets.';
         },
-        getRFAddress(){
+
+getRFAddress(){
             // RF partition (usually 0x1000 bytes) address varies by chipset.
-            // Beken "T-family" (and relatives) use 0x1E0000, "N-family" use 0x1D0000.
-            if(this.chipset === "BK7231T" || this.chipset === "BK7231U" || this.chipset === "BK7252"
-                || this.chipset === "BK7238" || this.chipset === "BK7252N") {
-				return '1e0000-1000';
-			}
-            if(this.chipset === "BK7231N" || this.chipset === "BK7231M") {
-				return '1d0000-1000';
-			}
-            // Larger-flash Bekens:
-            if(this.chipset === "BK7236") {
-				return '3fe000-1000';
-			}
-            if(this.chipset === "BK7258") {
-				return '7fe000-1000';
-			}
-			console.log('getRFAddress is not implemented for '+this.chipset);
+            const start = RF_START_BY_CHIPSET[this.chipset];
+            if(start){
+                return start + '-1000';
+            }
+			console.log('getRFAddress is not implemented for ' + this.chipset);
 			return '1e0000-1000';
         },
         getConfigAddress(){
             // OBK config partition is typically RF+0x1000 (size 0x1000).
-            if(this.chipset === "BK7231T" || this.chipset === "BK7231U" || this.chipset === "BK7252"
-                || this.chipset === "BK7238" || this.chipset === "BK7252N") {
-				return '1e1000-1000';
-			}
-            if(this.chipset === "BK7231N" || this.chipset === "BK7231M") {
-				return '1d1000-1000';
-			}
-            if(this.chipset === "BK7236") {
-				return '3ff000-1000';
-			}
-            if(this.chipset === "BK7258") {
-				return '7ff000-1000';
-			}
-			console.log('getConfigAddress is not implemented for '+this.chipset);
+            const rfStart = RF_START_BY_CHIPSET[this.chipset];
+            if(rfStart){
+                const cfgStart = (parseInt(rfStart, 16) + 0x1000).toString(16);
+                return cfgStart + '-1000';
+            }
+			console.log('getConfigAddress is not implemented for ' + this.chipset);
 			return '1e1000-1000';
         },
         appendArrayBuffers(buffer1, buffer2) {
@@ -393,7 +568,6 @@
 
         startDumpJob(label, fileTag, flashStart, flashSize, style){
             this.fullDumpJobLabel = label;
-            this.fullDumpFileTag = fileTag;
             this.fullDumpFlashStart = flashStart;
             this.fullDumpFlashSize = flashSize;
             this.fullDumpStyle = style;
@@ -719,7 +893,6 @@
 
     },
     mounted (){
-        this.msg = 'fred';
 
         this.rfurl = window.device+'/api/flash/'+this.getRFAddress();
         this.configurl = window.device+'/api/flash/'+this.getConfigAddress();
@@ -736,39 +909,58 @@
     font-family: 'Courier New', Courier, monospace;
     font-size: 14px;
 }
-  .container {
-    display: flex;
-    justify-content: center;
-  }
-
-  .item {
-    padding: 0 15px;
-  }
-  .pin-index {
-    display: inline-block;
-    width: 20px;
-  }
-  .flashIntro {
+.flashIntro {
     margin: 0 0 12px 0;
-  }
-  .flashIntro p {
+}
+.flashIntro p {
     margin: 0 0 6px 0;
-  }
-  .flashIntro code {
+}
+.flashIntro code,
+.jobStatusLog code {
     font-family: 'Courier New', Courier, monospace;
     padding: 0 4px;
     border-radius: 3px;
     background: #f2f2f2;
     border: 1px solid #ddd;
-  }
+}
 
+.jobStatus {
+    margin: 10px 0 0 0;
+}
+.jobStatus h4 {
+    margin: 8px 0 6px 0;
+}
+.jobStatusLog {
+    font-size: 13px;
+    line-height: 1.3;
+}
 
+.rfWriteBlock,
+.cfgWriteBlock {
+    display: block;
+}
+.rfWriteBlock .rfWriteLabel label,
+.cfgWriteBlock .cfgWriteLabel label {
+    display: block;
+    margin: 0 0 4px 0;
+}
+.rfWriteBlock .rfWriteFile input[type="file"],
+.cfgWriteBlock .cfgWriteFile input[type="file"] {
+    display: block;
+    margin: 0 0 6px 0;
+    max-width: 100%;
+}
+.rfWriteBlock .rfWriteButton button,
+.cfgWriteBlock .cfgWriteButton button {
+    display: block;
+    margin: 0;
+    max-width: 100%;
+}
 
-
-            .my-table,
-            .my-table th,
-            .my-table td {
-                border: 1px solid black;
-                border-collapse: collapse;
-            }
+.my-table,
+.my-table th,
+.my-table td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
 </style>
