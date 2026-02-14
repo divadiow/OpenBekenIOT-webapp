@@ -8706,8 +8706,8 @@
     {
       "vendor": "Tuya",
       "bDetailed": "1",
-      "name": "Smart Power Strip 5CH DIN 4xAC 4xUSB-A (EU)",
-      "model": "RH-EU411-4UW",
+      "name": "Smart Power Strip 16A 5CH DIN 4xAC 4xUSB-A (EU)",
+      "model": "RH-EU411-4U-W",
       "chip": "BK7238",
       "board": "T1-U-HL",
       "flags": "1024",
