@@ -8702,7 +8702,34 @@
       "command": "",
       "image": "https://obrazki.elektroda.pl/5533322700_1769036509.png",
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21833006#21833006"
-    },    
+    },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "1",
+      "name": "Smart Power Strip 5CH DIN 4xAC 4xUSB-A (EU)",
+      "model": "RH-EU411-4UW",
+      "chip": "BK7238",
+      "board": "T1-U-HL",
+      "flags": "1024",
+      "keywords": [
+        "DIN rail",
+        "energy monitoring",
+        "BL0942",
+        "relay module"
+      ],
+      "pins": {
+        "6": "Rel;5",
+        "9": "Rel;2",
+        "21": "Rel;4",
+        "22": "Btn_Tgl_All;0",
+        "23": "WifiLED_n;0",
+        "24": "Rel;3",
+        "26": "Rel;1"
+      },
+      "command": "startDriver BL0942",
+      "image": "https://obrazki.elektroda.pl/5119999700_1771076454.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4164991.html"
+    },
     {
       "vendor": "Tuya",
       "bDetailed": "0",
