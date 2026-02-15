@@ -11983,6 +11983,31 @@
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21733076#21733076"
     },
     {
+      "vendor": "Eightree",
+      "bDetailed": "1",
+      "name": "13A Smart Plug (UK)",
+      "model": "ET31",
+      "chip": "BK7238",
+      "board": "T1-2S-NL",
+      "flags": "1024",
+      "keywords": [
+        "SP27-16A WK-3 V1.4 20230220",
+        "Evatost Consulting Ltd",
+        "Shenzhen Realwe Innovation Technology Co., Ltd"
+      ],
+      "pins": {
+        "6": "BL0937CF1;0",
+        "8": "Rel;1",
+        "9": "Btn;1",
+        "10": "WifiLED_n;0",
+        "24": "BL0937SEL;0",
+        "26": "BL0937CF;0"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/9780893600_1767553854.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4159712.html"
+    },    
+    {
       "vendor": "Tuya",
       "bDetailed": "0",
       "name": "1-Gang Dry Contact Relay Module",
