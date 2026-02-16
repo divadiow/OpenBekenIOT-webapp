@@ -16,8 +16,8 @@
                 <th>Extra</th>
             </tr>
             <tr>
-                <td> <button @click="rf(null, $event)">Read RF configuration</button></td>
-                <td><a :href="rfurl" download="rfdata">Download RF data</a></td>
+                <td> <button @click="rf(null, $event)" :disabled="!isReadRFSupported" :title="readRFTitle">{{ readRFLabel }}</button></td>
+                <td><button type="button" @click="downloadRF($event)" :disabled="!isReadRFSupported" :title="readRFTitle">Download RF data</button></td>
                 <td>
                     <div class="rfWriteBlock">
                         <div class="rfWriteLabel">
@@ -35,7 +35,7 @@
             </tr>
             <tr>
                 <td>  <button @click="config(null, $event)">Read OBK configuration</button></td>
-                <td> <a :href="configurl" download="configdata">Download OBK configuration</a></td>
+                <td><button type="button" @click="downloadConfig($event)">Download OBK configuration</button></td>
                 <td>
                 <div class="cfgWriteBlock">
                     <div class="cfgWriteLabel">
@@ -86,6 +86,17 @@ const RF_START_BY_CHIPSET = {
     BK7258:  '7fe000',
 };
 
+const RF_SUPPORTED_CHIPSET_LIST = [
+    'BK7231T','BK7231U',
+    'BK7231N','BK7231M',
+    'BK7236','BK7238',
+    'BK7252','BK7252N',
+    'BK7258',
+];
+const RF_SUPPORTED_CHIPSETS = new Set(RF_SUPPORTED_CHIPSET_LIST);
+const RF_SUPPORTED_HELP_TEXT = 'BK7231T/U, BK7231N/M, BK7236, BK7238, BK7252, BK7252N, BK7258';
+
+
   module.exports = {
 
     data: ()=>{
@@ -121,11 +132,41 @@ const RF_START_BY_CHIPSET = {
     computed:{
         isRestoreRFSupported(){
             // Keep this list in sync with restore_rf_internal() templates.
-            return this.chipset === 'BK7231T' || this.chipset === 'BK7231U' || this.chipset === 'BK7252'
-                || this.chipset === 'BK7231N' || this.chipset === 'BK7231M' || this.chipset === 'BK7258'
-                || this.chipset === 'BK7238' || this.chipset === 'BK7252N'
-                || this.chipset === 'BK7236';
+            return RF_SUPPORTED_CHIPSETS.has(this.chipset);
         },
+isReadRFSupported(){
+    // Read-RF enablement aligned with Restore RF support + getRFAddress() mapping.
+    return this.isRestoreRFSupported;
+},
+readRFLabel(){
+    if(!this.chipset || this.chipset === 'unknown'){
+        return 'Read RF configuration (detecting chipset...)';
+    }
+    if(this.isReadRFSupported){
+        if(this.chipset === 'BK7238'){
+            return 'Read RF configuration (BK7238 auto @ 0x1E3000→0x1E0000)';
+        }
+        const parts = this.getRFAddress().split('-');
+        const startHex = (parts[0] || '').toUpperCase();
+        return 'Read RF configuration (' + this.chipset + ' @ 0x' + startHex + ')';
+    }
+    return 'Read RF configuration (unsupported: ' + this.chipset + ')';
+},
+readRFTitle(){
+    if(!this.chipset || this.chipset === 'unknown'){
+        return 'Waiting for /api/info to determine chipset.';
+    }
+    if(this.isReadRFSupported){
+        if(this.chipset === 'BK7238'){
+            return 'BK7238 RF auto-detect: tries 0x1E3000 first (stock Tuya), then 0x1E0000 (OpenBeken). Expects TLV\\0 at offset 0.';
+        }
+        const parts = this.getRFAddress().split('-');
+        const startHex = (parts[0] || '').toUpperCase();
+        const lenHex = (parts[1] || '').toUpperCase();
+        return 'Reads RF partition at 0x' + startHex + ' (len 0x' + lenHex + ').';
+    }
+    return 'Read RF is supported only on ' + RF_SUPPORTED_HELP_TEXT + '.';
+},
         restoreRFLabel(){
             if(!this.chipset || this.chipset === 'unknown'){
                 return 'Restore RF configuration (detecting chipset...)';
@@ -142,7 +183,7 @@ const RF_START_BY_CHIPSET = {
             if(this.isRestoreRFSupported){
                 return 'Writes generic RF calibration + randomizes MAC (last 3 bytes). Reboot afterward.';
             }
-            return 'Restore RF is supported only on BK7231T/U, BK7231N/M, BK7236, BK7238, BK7252, BK7252N, BK7258.';
+            return 'Restore RF is supported only on ' + RF_SUPPORTED_HELP_TEXT + '.';
         },
         isWriteRFSupported(){
             // Keep write-RF enablement aligned with Restore RF support + getRFAddress() mapping.
@@ -169,7 +210,7 @@ const RF_START_BY_CHIPSET = {
                 const lenHex = (parts[1] || '').toUpperCase();
                 return 'Writes RF partition at 0x' + startHex + ' (len 0x' + lenHex + ') using the selected file. Accepts RF TLV (TLV\\0 at offset 0) or a dump containing RF TLV. File size limit: 8MB.';
             }
-            return 'Write RF is supported only on BK7231T/U, BK7231N/M, BK7236, BK7238, BK7252, BK7252N, BK7258.';
+            return 'Write RF is supported only on ' + RF_SUPPORTED_HELP_TEXT + '.';
         },
     },
     methods:{
@@ -183,6 +224,55 @@ const RF_START_BY_CHIPSET = {
                 .replace(/"/g, '&quot;')
                 .replace(/'/g, '&#39;');
         },
+        promptYes(message){
+            const rep = prompt(String(message || '') + "\n\nType YES to continue.", "no");
+            if(rep === null || rep === undefined) return false;
+            const v = String(rep).trim().toLowerCase();
+            return (v === 'yes' || v === 'y');
+        },
+
+        async fetchOrThrow(url, options, label){
+            const r = await fetch(url, options || undefined);
+            if(!r.ok){
+                const tag = label ? (label + ': ') : '';
+                throw new Error(`${tag}HTTP ${r.status} ${r.statusText || ''}`.trim());
+            }
+            return r;
+        },
+        async fetchArrayBufferOrThrow(url, label, options){
+            const r = await this.fetchOrThrow(url, options, label);
+            return await r.arrayBuffer();
+        },
+        async fetchTextOrThrow(url, label, options){
+            const r = await this.fetchOrThrow(url, options, label);
+            return await r.text();
+        },
+
+parseFlexibleLength(input){
+    // Accept either decimal bytes (e.g. 4096) or hex (e.g. 0x1000 or 1000h).
+    if(input === null || input === undefined) return NaN;
+    let s = String(input).trim();
+    if(!s) return NaN;
+
+    // allow suffix "h" to mean hex, e.g. 1000h
+    if(/^[0-9a-fA-F]+h$/.test(s)){
+        s = s.slice(0, -1);
+        return parseInt(s, 16);
+    }
+
+    // 0x prefix => hex
+    if(s.startsWith('0x') || s.startsWith('0X')){
+        return parseInt(s, 16);
+    }
+
+    // contains hex alpha => assume hex
+    if(/[a-fA-F]/.test(s)){
+        return parseInt(s, 16);
+    }
+
+    // otherwise treat as decimal bytes
+    return parseInt(s, 10);
+},
         buffersEqual(a, b){
             if(!a || !b) return false;
             if(a.byteLength !== b.byteLength) return false;
@@ -210,22 +300,21 @@ const RF_START_BY_CHIPSET = {
         },
 
 
-        getinfo(){
+                async getinfo(){
             let url = window.device+'/api/info';
-            fetch(url)
-                .then(response => response.json())
-                .then(res => {
-                    this.build = res.build;
-                    this.shortName = res.shortName;
-                    this.chipset = res.chipset;     //Set chipset to fixed value for testing
-                    this.rfurl = window.device+'/api/flash/'+this.getRFAddress();
-                    this.configurl = window.device+'/api/flash/'+this.getConfigAddress();
-                })
-                .catch(err => {
-                    this.error = err.toString();
-                    this.status += '<br/>Error fetching /api/info: ' + this.escapeHtml(this.error);
-                    console.error(err);
-                }); // Never forget the final catch!
+            try{
+                const r = await this.fetchOrThrow(url, null, '/api/info');
+                const res = await r.json();
+                this.build = res.build;
+                this.shortName = res.shortName;
+                this.chipset = res.chipset;     //Set chipset to fixed value for testing
+                this.rfurl = window.device+'/api/flash/'+this.getRFAddress();
+                this.configurl = window.device+'/api/flash/'+this.getConfigAddress();
+            }catch(err){
+                this.error = err.toString();
+                this.status += '<br/>Error fetching /api/info: ' + this.escapeHtml(this.error);
+                console.error(err);
+            }
         },
         writeCFG(cb){
             if(this.invalidCFGSelected){
@@ -233,12 +322,12 @@ const RF_START_BY_CHIPSET = {
                 return;
             }
 
-            let confirmationForUser = prompt("Are you sure? This will overwrite your OBK configuration (pins, channels, flags, WiFi, IP, MQTT, short startup command). Type Y to continue.", "N");
-            if(confirmationForUser != null && confirmationForUser.length > 0 && (confirmationForUser[0] === 'Y' || confirmationForUser[0] === 'y')) {
-                this.status += '<br/>Starting CFG write...';
-                this.writeCFG_Internal(cb);
+                        if(!this.promptYes("Are you sure? This will overwrite your OBK configuration (pins, channels, flags, WiFi, IP, MQTT, short startup command).")) {
+                return;
             }
-        },
+            this.status += '<br/>Starting CFG write...';
+            this.writeCFG_Internal(cb);
+},
         writeCFG_Internal(cb){
             let url = window.device+'/api/flash/'+this.getConfigAddress();
             console.log('Will use URL '+url);
@@ -321,12 +410,12 @@ const RF_START_BY_CHIPSET = {
                 return;
             }
 
-            let confirmationForUser = prompt("Are you sure? This will overwrite your RF configuration (MAC address and calibration). Type Y to continue.", "N");
-            if(confirmationForUser != null && confirmationForUser.length > 0 && (confirmationForUser[0] === 'Y' || confirmationForUser[0] === 'y')) {
-                this.status += '<br/>Starting RF write...';
-                this.writeRFCFG_Internal(cb);
-            }
-        },
+                         if(!this.promptYes("Are you sure? This will overwrite your RF configuration (MAC address and calibration).")) {
+                 return;
+             }
+             this.status += '<br/>Starting RF write...';
+             this.writeRFCFG_Internal(cb);
+},
         writeRFCFG_Internal(cb){
             const rfAdr = this.getRFAddress();
             const parts = (rfAdr || '').split('-');
@@ -369,7 +458,12 @@ const RF_START_BY_CHIPSET = {
                 }
                 return fetch(url);
             })
-            .then(response => response.arrayBuffer())
+            .then(response => {
+                    if(!response.ok){
+                        throw new Error('HTTP ' + response.status + ' ' + response.statusText);
+                    }
+                    return response.arrayBuffer();
+                })
             .then(buffer => {
                 const ok = this.buffersEqual(payload, buffer);
                 const readMac = this.macPreviewFromRFBlock(buffer);
@@ -520,6 +614,57 @@ getRFAddress(){
 			console.log('getRFAddress is not implemented for ' + this.chipset);
 			return '1e0000-1000';
         },
+
+        bufferStartsWithTLV0(buffer){
+            try{
+                const b = new Uint8Array(buffer);
+                return b.length >= 4 && b[0] === 0x54 && b[1] === 0x4C && b[2] === 0x56 && b[3] === 0x00; // 'TLV\0'
+            }catch(e){
+                return false;
+            }
+        },
+        getRFReadCandidates(){
+            // BK7238 special-case: stock Tuya commonly uses 0x1E3000; OpenBeken uses 0x1E0000.
+            if(this.chipset === 'BK7238'){
+                return ['1e3000-1000', '1e0000-1000'];
+            }
+            return [this.getRFAddress()];
+        },
+        async fetchRFBufferAuto(){
+            const candidates = this.getRFReadCandidates();
+            let lastErr = null;
+
+            for(let i = 0; i < candidates.length; i++){
+                const addr = candidates[i];
+                const url = window.device + '/api/flash/' + addr;
+
+                try{
+                    const r = await fetch(url);
+                    if(!r.ok) throw new Error(`HTTP ${r.status}`);
+                    const buf = await r.arrayBuffer();
+
+                    if(this.chipset === 'BK7238'){
+                        const startsTLV = this.bufferStartsWithTLV0(buf);
+
+                        if(i === 0 && !startsTLV){
+                            // Only the first candidate (0x1E3000) has a strict TLV\0 expectation for deciding fallback.
+                            this.status += '<br/>BK7238: 0x1E3000 does not start with TLV\\0; trying 0x1E0000...';
+                            continue;
+                        }
+                        if(i === 1 && !startsTLV){
+                            this.status += '<br/>BK7238: 0x1E0000 also does not start with TLV\\0; using it anyway.';
+                        }
+                    }
+
+                    this.rfLastReadAddress = addr; // informational
+                    return { buffer: buf, addr: addr };
+                }catch(e){
+                    lastErr = e;
+                }
+            }
+
+            throw lastErr || new Error('RF read failed.');
+        },
         getConfigAddress(){
             // OBK config partition is typically RF+0x1000 (size 0x1000).
             const rfStart = RF_START_BY_CHIPSET[this.chipset];
@@ -543,8 +688,46 @@ getRFAddress(){
 
             return combinedBuffer;
         },
-        downloadArrayBuffer(arrayBuffer, filename) {
-            const blob = new Blob([arrayBuffer]);
+        async downloadRF(event) {
+            if (!this.isReadRFSupported) {
+                this.status += 'RF download is not supported on this platform/chip.\n';
+                return;
+            }
+            try {
+                this.status += 'Downloading RF data...\n';
+
+                // Prefer already-read RF data if available, otherwise auto-fetch.
+                let buf = null;
+                if (this.rfdata && this.rfdata.byteLength === 0x1000) {
+                    buf = this.rfdata;
+                } else {
+                    const res = await this.fetchRFBufferAuto();
+                    buf = res.buffer;
+                }
+
+                this.downloadArrayBuffer(buf, 'rfdata.bin');
+                this.status += 'RF data downloaded.\n';
+            } catch (e) {
+                const msg = (e && e.message) ? e.message : String(e);
+                this.status += `RF download failed: ${this.escapeHtml(msg)}\n`;
+            }
+        },
+
+        async downloadConfig(event) {
+            try {
+                this.status += 'Downloading OBK configuration...\n';
+                const r = await fetch(this.configurl);
+                if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                const buf = await r.arrayBuffer();
+                this.downloadArrayBuffer(buf, 'configdata.bin');
+                this.status += 'OBK configuration downloaded.\n';
+            } catch (e) {
+                const msg = (e && e.message) ? e.message : String(e);
+                this.status += `OBK configuration download failed: ${this.escapeHtml(msg)}\n`;
+            }
+        },
+downloadArrayBuffer(arrayBuffer, filename) {
+            const blob = new Blob([arrayBuffer], { type: 'application/octet-stream' });
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
             link.download = filename;
@@ -553,7 +736,9 @@ getRFAddress(){
             link.click();
 
             // Clean up resources
-            window.URL.revokeObjectURL(link.href);
+            setTimeout(() => {
+                window.URL.revokeObjectURL(link.href);
+            }, 1000);
         },
         generateFullDumpDownloadForBrowser() {
             let fileName = this.chipset + "_"+this.fullDumpStyle+"_";
@@ -603,7 +788,12 @@ getRFAddress(){
             };
 
             fetch(url)
-                .then(response => response.arrayBuffer())
+                .then(response => {
+                    if(!response.ok){
+                        throw new Error('HTTP ' + response.status + ' ' + response.statusText);
+                    }
+                    return response.arrayBuffer();
+                })
                 .then(buffer => {
                     if(buffer.byteLength != this.fullDumpChunkSize) {
                         this.status += "Unexpected response length (" + buffer.byteLength + "). Retrying...";
@@ -634,72 +824,70 @@ getRFAddress(){
                         }
                     }); // Never forget the final catch!
         },
-	 readCustom(cb) {
-	    let offset = prompt("Enter the offset (in hex):", "0x0");
-	    let length = prompt("Enter the length (in bytes):", "256");
-	    offset = parseInt(offset, 16);
-	    length = parseInt(length);
+	 async readCustom(cb) {
+    try{
+        let offset = prompt("Enter the offset (in hex):", "0x0");
+        let lengthRaw = prompt("Enter the length (decimal bytes, or hex like 0x1000):", "256");
+        let length = this.parseFlexibleLength(lengthRaw);
+        offset = parseInt(offset, 16);
 
-	    if (isNaN(offset) || isNaN(length)) {
-	        this.status += '<br/>Invalid offset or length entered.';
-	        return;
-	    }
+        if (isNaN(offset) || isNaN(length)) {
+            this.status += '<br/>Invalid offset or length entered.';
+            return;
+        }
 
-	    this.status += `<br/>Reading custom data from offset 0x${offset.toString(16)} with length ${length}...`;
-	    let url = window.device + `/api/flash/${offset.toString(16)}-${length.toString(16)}`;
-	    console.log('Will use URL ' + url);
+        this.status += `<br/>Reading custom data from offset 0x${offset.toString(16)} with length ${length} bytes (0x${length.toString(16)})...`;
+        let url = window.device + `/api/flash/${offset.toString(16)}-${length.toString(16)}`;
+        console.log('Will use URL ' + url);
 
-	    fetch(url)
-	        .then(response => response.arrayBuffer())
-	        .then(buffer => {
-	            this.configdata = buffer;
-	            console.log('received ' + buffer.byteLength);
-	            this.status += '..received custom data...';
-	            this.dump(buffer);
-	            if (cb) cb();
-	        })
-	        .catch(err => console.error(err)); // Never forget the final catch!
-	},
+        const buffer = await this.fetchArrayBufferOrThrow(url, 'Read custom data');
+        this.configdata = buffer;
+        console.log('received ' + buffer.byteLength);
+        this.status += '..received custom data...';
+        this.dump(buffer);
+        if (cb) cb();
+    }catch(e){
+        const msg = (e && e.message) ? e.message : String(e);
+        this.status += `<br/>Custom read failed: ${this.escapeHtml(msg)}`;
+        console.error(e);
+    }
+},
 
-	downloadCustom(cb) {
-	    let offset = prompt("Enter the offset (in hex):", "0x0");
-	    let length = prompt("Enter the length (in bytes):", "256");
-	    offset = parseInt(offset, 16);
-	    length = parseInt(length);
+	async downloadCustom(cb) {
+    try{
+        let offset = prompt("Enter the offset (in hex):", "0x0");
+        let lengthRaw = prompt("Enter the length (decimal bytes, or hex like 0x1000):", "256");
+        let length = this.parseFlexibleLength(lengthRaw);
+        offset = parseInt(offset, 16);
 
-	    if (isNaN(offset) || isNaN(length)) {
-	        this.status += '<br/>Invalid offset or length entered.';
-	        return;
-	    }
+        if (isNaN(offset) || isNaN(length)) {
+            this.status += '<br/>Invalid offset or length entered.';
+            return;
+        }
 
-	    this.status += `<br/>Downloading custom data from offset 0x${offset.toString(16)} with length ${length}...`;
-	    let url = window.device + `/api/flash/${offset.toString(16)}-${length.toString(16)}`;
-	    console.log('Will use URL ' + url);
+        this.status += `<br/>Downloading custom data from offset 0x${offset.toString(16)} with length ${length} bytes (0x${length.toString(16)})...`;
+        let url = window.device + `/api/flash/${offset.toString(16)}-${length.toString(16)}`;
+        console.log('Will use URL ' + url);
 
-	    fetch(url)
-	        .then(response => response.arrayBuffer())
-	        .then(buffer => {
-	            this.downloadArrayBuffer(buffer, `custom_${offset.toString(16)}-${length}.bin`);
-	            this.status += `<br/>Custom data is ready.`;
-	            if (cb) cb();
-	        })
-	        .catch(err => console.error(err));
-	},
+        const buffer = await this.fetchArrayBufferOrThrow(url, 'Download custom data');
+        this.downloadArrayBuffer(buffer, `custom_${offset.toString(16)}-${length.toString(16)}.bin`);
+        this.status += `<br/>Custom data is ready.`;
+        if (cb) cb();
+    }catch(e){
+        const msg = (e && e.message) ? e.message : String(e);
+        this.status += `<br/>Custom download failed: ${this.escapeHtml(msg)}`;
+        console.error(e);
+    }
+},
         downloadFullDump() {
             if(0){
                 alert("Not available yet.");
                 return;
             }
-			let rep = prompt("Are you certain? This option is slow and may crash OpenBeken on older builds, requiring a manual power-cycle. It may also reboot several times on newer builds. If you only need settings, prefer downloading the configuration partition and a LittleFS backup (.tar). Do not flash a full 2MB dump from one device to another; RF/WiFi calibration is device-specific. Type yes to continue.", "no");
-			if (rep != null) {
-				  if(rep[0] == "y") {
-				  } else {
-                    return;
-                  }
-			} else {
+			            if(!this.promptYes("Are you certain? This option is slow and may crash OpenBeken on older builds, requiring a manual power-cycle. It may also reboot several times on newer builds. If you only need settings, prefer downloading the configuration partition and a LittleFS backup (.tar). Do not flash a full 2MB dump from one device to another; RF/WiFi calibration is device-specific.")) {
                 return;
             }
-            this.startDumpJob("full 2MB dump", "FullDump", 0, 2097152, "QIO");
+this.startDumpJob("full 2MB dump", "FullDump", 0, 2097152, "QIO");
         },
         doFlashDumpInternal() {
             if(this.fullDumpRunning!=0){
@@ -716,20 +904,29 @@ getRFAddress(){
             this.fullDumpErrors = 0;
             this.downloadFullDumpFragment();
         },
-        rf(cb){
+        async rf(cb){
+            if(!this.isReadRFSupported){
+                this.status += '<br/>Read RF configuration is unsupported on ' + this.escapeHtml(this.chipset) + '.';
+                return;
+            }
             this.status += '<br/>Reading RF configuration...';
-            let url = window.device+'/api/flash/'+this.getRFAddress();
-            console.log('Will use URL '+url);
-            fetch(url)
-                .then(response => response.arrayBuffer())
-                .then(buffer => {
-                    this.rfdata = buffer;
-                    console.log('received '+buffer.byteLength);
-                    this.status += '..received RF configuration...';
-                    this.dump(buffer);
-                    if(cb) cb();
-                })
-                .catch(err => console.error(err)); // Never forget the final catch!
+            try{
+                const res = await this.fetchRFBufferAuto();
+                const buffer = res.buffer;
+                const addr = res.addr;
+
+                this.rfdata = buffer;
+                console.log('received ' + buffer.byteLength + ' from ' + addr);
+
+                const startHex = (addr.split('-')[0] || '').toUpperCase();
+                this.status += '..received RF configuration from 0x' + startHex + '...';
+                this.dump(buffer);
+                if(cb) cb();
+            }catch(e){
+                const msg = (e && e.message) ? e.message : String(e);
+                this.status += '<br/>RF read failed: ' + this.escapeHtml(msg);
+                console.error(e);
+            }
         },
         getTuyaConfigAddress(){
             if(this.chipset === "BK7231T") {
@@ -740,49 +937,53 @@ getRFAddress(){
 		}
 		return 0x1D8000;
         },
-        readTuyaConfig(cb){
-            this.status += '<br/>Reading Tuya GPIO configuration...';
-            let url = window.device+'/api/flash/1EE000-1000';
-            console.log('Will use URL '+url);
-            fetch(url)
-                .then(response => response.arrayBuffer())
-                .then(buffer => {
-                    this.configdata = buffer;
-                    console.log('received '+buffer.byteLength);
-                    this.status += '..received Tuya GPIO configuration...';
-                    this.dump(buffer);
-                    if(cb) cb();
-                })
-                .catch(err => console.error(err)); // Never forget the final catch!
+                async readTuyaConfig(cb){
+            try{
+                this.status += '<br/>Reading Tuya GPIO configuration...';
+                let url = window.device+'/api/flash/1EE000-1000';
+                console.log('Will use URL '+url);
+
+                const buffer = await this.fetchArrayBufferOrThrow(url, 'Read Tuya GPIO configuration');
+                this.configdata = buffer;
+                console.log('received '+buffer.byteLength);
+                this.status += '..received Tuya GPIO configuration...';
+                this.dump(buffer);
+                if(cb) cb();
+            }catch(e){
+                const msg = (e && e.message) ? e.message : String(e);
+                this.status += `<br/>Failed to read Tuya GPIO configuration: ${this.escapeHtml(msg)}`;
+                console.error(e);
+            }
         },
         downloadTuyaConfig() {
             // it ends at 2097152 - at 2MB
             this.startDumpJob("Tuya GPIO config", "TuyaConfig", 0x1EE000, 73728, "TuyaConfig");
         },
-        config(cb){
-            this.status += '<br/>Reading OBK configuration...';
-            let url = window.device+'/api/flash/'+this.getConfigAddress();
-            console.log('Will use URL '+url);
-            fetch(url)
-                .then(response => response.arrayBuffer())
-                .then(buffer => {
-                    this.configdata = buffer;
-                    console.log('received '+buffer.byteLength);
-                    this.status += '..received OBK configuration...';
-                    this.dump(buffer);
-                    if(cb) cb();
-                })
-                .catch(err => console.error(err)); // Never forget the final catch!
-        },
-        restore_rf(cb){
-			  let rep = prompt("Use this option only if your RF partition is already corrupted (for example, your MAC ends with 00 00). Otherwise, WiFi performance may decrease because the recreated RF partition uses generic calibration data. Type yes to continue.", "no");
-			  if (rep != null) {
-				  if(rep == "yes") {
-					this.restore_rf_internal(cb);
-				  }
-			  }
+        async config(cb){
+            try{
+                this.status += '<br/>Reading OBK configuration...';
+                let url = window.device+'/api/flash/'+this.getConfigAddress();
+                console.log('Will use URL '+url);
 
-		},
+                const buffer = await this.fetchArrayBufferOrThrow(url, 'Read OBK configuration');
+                this.configdata = buffer;
+                console.log('received '+buffer.byteLength);
+                this.status += '..received OBK configuration...';
+                this.dump(buffer);
+                if(cb) cb();
+            }catch(e){
+                const msg = (e && e.message) ? e.message : String(e);
+                this.status += `<br/>Failed to read OBK configuration: ${this.escapeHtml(msg)}`;
+                console.error(e);
+            }
+        },
+
+        restore_rf(cb){
+			              if(!this.promptYes("Use this option only if your RF partition is already corrupted (for example, your MAC ends with 00 00). Otherwise, WiFi performance may decrease because the recreated RF partition uses generic calibration data.")) {
+                return;
+            }
+            this.restore_rf_internal(cb);
+},
 		/**
 		 * Returns a random integer between min (inclusive) and max (inclusive).
 		 * The value is no lower than min (or the next integer greater than min
@@ -822,7 +1023,7 @@ getRFAddress(){
 			return null;
 		},
 
-        restore_rf_internal(cb){
+        async restore_rf_internal(cb){
             console.log('restore rf ');
             let rfRange = this.getRFAddress();
             let url = window.device+'/api/flash/'+rfRange;
@@ -858,16 +1059,18 @@ getRFAddress(){
             streamData[41] = this.getRandomInt(0,255);
 
             if (streamData){
-                fetch(url, {
+                try{
+                    await this.fetchTextOrThrow(url, 'Restore RF', {
                         method: 'POST',
                         body: streamData
-                    })
-                    .then(response => response.text())
-                    .then(text => {
-                        console.log('received '+text);
-                        this.status += '<br/>RF configuration restored for ' + this.chipset + ' at ' + rfStartFmt + ' (len ' + rfLenFmt + '). Reboot the device.';
-                    })
-                    .catch(err => console.error(err)); // Never forget the final catch!
+                    });
+                    this.status += '<br/>RF configuration restored for ' + this.chipset + ' at ' + rfStartFmt + ' (len ' + rfLenFmt + '). Reboot the device.';
+                    if(cb) cb();
+                }catch(e){
+                    const msg = (e && e.message) ? e.message : String(e);
+                    this.status += `<br/>Restore RF failed: ${this.escapeHtml(msg)}`;
+                    console.error(e);
+                }
             }
         },
         dump(buffer){
