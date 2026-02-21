@@ -109,7 +109,156 @@
         }
     }
 
-    function parseJSONContent(jsonStr, logCallback) {
+    
+    // --- Tuya "pseudo-JSON" parser (user_param_key) ---
+    // Some devices store user_param_key in a JSON-like format without quotes, and with bare hex tokens inside arrays
+    // e.g. {Jsonver:1.0.4,wfcfg:spcl_auto,foo:[1,2d,0b]...}
+    // JSON.parse() will fail; this parser converts it into a real JS object.
+    function parseTuyaPseudoObject(text) {
+        var s = text;
+        var i = 0;
+
+        function isWS(ch) { return ch === ' ' || ch === '\t' || ch === '\r' || ch === '\n'; }
+        function isKeyChar(ch) {
+            var c = ch.charCodeAt(0);
+            // 0-9 A-Z a-z _
+            return (c >= 48 && c <= 57) || (c >= 65 && c <= 90) || (c >= 97 && c <= 122) || ch === '_';
+        }
+
+        function skipWS() { while (i < s.length && isWS(s[i])) i++; }
+
+        function parseToken() {
+            var start = i;
+            while (i < s.length) {
+                var ch = s[i];
+                if (ch === ',' || ch === '}' || ch === ']' || isWS(ch)) break;
+                i++;
+            }
+            return s.substring(start, i);
+        }
+
+        function tokenToValue(tok) {
+            if (tok === undefined || tok === null) return null;
+            tok = tok.trim();
+            if (tok.length === 0) return "";
+
+            var low = tok.toLowerCase();
+            if (low === "true") return true;
+            if (low === "false") return false;
+            if (low === "null") return null;
+
+            // Decimal int
+            if (/^-?\d+$/.test(tok)) return parseInt(tok, 10);
+
+            // Decimal float
+            if (/^-?\d+\.\d+$/.test(tok)) return parseFloat(tok);
+
+            // 0x-prefixed hex
+            if (/^0x[0-9a-f]+$/i.test(tok)) return parseInt(tok, 16);
+
+            // Bare hex tokens often appear in arrays, e.g. 2d, 0b, 8a (no 0x prefix)
+            if (/^[0-9a-f]+$/i.test(tok) && /[a-f]/i.test(tok)) return parseInt(tok, 16);
+
+            // Otherwise treat as string token (e.g. spcl_auto, rgb, 1.0.4)
+            return tok;
+        }
+
+        function parseValue(ctx, arrIndex) {
+            skipWS();
+            if (i >= s.length) return null;
+
+            var ch = s[i];
+            if (ch === '[') return parseArray(ctx);
+            if (ch === '{') return parseObject();
+
+            // Quoted string (rare, but tolerate)
+            if (ch === '"') {
+                i++;
+                var out = "";
+                while (i < s.length) {
+                    ch = s[i];
+                    if (ch === '"') { i++; break; }
+                    if (ch === '\\' && i + 1 < s.length) {
+                        out += s[i + 1];
+                        i += 2;
+                        continue;
+                    }
+                    out += ch;
+                    i++;
+                }
+                return out;
+            }
+
+            var tok = parseToken();
+            return tokenToValue(tok);
+        }
+
+        function parseArray(ctx) {
+            // assumes current char is '['
+            i++; // skip '['
+            var arr = [];
+            var idx = 0;
+            while (i < s.length) {
+                skipWS();
+                if (i >= s.length) break;
+                if (s[i] === ']') { i++; break; }
+                if (s[i] === ',') { i++; continue; }
+
+                var v = parseValue(ctx, idx);
+                arr.push(v);
+                idx++;
+
+                skipWS();
+                if (i < s.length && s[i] === ',') { i++; continue; }
+                if (i < s.length && s[i] === ']') { i++; break; }
+            }
+            return arr;
+        }
+
+        function parseObject() {
+            // assumes current char is '{'
+            i++; // skip '{'
+            var obj = {};
+            while (i < s.length) {
+                skipWS();
+                if (i >= s.length) break;
+                if (s[i] === '}') { i++; break; }
+                if (s[i] === ',') { i++; continue; }
+
+                var keyStart = i;
+                while (i < s.length && isKeyChar(s[i])) i++;
+                var key = s.substring(keyStart, i).trim();
+                skipWS();
+                if (s[i] !== ':') {
+                    // Not a key:value pair - bail out to avoid infinite loop
+                    i++;
+                    continue;
+                }
+                i++; // skip ':'
+
+                var keyLower = key.toLowerCase();
+                var val = parseValue(null, null);
+                if (key.length > 0) obj[key] = val;
+
+                skipWS();
+                if (i < s.length && s[i] === ',') { i++; continue; }
+                if (i < s.length && s[i] === '}') { i++; break; }
+            }
+            return obj;
+        }
+
+        // Entry
+        skipWS();
+        if (s[i] === '{') {
+            return parseObject();
+        }
+        // If braces were trimmed away, try to parse as a single object body
+        s = "{" + s + "}";
+        i = 0;
+        return parseObject();
+    }
+
+function parseJSONContent(jsonStr, logCallback) {
         var log = logCallback || console.log;
 
         // 1. Initial cleanup: remove nulls
@@ -129,6 +278,18 @@
             return parsed;
         } catch (e) {
             log('Standard parse failed: ' + e.message, 'warning');
+        }
+
+        // 3b. Try Tuya pseudo-JSON (user_param_key is often JSON-like but not strict JSON)
+        try {
+            var pseudo = parseTuyaPseudoObject(clean);
+            if (pseudo && typeof pseudo === 'object') {
+                log('Parsed Tuya pseudo-JSON user_param_key', 'success');
+                return pseudo;
+            }
+        } catch (e) {
+            // Keep this as debug to avoid scaring users - it’s a best-effort parser
+            log('Pseudo-JSON parse failed: ' + e.message, 'debug');
         }
 
         // 4. Heuristic Repairs
