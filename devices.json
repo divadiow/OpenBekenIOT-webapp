@@ -11983,6 +11983,28 @@
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21733076#21733076"
     },
     {
+      "vendor": "Action",
+      "bDetailed": "0",
+      "name": "LSC Smart Connect LED Smart Lightbulb A60 E27 RGB (WiFi)",
+      "model": "2578539.1",
+      "chip": "BK7231N",
+      "board": "CBLC5",
+      "flags": "5124",
+      "keywords": [
+        "FM H24511",
+        "806lm",
+        "RGB+2700K-6500K",
+        "9.4W"
+      ],
+      "pins": {
+        "6": "KP18058_DAT;0",
+        "24": "KP18058_CLK;0"
+      },
+      "command": "backlog PowerSave 1; stopDriver *; startDriver KP18058; KP18058_Map 2 1 0 4 3; KP18058_Current 4 4; Dimmer 50;",
+      "image": "https://obrazki.elektroda.pl/3347151400_1772031937.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4166280.html"      
+    },
+    {
       "vendor": "Eightree",
       "bDetailed": "1",
       "name": "13A Smart Plug (UK)",
