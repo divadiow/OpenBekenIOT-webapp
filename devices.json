@@ -3684,6 +3684,27 @@
     },
     {
       "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "TOZENVAN Single Channel Touch Wall Switch",
+      "model": "SK-W801 J",
+      "chip": "BK7231N",
+      "board": "CB3S",
+      "flags": "1024",
+      "keywords": ["stvrdl", "SK-JL-A603", "BL0937"],
+      "pins": {
+        "6": "Rel;1",
+        "7": "BL0937CF1;0",
+        "8": "BL0937CF;0",
+        "10": "Btn;1",
+        "24": "BL0937SEL;0",
+        "26": "WifiLED_n;0"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7314771200_1772136358.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4166424.html"
+    },    
+    {
+      "vendor": "Tuya",
       "bDetailed": "1",
       "name": "Tuya 4CH touch switch 10A",
       "chip": "BK7231T",
