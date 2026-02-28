@@ -6632,6 +6632,31 @@
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?t=3874289"
     },
     {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Farylink 10A Breaker Wifi Switch",
+      "model": "FL-S63-V1.0",
+      "chip": "TR6260",
+      "board": "FL-M61 V2",
+      "flags": "1024",
+      "keywords": [
+        "Yongwei",
+        "tr6260s1",
+        "transa",
+        "000003w2v6",
+        "keyg4tem5agud5cw",
+        "syuivtl7j56zlrke"
+      ],
+      "pins": {
+        "2": "WifiLED;0",
+        "3": "Btn;0",
+        "4": "Rel;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/1643181800_1677426605.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic3960571.html"
+    },    
+    {
       "vendor": "QiaChip",
       "bDetailed": "1",
       "name": "QiaChip Smart Switch (T version)",
