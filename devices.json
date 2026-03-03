@@ -3684,6 +3684,27 @@
     },
     {
       "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "TOZENVAN Single Channel Touch Wall Switch",
+      "model": "SK-W801 J",
+      "chip": "BK7231N",
+      "board": "CB3S",
+      "flags": "1024",
+      "keywords": ["stvrdl", "SK-JL-A603", "BL0937"],
+      "pins": {
+        "6": "Rel;1",
+        "7": "BL0937CF1;0",
+        "8": "BL0937CF;0",
+        "10": "Btn;1",
+        "24": "BL0937SEL;0",
+        "26": "WifiLED_n;0"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7314771200_1772136358.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4166424.html"
+    },    
+    {
+      "vendor": "Tuya",
       "bDetailed": "1",
       "name": "Tuya 4CH touch switch 10A",
       "chip": "BK7231T",
@@ -6611,6 +6632,54 @@
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?t=3874289"
     },
     {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Farylink 10A Breaker Wifi Switch",
+      "model": "FL-S63-V1.0",
+      "chip": "TR6260",
+      "board": "FL-M61 V2",
+      "flags": "1024",
+      "keywords": [
+        "Yongwei",
+        "tr6260s1",
+        "transa",
+        "000003w2v6",
+        "keyg4tem5agud5cw",
+        "syuivtl7j56zlrke"
+      ],
+      "pins": {
+        "2": "WifiLED;0",
+        "3": "Btn;1",
+        "4": "Rel;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/1643181800_1677426605.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic3960571.html"
+    },
+    {
+      "vendor": "ALDI",
+      "bDetailed": "0",
+      "name": "Casalux RGBW Innen 15m SMARTER LED-STREIFEN",
+      "model": "",
+      "chip": "BK7231N",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "strip"
+      ],
+      "pins": {
+        "2": "Btn;0",
+        "6": "PWM;0",
+        "8": "PWM;2",
+        "9": "PWM;3",
+        "24": "PWM;1",
+        "26": "IRRecv;0"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7754023700_1772184184.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4166455.html"
+    },        
+    {
       "vendor": "QiaChip",
       "bDetailed": "1",
       "name": "QiaChip Smart Switch (T version)",
@@ -9448,6 +9517,33 @@
       "bDetailed": "0",
       "name": "Mini WiFi Curtain Module",
       "model": "QS-WIFI-S10-C04",
+      "chip": "BK7238",
+      "board": "T1-M",
+      "flags": "64",
+      "keywords": [
+        "shutter",
+        "rollers",
+        "blinds",
+        "QLRELAY",
+        "JZC-11FH",
+        "003-1H2L"
+      ],
+      "pins": {
+        "6": "BtnShutterUp;1",
+        "8": "WifiLED_n;0",
+        "9": "ShutterA;1",
+        "24": "ShutterB;1",
+        "26": "BtnShutterDown;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6465596100_1772258118.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4166558.html"
+    },    
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Mini WiFi Curtain Module",
+      "model": "QS-WIFI-S10-C04",
       "chip": "BK7231N",
       "board": "CBLC9",
       "flags": "1024",
@@ -10283,6 +10379,25 @@
       "image": "https://obrazki.elektroda.pl/8843433600_1702660408.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4021621.html"
     },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Generic Mini Switch",
+      "model": "KC E243951",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "flags": "1024",
+      "keywords": ["86-TDQ","INNOU2","2022.12.01", "breaker"],
+      "pins": {
+        "7": "WifiLED_n;0",
+        "8": "Rel;1",
+        "10": "Btn_Tgl_All;0",
+        "26": "TglChanOnTgl;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7667601800_1772399095.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4166758.html"
+    },    
     {
       "vendor": "Tuya",
       "bDetailed": "0",
@@ -12886,7 +13001,8 @@
     {
       "vendor": "Tuya",
       "bDetailed": "1",
-      "name": "AT-Q-SMR1-20 wifi DIN rail RCBO circuit breaker + energy meter",
+      "name": "WiFi DIN rail RCBO circuit breaker + energy meter",
+      "model": "AT-Q-SMR1-20",
       "chip": "BK7231T",
       "board": "WB3S",
       "pins": {},
@@ -12894,6 +13010,30 @@
       "image": "https://obrazki.elektroda.pl/3704334600_1672760032.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic3946256.html"
     },
+    {
+      "vendor": "AT",
+      "bDetailed": "0",
+      "name": "63A DIN rail wifi switch with power metering",
+      "model": "AT-SY1-TSW",
+      "chip": "BK7238",
+      "board": "T1-U-HL",
+      "flags": "0",
+      "keywords": [
+        "circut",
+        "breaker"
+      ],
+      "pins": {
+        "6": "BridgeREV;1",
+        "8": "BridgeFWD;1",
+        "17": "Btn;1",
+        "20": "ADC;2",
+        "21": "LED;1",
+        "28": "WifiLED_n;0"
+      },
+      "command": "backlog startDriver BL0942; startDriver Bridge; BridgePulseLength 100; powersave 1",
+      "image": "https://obrazki.elektroda.pl/1332857400_1772244672.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4166555.html"
+    },    
     {
       "vendor": "LSC",
       "bDetailed": "0",
