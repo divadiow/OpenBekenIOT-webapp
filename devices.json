@@ -47,6 +47,30 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4111089.html"
     },
     {
+      "vendor": "eWeLink",
+      "bDetailed": "0",
+      "name": "Generic Window / Door Contact Sensor",
+      "model": "W105SE0X-01-DOOR-HB",
+      "chip": "BK7238",
+      "board": "on PCB",
+      "flags": "0",
+      "keywords": [
+        "insmod DM",
+        "CK-BK7238-W105SE0X-01-DOOR-HB---Ver:1.0.4",
+        "magnet"
+      ],
+      "pins": {
+        "7": "Btn;2",
+        "20": "BAT_ADC;0",
+        "21": "WifiLED_n;0",
+        "23": "dInput_n;1",
+        "27": "BAT_Relay;0"
+      },
+      "command": "Battery_Setup 2000 3000 1.54",
+      "image": "https://obrazki.elektroda.pl/9972549500_1774337978.png",
+      "wiki": ""
+    },    
+    {
       "vendor": "Cozylife",
       "bDetailed": "0",
       "name": "Aiyato Homekit 9W RGBWW Dimmable 2700-6500K E27 Bulb",
