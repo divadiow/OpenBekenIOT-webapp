@@ -71,6 +71,31 @@
       "wiki": ""
     },
     {
+      "vendor": "Smart Ape",
+      "bDetailed": "0",
+      "name": "10A/240V Smart Plug with Energy Meter",
+      "model": "SA-SWPWPM",
+      "chip": "BK7231T",
+      "board": "WB2S",
+      "flags": "1156",
+      "keywords": [
+        "BL0937",
+        "Power metering",
+        "new zealand"
+      ],
+      "pins": {
+        "6": "WifiLED_n;0",
+        "7": "BL0937CF;0",
+        "8": "BL0937CF1;0",
+        "10": "Btn;1",
+        "24": "BL0937SEL;1",
+        "26": "Rel;1"
+      },
+      "command": "startDriver NTP\r\nntp_timeZoneOfs  13\r\nSetupEnergyStats 1 60 60",
+      "image": "https://static.elektroda.pl/attach/SA-SWPWPM_1353346.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4170146.html"
+    },
+    {
       "vendor": "Surfou",
       "bDetailed": "0",
       "name": "TYPE L 16A SMART PLUG (IT)",
