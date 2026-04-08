@@ -5518,6 +5518,31 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4093507.html"
     },
     {
+      "vendor": "TP-Link",
+      "bDetailed": "0",
+      "name": "Tapo Smart Plug Mini (CA)",
+      "model": "P105",
+      "chip": "RTL87X0C",
+      "board": "",
+      "flags": "0",
+      "keywords": [
+        "outlet",
+        "2084500255",
+        "E248237",
+        "CTI PLC=3",
+        "KB-6160"
+      ],
+      "pins": {
+        "8": "Rel;0",
+        "9": "LED;0",
+        "10": "LED_n;0",
+        "17": "Btn_n;0"
+      },
+      "command": "setButtonTimes 50 1 5\r\naddEventHandler OnHold 17 SafeMode",
+      "image": "https://obrazki.elektroda.pl/8101309500_1775654666.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4170406.html"
+    },    
+    {
       "vendor": "Tuya",
       "bDetailed": "0",
       "name": "2 in 1 plug power metering WiFi 16A Beige double plug",
