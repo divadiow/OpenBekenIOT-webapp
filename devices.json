@@ -14893,6 +14893,32 @@
     },
     {
       "vendor": "Arlec",
+      "bDetailed": "1",
+      "name": "Grid Connect Series 3 Smart Plug with Energy Meter",
+      "model": "PC191BKHA",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "flags": "134218752",
+      "keywords": [
+        "BL0937",
+        "PC191-A4-G",
+        "20210105-G"
+      ],
+      "pins": {
+        "6": "BL0937CF1;0",
+        "7": "BL0937CF;0",
+        "8": "Rel;1",
+        "10": "WifiLED_n;0",
+        "11": "Btn;1",
+        "24": "BL0937SEL;0",
+        "26": "LED;1"
+      },
+      "command": "backlog startDriver NTP; startDriver BL0937; SetupEnergyStats 1 300 10; PowerSave 1; PowerSave_WFI 1; TelePeriod 300",
+      "image": "https://obrazki.elektroda.pl/6407621400_1775885345.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4170833.html"
+    },
+    {
+      "vendor": "Arlec",
       "bDetailed": "0",
       "name": "Arlec Grid Connect PC191 Series 2 Smart Plug-In Socket with Energy Meter",
       "model": "PC191",
