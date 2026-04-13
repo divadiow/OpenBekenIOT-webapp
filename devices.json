@@ -14918,6 +14918,25 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4170833.html"
     },
     {
+      "vendor": "Ledvance",
+      "bDetailed": "0",
+      "name": "SMART Orbis Backlight 28W 3000K-6500K 2400lm 220-240V",
+      "model": "RD BL 350 RGBTW BK",
+      "chip": "BK7231T",
+      "board": "WL2S",
+      "keywords": ["573574","4058075573574"],
+      "pins": {
+        "6": "PWM;1",
+        "7": "PWM;5",
+        "8": "PWM;4",
+        "24": "PWM;3",
+        "26": "PWM;2"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/1479380900_1776102111.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4171054.html"
+    },    
+    {
       "vendor": "Arlec",
       "bDetailed": "0",
       "name": "Arlec Grid Connect PC191 Series 2 Smart Plug-In Socket with Energy Meter",
