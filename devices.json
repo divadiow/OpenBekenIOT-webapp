@@ -5541,7 +5541,7 @@
       "command": "setButtonTimes 50 1 5\r\naddEventHandler OnHold 17 SafeMode",
       "image": "https://obrazki.elektroda.pl/8101309500_1775654666.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4170406.html"
-    },    
+    },
     {
       "vendor": "Tuya",
       "bDetailed": "0",
@@ -5563,6 +5563,27 @@
       "command": "",
       "image": "https://obrazki.elektroda.pl/5911139000_1739135470.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4105277.html"
+    },
+    {
+      "vendor": "Feit Electric",
+      "bDetailed": "1",
+      "name": "A19 E26 Smart Light Bulb",
+      "model": "OM60/RGBW/CA/AG(N)",
+      "chip": "BK7238",
+      "board": "T1-U-HL",
+      "flags": "1024",
+      "keywords": [
+          "RGBCW",
+          "BP5758D",
+          "E26"
+      ],
+      "pins": {
+          "6": "BP5758D_DAT",
+          "26": "BP5758D_CLK"
+      },
+      "command": "backlog startDriver BP5758D; BP5758D_Map 2 0 1 4 3; BP5758D_Current 25 50",
+      "image": "https://obrazki.elektroda.pl/3327228600_1776556148_thumb.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4171539.html"
     },
     {
       "vendor": "Tuya",
