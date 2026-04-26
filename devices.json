@@ -7970,6 +7970,26 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic3979012.html"
     },
     {
+      "vendor": "DELTACO",
+      "bDetailed": "0",
+      "name": "RGB Lamp E27",
+      "model": "SH-LE27RGB",
+      "chip": "BK7231T",
+      "board": "WB2L",
+      "flags": "5124",
+      "keywords": ["light", "bulb", "LED"],
+      "pins": {
+        "6": "PWM;3",
+        "7": "PWM;5",
+        "8": "PWM;4",
+        "24": "PWM;2",
+        "26": "PWM;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/9921859600_1777229294.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4172236.html"
+    },
+    {
       "vendor": "Tuya",
       "bDetailed": "0",
       "name": "Generic EU Smart Plug AC90-250V",
