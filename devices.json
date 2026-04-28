@@ -71,6 +71,31 @@
       "wiki": ""
     },
     {
+      "vendor": "Smart Ape",
+      "bDetailed": "0",
+      "name": "10A/240V Smart Plug with Energy Meter",
+      "model": "SA-SWPWPM",
+      "chip": "BK7231T",
+      "board": "WB2S",
+      "flags": "1156",
+      "keywords": [
+        "BL0937",
+        "Power metering",
+        "new zealand"
+      ],
+      "pins": {
+        "6": "WifiLED_n;0",
+        "7": "BL0937CF;0",
+        "8": "BL0937CF1;0",
+        "10": "Btn;1",
+        "24": "BL0937SEL;1",
+        "26": "Rel;1"
+      },
+      "command": "startDriver NTP\r\nntp_timeZoneOfs  13\r\nSetupEnergyStats 1 60 60",
+      "image": "https://static.elektroda.pl/attach/SA-SWPWPM_1353346.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4170146.html"
+    },
+    {
       "vendor": "Surfou",
       "bDetailed": "0",
       "name": "TYPE L 16A SMART PLUG (IT)",
@@ -5493,6 +5518,31 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4093507.html"
     },
     {
+      "vendor": "TP-Link",
+      "bDetailed": "0",
+      "name": "Tapo Smart Plug Mini (CA)",
+      "model": "P105",
+      "chip": "RTL87X0C",
+      "board": "",
+      "flags": "0",
+      "keywords": [
+        "outlet",
+        "2084500255",
+        "E248237",
+        "CTI PLC=3",
+        "KB-6160"
+      ],
+      "pins": {
+        "8": "Rel;0",
+        "9": "LED;0",
+        "10": "LED_n;0",
+        "17": "Btn_n;0"
+      },
+      "command": "setButtonTimes 50 1 5\r\naddEventHandler OnHold 17 SafeMode",
+      "image": "https://obrazki.elektroda.pl/8101309500_1775654666.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4170406.html"
+    },
+    {
       "vendor": "Tuya",
       "bDetailed": "0",
       "name": "2 in 1 plug power metering WiFi 16A Beige double plug",
@@ -5513,6 +5563,27 @@
       "command": "",
       "image": "https://obrazki.elektroda.pl/5911139000_1739135470.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4105277.html"
+    },
+    {
+      "vendor": "Feit Electric",
+      "bDetailed": "1",
+      "name": "A19 E26 Smart Light Bulb",
+      "model": "OM60/RGBW/CA/AG(N)",
+      "chip": "BK7238",
+      "board": "T1-U-HL",
+      "flags": "1024",
+      "keywords": [
+          "RGBCW",
+          "BP5758D",
+          "E26"
+      ],
+      "pins": {
+          "6": "BP5758D_DAT",
+          "26": "BP5758D_CLK"
+      },
+      "command": "backlog startDriver BP5758D; BP5758D_Map 2 0 1 4 3; BP5758D_Current 25 50",
+      "image": "https://obrazki.elektroda.pl/3327228600_1776556148_thumb.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4171539.html"
     },
     {
       "vendor": "Tuya",
@@ -7897,6 +7968,26 @@
       "command": "",
       "image": "https://obrazki.elektroda.pl/6158913500_1719154715_thumb.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic3979012.html"
+    },
+    {
+      "vendor": "DELTACO",
+      "bDetailed": "0",
+      "name": "RGB Lamp E27",
+      "model": "SH-LE27RGB",
+      "chip": "BK7231T",
+      "board": "WB2L",
+      "flags": "5124",
+      "keywords": ["light", "bulb", "LED"],
+      "pins": {
+        "6": "PWM;3",
+        "7": "PWM;5",
+        "8": "PWM;4",
+        "24": "PWM;2",
+        "26": "PWM;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/9921859600_1777229294.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4172236.html"
     },
     {
       "vendor": "Tuya",
@@ -14841,6 +14932,51 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic3978911.html",
       "product": "https://www.feit.com/products/st19-curved-filament-alexa-google-decorative-smart-bulb-st2160-rgbw-fil-ag"
     },
+    {
+      "vendor": "Arlec",
+      "bDetailed": "1",
+      "name": "Grid Connect Series 3 Smart Plug with Energy Meter",
+      "model": "PC191BKHA",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "flags": "134218752",
+      "keywords": [
+        "BL0937",
+        "PC191-A4-G",
+        "20210105-G"
+      ],
+      "pins": {
+        "6": "BL0937CF1;0",
+        "7": "BL0937CF;0",
+        "8": "Rel;1",
+        "10": "WifiLED_n;0",
+        "11": "Btn;1",
+        "24": "BL0937SEL;0",
+        "26": "LED;1"
+      },
+      "command": "backlog startDriver NTP; startDriver BL0937; SetupEnergyStats 1 300 10; PowerSave 1; PowerSave_WFI 1; TelePeriod 300",
+      "image": "https://obrazki.elektroda.pl/6407621400_1775885345.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4170833.html"
+    },
+    {
+      "vendor": "Ledvance",
+      "bDetailed": "0",
+      "name": "SMART Orbis Backlight 28W 3000K-6500K 2400lm 220-240V",
+      "model": "RD BL 350 RGBTW BK",
+      "chip": "BK7231T",
+      "board": "WL2S",
+      "keywords": ["573574","4058075573574"],
+      "pins": {
+        "6": "PWM;1",
+        "7": "PWM;5",
+        "8": "PWM;4",
+        "24": "PWM;3",
+        "26": "PWM;2"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/1479380900_1776102111.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4171054.html"
+    },    
     {
       "vendor": "Arlec",
       "bDetailed": "0",
