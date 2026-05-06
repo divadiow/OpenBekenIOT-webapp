@@ -1232,6 +1232,34 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4037213.html"
     },
     {
+      "vendor": "Ener-J",
+      "bDetailed": "0",
+      "name": "9W Smart Colour Changing Light Bulb, B22 RGB CCT",
+      "model": "SHA5262",
+      "chip": "BK7231T",
+      "board": "WB3L",
+      "flags": "1024",
+      "keywords": [
+        "EL-A60-10X2 V7.7",
+        "EL-DY-245 V7.1",
+        "BP5778",
+        "BP2513D",
+        "00000149dc",
+        "keytg5kq8gvkv9dh",
+        "pfyewd04anarmjjy"
+      ],
+      "pins": {
+        "6": "PWM;5",
+        "7": "PWM;4",
+        "8": "PWM;1",
+        "24": "PWM;2",
+        "26": "PWM;3"
+      },
+      "command": "powersave 1",
+      "image": "https://obrazki.elektroda.pl/7834967200_1778047468.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21897152#21897152"
+    },
+    {
       "vendor": "Tuya",
       "bDetailed": "0",
       "name": "Generic 16A DIY Mini Switch",
