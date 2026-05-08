@@ -1114,7 +1114,33 @@
       "command": "",
       "image": "https://obrazki.elektroda.pl/6165346000_1778267835.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4173239.html"      
-    },    
+    },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Arlec Grid Connect Smart RGBW Puck Lights",
+      "model": "UC508HA",
+      "chip": "BK7231N",
+      "board": "on PCB",
+      "flags": "1074664463",
+      "keywords": [
+        "CYTT-286",
+        "CYTT-341",
+        "0455820"
+      ],
+      "pins": {
+        "6": "AlwaysLow;1",
+        "7": "PWM;4",
+        "8": "PWM;3",
+        "9": "PWM;2",
+        "14": "Btn;0",
+        "24": "AlwaysLow;5",
+        "26": "PWM;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/5937954000_1778275802.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4173127.html"
+    },
     {
       "vendor": "Poundland UK",
       "bDetailed": "0",
