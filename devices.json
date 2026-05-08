@@ -1094,6 +1094,28 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4093154.html"
     },
     {
+      "vendor": "LEDVANCE",
+      "bDetailed": "0",
+      "name": "SmartPlus Classic A100 Tunable White Bulb E27 14W 1521lm",
+      "model": "AC27511",
+      "chip": "BK7231T",
+      "board": "WB8P",
+      "flags": "1280",
+      "keywords": [
+        "2700-6500k",
+        "warm",
+        "smart+",
+        "230v"
+      ],
+      "pins": {
+        "7": "PWM;5",
+        "8": "PWM_n;4"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6165346000_1778267835.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4173239.html"      
+    },    
+    {
       "vendor": "Poundland UK",
       "bDetailed": "0",
       "name": "Ultrabrite Smart Wifi Plug",
