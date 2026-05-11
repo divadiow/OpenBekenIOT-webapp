@@ -5702,6 +5702,31 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4066446.html"
     },
     {
+      "vendor": "Moes",
+      "bDetailed": "0",
+      "name": "MiNi Smart Switch Module",
+      "model": "WM4LT2",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "flags": "1024",
+      "keywords": [
+        "WM-104B-M-LT-MS",
+        "relay",
+        "breaker"
+      ],
+      "pins": {
+        "6": "Rel;2",
+        "7": "LED;1",
+        "8": "Rel;1",
+        "11": "Btn;10",
+        "24": "dInput_n;2",
+        "26": "dInput_n;1"
+      },
+      "command": "",
+      "image": "https://static.elektroda.pl/attach/0dfcdd79-f3c7-4547-be44-48d4158811c5~1_1786855.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4173399.html"
+    },    
+    {
       "vendor": "TP-Link",
       "bDetailed": "0",
       "name": "Kasa Dual WiFi Exterior Smart Plug (US)",
