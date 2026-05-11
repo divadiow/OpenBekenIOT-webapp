@@ -4433,6 +4433,28 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic3941003.html"
     },
     {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Generic E27 RGB CW WW LED Bulb",
+      "model": "XLD-WIFIBLE-A19",
+      "chip": "LN882H",
+      "board": "CB2L",
+      "flags": "5120",
+      "keywords": [
+        "AC 85-265V"
+      ],
+      "pins": {
+        "7": "PWM;1",
+        "10": "PWM;2",
+        "11": "PWM;3",
+        "12": "PWM;4",
+        "19": "PWM;5"
+      },
+      "command": "PWMFrequency 5000",
+      "image": "https://obrazki.elektroda.pl/9478685300_1778530301.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4173497.html"
+    },    
+    {
       "vendor": "LSC",
       "bDetailed": "0",
       "name": "LSC Smart Filament LED 350lumen Extra Warm White E27",
