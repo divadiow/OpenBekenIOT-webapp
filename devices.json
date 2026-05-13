@@ -4433,6 +4433,28 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic3941003.html"
     },
     {
+      "vendor": "ARLEC",
+      "bDetailed": "0",
+      "name": "Smart Plug-in Socket with Energy Meter",
+      "model": "PC191HA Series 4",
+      "chip": "BK7238",
+      "board": "T1-2S-NL",
+      "flags": "1024",
+      "keywords": [
+        "BL0942",
+        "TIANBO",
+        "HJR-3FF-S-H"
+      ],
+      "pins": {
+        "8": "WifiLED_n;0",
+        "24": "Btn;1",
+        "26": "Rel;1"
+      },
+      "command": "backlog startDriver BL0942; SetupEnergyStats 1 60 60; PowerSave 1",
+      "image": "https://obrazki.elektroda.pl/6369838400_1778554565.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4173508.html"      
+    },    
+    {
       "vendor": "Tuya",
       "bDetailed": "0",
       "name": "Generic E27 RGB CW WW LED Bulb",
