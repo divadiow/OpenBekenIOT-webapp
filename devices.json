@@ -4770,6 +4770,30 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic3943675.html"
     },
     {
+      "vendor": "Hombli",
+      "bDetailed": "0",
+      "name": "Smart Swiss Socket 2500W",
+      "model": "HBSS-3109",
+      "chip": "BK7231T",
+      "board": "WB2S",
+      "flags": "1024",
+      "keywords": [
+        "B2030474",
+        "plug"
+      ],
+      "pins": {
+        "6": "WifiLED_n;0;0",
+        "7": "BL0937CF;0;0",
+        "8": "BL0937CF1;0;0",
+        "10": "Btn;1;1",
+        "24": "BL0937SEL;0",
+        "26": "Rel;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6593140100_1778769325.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4173757.html"
+    },
+    {
       "vendor": "Nedis",
       "bDetailed": "0",
       "name": "Nedis SmartLife LED Strip | Wi-Fi | RGBCW - WIFILS50CRGBW",
