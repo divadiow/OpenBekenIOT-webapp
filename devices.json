@@ -4813,7 +4813,7 @@
     "7": "WifiLED_n;0",
     "10": "BL0937CF;0"
     },
-    "command": "PowerSave 1",
+    "command": "backlog startDriver BL0937; PowerSave 0",
     "image": "https://obrazki.elektroda.pl/3342727000_1778915784.jpg",
     "wiki": "https://www.elektroda.com/rtvforum/topic4173894.html"
     },    
