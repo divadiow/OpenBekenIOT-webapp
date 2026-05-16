@@ -4794,6 +4794,30 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4173757.html"
     },
     {
+    "vendor": "Tuya",
+    "bDetailed": "0",
+    "name": "SmartPlug LIVEBEST 20A Plug (EU)",
+    "model": "J17",
+    "chip": "LN882H",
+    "board": "WB02A-0882H-1518D1",
+    "flags": "1024",
+    "keywords": [
+    "QLRELAY",
+    "JZC-11FH"
+    ],
+    "pins": {
+    "3": "BL0937SEL;0",
+    "4": "Rel;1",
+    "5": "BL0937CF1;0",
+    "6": "Btn;1",
+    "7": "WifiLED_n;0",
+    "10": "BL0937CF;0"
+    },
+    "command": "PowerSave 1",
+    "image": "https://obrazki.elektroda.pl/3342727000_1778915784.jpg",
+    "wiki": "https://www.elektroda.com/rtvforum/topic4173894.html"
+    },    
+    {
       "vendor": "Nedis",
       "bDetailed": "0",
       "name": "Nedis SmartLife LED Strip | Wi-Fi | RGBCW - WIFILS50CRGBW",
