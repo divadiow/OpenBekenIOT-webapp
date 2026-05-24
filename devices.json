@@ -1094,6 +1094,54 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4093154.html"
     },
     {
+      "vendor": "LEDVANCE",
+      "bDetailed": "0",
+      "name": "SmartPlus Classic A100 Tunable White Bulb E27 14W 1521lm",
+      "model": "AC27511",
+      "chip": "BK7231T",
+      "board": "WB8P",
+      "flags": "1280",
+      "keywords": [
+        "2700-6500k",
+        "warm",
+        "smart+",
+        "230v"
+      ],
+      "pins": {
+        "7": "PWM;5",
+        "8": "PWM_n;4"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6165346000_1778267835.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4173239.html"      
+    },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Arlec Grid Connect Smart RGBW Puck Lights",
+      "model": "UC508HA",
+      "chip": "BK7231N",
+      "board": "on PCB",
+      "flags": "1074664463",
+      "keywords": [
+        "CYTT-286",
+        "CYTT-341",
+        "0455820"
+      ],
+      "pins": {
+        "6": "AlwaysLow;1",
+        "7": "PWM;4",
+        "8": "PWM;3",
+        "9": "PWM;2",
+        "14": "Btn;0",
+        "24": "AlwaysLow;5",
+        "26": "PWM;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/5937954000_1778275802.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4173127.html"
+    },
+    {
       "vendor": "Poundland UK",
       "bDetailed": "0",
       "name": "Ultrabrite Smart Wifi Plug",
@@ -1230,6 +1278,34 @@
       "command": "",
       "image": "https://obrazki.elektroda.pl/3368646600_1708393825_thumb.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4037213.html"
+    },
+    {
+      "vendor": "Ener-J",
+      "bDetailed": "0",
+      "name": "9W Smart Colour Changing Light Bulb, B22 RGB CCT",
+      "model": "SHA5262",
+      "chip": "BK7231T",
+      "board": "WB3L",
+      "flags": "1024",
+      "keywords": [
+        "EL-A60-10X2 V7.7",
+        "EL-DY-245 V7.1",
+        "BP5778",
+        "BP2513D",
+        "00000149dc",
+        "keytg5kq8gvkv9dh",
+        "pfyewd04anarmjjy"
+      ],
+      "pins": {
+        "6": "PWM;5",
+        "7": "PWM;4",
+        "8": "PWM;1",
+        "24": "PWM;2",
+        "26": "PWM;3"
+      },
+      "command": "powersave 1",
+      "image": "https://obrazki.elektroda.pl/7834967200_1778047468.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21897152#21897152"
     },
     {
       "vendor": "Tuya",
@@ -4357,6 +4433,50 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic3941003.html"
     },
     {
+      "vendor": "ARLEC",
+      "bDetailed": "0",
+      "name": "Smart Plug-in Socket with Energy Meter (AU)",
+      "model": "PC191HA Series 4",
+      "chip": "BK7238",
+      "board": "T1-2S-NL",
+      "flags": "1024",
+      "keywords": [
+        "BL0942",
+        "TIANBO",
+        "HJR-3FF-S-H"
+      ],
+      "pins": {
+        "8": "WifiLED_n;0",
+        "24": "Btn;1",
+        "26": "Rel;1"
+      },
+      "command": "backlog startDriver BL0942; SetupEnergyStats 1 60 60; PowerSave 1",
+      "image": "https://obrazki.elektroda.pl/6369838400_1778554565.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4173508.html"      
+    },    
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Generic E27 RGB CW WW LED Bulb",
+      "model": "XLD-WIFIBLE-A19",
+      "chip": "LN882H",
+      "board": "CB2L",
+      "flags": "5120",
+      "keywords": [
+        "AC 85-265V"
+      ],
+      "pins": {
+        "7": "PWM;1",
+        "10": "PWM;2",
+        "11": "PWM;3",
+        "12": "PWM;4",
+        "19": "PWM;5"
+      },
+      "command": "PWMFrequency 5000",
+      "image": "https://obrazki.elektroda.pl/9478685300_1778530301.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4173497.html"
+    },    
+    {
       "vendor": "LSC",
       "bDetailed": "0",
       "name": "LSC Smart Filament LED 350lumen Extra Warm White E27",
@@ -4649,6 +4769,54 @@
       "image": "https://obrazki.elektroda.pl/9833312300_1671800446.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic3943675.html"
     },
+    {
+      "vendor": "Hombli",
+      "bDetailed": "0",
+      "name": "Smart Swiss Socket 2500W",
+      "model": "HBSS-3109",
+      "chip": "BK7231T",
+      "board": "WB2S",
+      "flags": "1024",
+      "keywords": [
+        "B2030474",
+        "plug"
+      ],
+      "pins": {
+        "6": "WifiLED_n;0;0",
+        "7": "BL0937CF;0;0",
+        "8": "BL0937CF1;0;0",
+        "10": "Btn;1;1",
+        "24": "BL0937SEL;0",
+        "26": "Rel;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/6593140100_1778769325.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4173757.html"
+    },
+    {
+    "vendor": "Tuya",
+    "bDetailed": "0",
+    "name": "SmartPlug LIVEBEST 20A Plug (EU)",
+    "model": "J17",
+    "chip": "LN882H",
+    "board": "WB02A-0882H-1518D1",
+    "flags": "1024",
+    "keywords": [
+    "QLRELAY",
+    "JZC-11FH"
+    ],
+    "pins": {
+    "3": "BL0937SEL;0",
+    "4": "Rel;1",
+    "5": "BL0937CF1;0",
+    "6": "Btn;1",
+    "7": "WifiLED_n;0",
+    "10": "BL0937CF;0"
+    },
+    "command": "backlog startDriver BL0937; PowerSave 0",
+    "image": "https://obrazki.elektroda.pl/3342727000_1778915784.jpg",
+    "wiki": "https://www.elektroda.com/rtvforum/topic4173894.html"
+    },    
     {
       "vendor": "Nedis",
       "bDetailed": "0",
@@ -5625,6 +5793,31 @@
       "image": "https://obrazki.elektroda.pl/9049397300_1721571936.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4066446.html"
     },
+    {
+      "vendor": "Moes",
+      "bDetailed": "0",
+      "name": "MiNi Smart Switch Module",
+      "model": "WM4LT2",
+      "chip": "BK7231N",
+      "board": "CB2S",
+      "flags": "1024",
+      "keywords": [
+        "WM-104B-M-LT-MS",
+        "relay",
+        "breaker"
+      ],
+      "pins": {
+        "6": "Rel;2",
+        "7": "LED;1",
+        "8": "Rel;1",
+        "11": "Btn;10",
+        "24": "dInput_n;2",
+        "26": "dInput_n;1"
+      },
+      "command": "",
+      "image": "https://static.elektroda.pl/attach/0dfcdd79-f3c7-4547-be44-48d4158811c5~1_1786855.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4173399.html"
+    },    
     {
       "vendor": "TP-Link",
       "bDetailed": "0",
@@ -7969,6 +8162,34 @@
       "image": "https://obrazki.elektroda.pl/6158913500_1719154715_thumb.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic3979012.html"
     },
+    {
+      "vendor": "MOES",
+      "bDetailed": "0",
+      "name": "WiFi Smart Plug with Energy Monitoring",
+      "model": "WP-ZK-EU16M",
+      "chip": "BK7231T",
+      "board": "WB2S",
+      "keywords": [
+        "EU plug",
+        "Schuko",
+        "16A",
+        "power metering",
+        "BL0937",
+        "Tuya",
+        "Smart Life"
+      ],
+      "pins": {
+        "6": "LED_n;1",
+        "7": "BL0937CF;1",
+        "8": "BL0937CF1;1",
+        "10": "Btn;1",
+        "24": "BL0937SEL;1",
+        "26": "Rel;1"
+      },
+      "command": "startDriver BL0937",
+      "image": "https://obrazki.elektroda.pl/5163628800_1777794062.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4172713.html"
+    },    
     {
       "vendor": "DELTACO",
       "bDetailed": "0",
