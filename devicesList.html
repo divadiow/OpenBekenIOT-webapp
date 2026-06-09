@@ -124,7 +124,7 @@ function hideNotNeeded()
 
 </script>
 <form onsubmit="return false;">
-	<div class="form-row align-items-center" style="margin-left: 0px; margin-right: 0px;">
+	<div class="form-row align-items-end mt-2" style="margin-left: 0px; margin-right: 0px;">
 		<div class="col-auto" >
 		  <label class="mr-sm-2" for="inlineFormCustomSelect">Type:</label>
 		  <div class="input-group mb-2">
@@ -155,20 +155,25 @@ function hideNotNeeded()
 		  </select>
 		</div>
 	  </div>
-	  
-	  <div id="chipFiltersContainer"></div>
-			<div class="col-auto forumFilter">
-			<label class="mr-sm-2" for="filter_detailed"></label>
-			<div class="form-check mb-2">
+	  <div class="col-auto mb-2">
+		<button class="btn btn-primary" onclick="refreshForFilters()">Apply filtering</button>
+	  </div>
+	  <div class="col-auto mb-2">
+		<button class="btn btn-outline-secondary" onclick="clearAllFilters()">Clear all</button>
+	  </div>
+	  <div class="col-auto mb-2">
+		<button class="btn btn-outline-secondary" onclick="resetAllFilters()">Reset all</button>
+	  </div>
+	  <div class="col-auto forumFilter mb-2">
+			<div class="form-check">
 			<input class="form-check-input" type="checkbox" id="filter_detailed">
 			<label class="form-check-label" for="filter_detailed">
 			Only show DETAILED teardowns
 			</label>
 			</div>
-			</div>
-			<div class="col-auto">
-		<button class="btn btn-primary mb-2" onclick="refreshForFilters()">Apply filtering</button>
-	</div>	
+	  </div>
+	  <div class="w-100"></div>
+	  <div id="chipFiltersContainer" class="w-100 forumFilter mb-2"></div>
   </div>
 </form>
 <h6 class="forumFilter">NOTE: BL0937, BL0942 and CSE7766 (HLW8032) are chips used for energy metering.</h6>
@@ -206,6 +211,7 @@ var g_chipFilterConfigs = [
 	{ key: "BK7252N", label: "BK7252N", matches: function(chip) { return chip === "BK7252N"; } },
 	{ key: "BL602", label: "BL602", matches: function(chip) { return chip === "BL602"; } },
 	{ key: "ECR6600", label: "ECR6600", matches: function(chip) { return chip === "ECR6600"; } },
+	{ key: "GD32VW553", label: "GD32VW553", matches: function(chip) { return chip === "GD32VW553"; } },
 	{ key: "ESP32", label: "ESP32*", matches: function(chip) { return chip != null && chip.toUpperCase().indexOf("ESP32") === 0; } },
 	{ key: "ESP82XX", label: "ESP82XX", matches: function(chip) { return chip === "ESP8266" || chip === "ESP8285"; } },
 	{ key: "LN8825", label: "LN8825", matches: function(chip) { return chip === "LN8825"; } },
@@ -213,6 +219,7 @@ var g_chipFilterConfigs = [
 	{ key: "RDA5981", label: "RDA5981", matches: function(chip) { return chip === "RDA5981"; } },
 	{ key: "RTL8710AM", label: "RTL8710AM", matches: function(chip) { return chip === "RTL8710AM"; } },
 	{ key: "RTL8710B", label: "RTL8710B", matches: function(chip) { return chip === "RTL8710B"; } },
+	{ key: "RTL8721DA", label: "RTL8721DA", matches: function(chip) { return chip === "RTL8721DA" || chip === "RTL8711DAM"; } },
 	{ key: "RTL87X0C", label: "RTL87X0C", matches: function(chip) { return chip === "RTL87X0C" || (chip != null && chip.toUpperCase().indexOf("W701-") === 0); } },
 	{ key: "TR6260", label: "TR6260", matches: function(chip) { return chip === "TR6260"; } },
 	{ key: "TXW81X", label: "TXW81X", matches: function(chip) { return chip === "TXW81X"; } },
@@ -380,6 +387,26 @@ function processJSON(json) {
 	refreshJSON();
 }
 function refreshForFilters() {
+	refreshJSON();
+}
+function setAllPlatformFilters(checked) {
+	for(var i = 0; i < g_chipFilters.length; i++) {
+		var checkbox = document.getElementById(g_chipFilters[i].checkboxId);
+		if(checkbox != null) {
+			checkbox.checked = checked;
+		}
+	}
+}
+function clearAllFilters() {
+	document.getElementById("filter_text").value = "";
+	document.getElementById("filter_detailed").checked = false;
+	setAllPlatformFilters(false);
+	refreshJSON();
+}
+function resetAllFilters() {
+	document.getElementById("filter_text").value = "";
+	document.getElementById("filter_detailed").checked = false;
+	setAllPlatformFilters(true);
 	refreshJSON();
 }
 function findDocsURLForChip(chip) {
