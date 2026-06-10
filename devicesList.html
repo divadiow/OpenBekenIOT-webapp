@@ -203,6 +203,7 @@ var g_database;
 var g_cloudCuttable;
 var g_chipFilters = [];
 var g_chipFilterLookup = {};
+var g_otherChipFilterKey = "OTHER_UNLISTED";
 var g_chipFilterConfigs = [
 	{ key: "BK7231N", label: "BK7231N", matches: function(chip) { return chip === "BK7231N" || chip === "BK7231M" || chip === "BL2028N" || chip === "T34"; } },
 	{ key: "BK7231T", label: "BK7231T", matches: function(chip) { return chip === "BK7231T"; } },
@@ -274,9 +275,17 @@ function getChipSearchAliases(chip) {
 	return aliases;
 }
 
+function getChipFilterKey(chip) {
+	if(chip != null && g_chipFilterLookup[chip] != null) {
+		return g_chipFilterLookup[chip];
+	}
+	return g_otherChipFilterKey;
+}
+
 function buildChipFilters(devices) {
 	var chipCounts = {};
 	var chipNames = [];
+	var matchedChips = {};
 	var i;
 	for(i = 0; i < devices.length; i++) {
 		var chip = devices[i].chip;
@@ -299,6 +308,7 @@ function buildChipFilters(devices) {
 			if(family.matches(chipName)) {
 				familyCount += chipCounts[chipName];
 				g_chipFilterLookup[chipName] = family.key;
+				matchedChips[chipName] = true;
 			}
 		}
 		g_chipFilters.push({
@@ -308,6 +318,19 @@ function buildChipFilters(devices) {
 			checkboxId: makeChipFilterId(family.key)
 		});
 	}
+	var otherCount = 0;
+	for(i = 0; i < devices.length; i++) {
+		var otherChip = devices[i].chip;
+		if(otherChip == null || otherChip.length === 0 || matchedChips[otherChip] !== true) {
+			otherCount++;
+		}
+	}
+	g_chipFilters.push({
+		key: g_otherChipFilterKey,
+		label: "Other",
+		count: otherCount,
+		checkboxId: makeChipFilterId(g_otherChipFilterKey)
+	});
 	renderChipFilters();
 }
 
@@ -340,10 +363,7 @@ function renderChipFilters() {
 }
 
 function isChipAllowedByFilters(chip) {
-	var filterKey = g_chipFilterLookup[chip];
-	if(filterKey == null) {
-		return true;
-	}
+	var filterKey = getChipFilterKey(chip);
 	var checkbox = document.getElementById(makeChipFilterId(filterKey));
 	if(checkbox == null) {
 		return true;
@@ -406,6 +426,7 @@ function clearAllFilters() {
 function resetAllFilters() {
 	document.getElementById("filter_text").value = "";
 	document.getElementById("filter_detailed").checked = false;
+	document.getElementById("selectMax").value = "10";
 	setAllPlatformFilters(true);
 	refreshJSON();
 }
