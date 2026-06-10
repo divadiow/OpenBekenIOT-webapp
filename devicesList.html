@@ -421,14 +421,12 @@ function clearAllFilters() {
 	document.getElementById("filter_text").value = "";
 	document.getElementById("filter_detailed").checked = false;
 	setAllPlatformFilters(false);
-	refreshJSON();
 }
 function resetAllFilters() {
 	document.getElementById("filter_text").value = "";
 	document.getElementById("filter_detailed").checked = false;
 	document.getElementById("selectMax").value = "10";
 	setAllPlatformFilters(true);
-	refreshJSON();
 }
 function findDocsURLForChip(chip) {
 
