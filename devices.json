@@ -5662,7 +5662,27 @@
       "keywords": ["AC100-240V", "BL0937"],
       "image": "https://obrazki.elektroda.pl/9975877900_1772888412.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4167374.html"
-    },    
+    },
+    {
+      "vendor": "ELIVCO",
+      "bDetailed": "0",
+      "name": "eWElink 16A Smart Power Metering Plug",
+      "model": "FL-S165-V1",      
+      "chip": "BL602",
+      "board": "SM-028_V1.3",
+        "pins": {
+          "2": "BL0937SEL;0",
+          "3": "BL0937CF1;0",
+          "14": "Rel;1",
+          "20": "BL0937CF;0",
+          "21": "LED_n;1",
+          "22": "Btn;1"
+        },
+      "command": "",
+      "keywords": ["AC100-240V", "BL0937", "farylink"],
+      "image": "https://obrazki.elektroda.pl/7490840000_1781321979.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4176212.html"
+    },       
     {
       "vendor": "Tuya",
       "bDetailed": "0",
