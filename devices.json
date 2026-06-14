@@ -131,7 +131,7 @@
       "pins": {
         "49": "PWM;3",
         "50": "PWM;1",
-        "51": "PWM;2"  
+        "51": "PWM;2"
       },
       "command": "",
       "image": "https://obrazki.elektroda.pl/9231549100_1781039948.png",
@@ -153,7 +153,7 @@
       },
       "command": "",
       "image": "https://obrazki.elektroda.pl/8731894200_1730483606.png",
-      "wiki": "https://www.elektroda.com/rtvforum/topic4092465.html"      
+      "wiki": "https://www.elektroda.com/rtvforum/topic4092465.html"
     },
     {
       "vendor": "Smart Ape",
@@ -542,7 +542,7 @@
     {
       "vendor": "Tmall Genie",
       "bDetailed": "0",
-      "name": "XradioTech/AllWinner XR87AT + YiChip YC1021 Bluetooth Module",
+      "name": "XradioTech/AllWinner XR872AT + YiChip YC1021 Bluetooth Module",
       "model": "S610",
       "chip": "XR872",
       "board": "AM-01-S610",
@@ -560,6 +560,22 @@
       "image": "https://obrazki.elektroda.pl/6591104600_1751006191.png",
       "wiki": "https://www.elektroda.com/rtvforum/viewtopic.php?p=21589985#21589985"
     },
+    {
+      "vendor": "",
+      "bDetailed": "0",
+      "name": "XF16 Mini Camera (no cam support in OpenXR872)",
+      "model": "A9",
+      "chip": "XR872",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "2416","J9_001_V1.2_20221222", "T25S80", "ChipSourceTek","XradioTech","AllWinner","XRADIO","C74014","TJ25Q08M"
+      ],
+      "pins": {},
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/4850957500_1725798245.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4074636.html"
+    },    
     {
       "vendor": "Tuya",
       "bDetailed": "0",
@@ -1198,7 +1214,7 @@
       },
       "command": "",
       "image": "https://obrazki.elektroda.pl/6165346000_1778267835.jpg",
-      "wiki": "https://www.elektroda.com/rtvforum/topic4173239.html"      
+      "wiki": "https://www.elektroda.com/rtvforum/topic4173239.html"
     },
     {
       "vendor": "Tuya",
@@ -4639,7 +4655,7 @@
       },
       "command": "backlog startDriver BL0942; SetupEnergyStats 1 60 60; PowerSave 1",
       "image": "https://obrazki.elektroda.pl/6369838400_1778554565.jpg",
-      "wiki": "https://www.elektroda.com/rtvforum/topic4173508.html"      
+      "wiki": "https://www.elektroda.com/rtvforum/topic4173508.html"
     },    
     {
       "vendor": "Tuya",
@@ -6324,7 +6340,7 @@
         "RGBW",
         "KP18058",
         "I2C",
-        "Tuya"        
+        "Tuya"
       ],
       "pins": {
         "7": "KP18058_CLK;0",
@@ -6332,7 +6348,7 @@
       },
       "command": "backlog KP18058_Map 2 0 1 255 3; KP18058_Current 25 13; SetFlag 24 1; SetFlag 12 1; led_dimmer $led_dimmer; PowerSave 1",
       "image": "https://obrazki.elektroda.pl/8189021300_1772710483.jpg",
-      "wiki": "https://www.elektroda.com/rtvforum/topic4167160.html"      
+      "wiki": "https://www.elektroda.com/rtvforum/topic4167160.html"
       },    
     {
       "vendor": "Moes",
@@ -9404,7 +9420,7 @@
     {
       "vendor": "ACDC Dynamics",
       "bDetailed": "1",
-      "name": " 230VAC 40A Smart WIFI DIN Timer/Switch/PowerMonitor",
+      "name": "230VAC 40A Smart WIFI DIN Timer/Switch/PowerMonitor",
       "model": "ATMS4002",
       "chip": "BK7231N",
       "board": "CBU",
@@ -10542,7 +10558,7 @@
         "socket",
         "BP2525",
         "C0003_P9_LN882H_PLUG1",
-        "qsjrrszpjipdyjpy"        
+        "qsjrrszpjipdyjpy"
       ],
       "pins": {
         "6": "LED_n;0",
@@ -12864,7 +12880,7 @@
       },
       "command": "backlog PowerSave 1; stopDriver *; startDriver KP18058; KP18058_Map 2 1 0 4 3; KP18058_Current 4 4; Dimmer 50;",
       "image": "https://obrazki.elektroda.pl/3347151400_1772031937.jpg",
-      "wiki": "https://www.elektroda.com/rtvforum/topic4166280.html"      
+      "wiki": "https://www.elektroda.com/rtvforum/topic4166280.html"
     },
     {
       "vendor": "Eightree",
