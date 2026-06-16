@@ -9939,8 +9939,9 @@
     {
       "vendor": "",
       "bDetailed": "0",
-      "name": "XR809 LCD TuyaMCU Thermometer",
+      "name": "LCD TuyaMCU Thermometer",
       "chip": "XR809",
+      "board": "XR3",      
       "pins": {},
       "image": "https://obrazki.elektroda.pl/1797393800_1621784942.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic3806769.html#gallery-81"
@@ -9948,8 +9949,9 @@
     {
       "vendor": "",
       "bDetailed": "0",
-      "name": "CT60W XR809 Indoor PIR Sensor",
+      "name": "CT60W Indoor PIR Sensor",
       "chip": "XR809",
+      "board": "XR3",      
       "pins": {},
       "image": "https://obrazki.elektroda.pl/6755644700_1624469693.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic3806769.html#gallery-90"
@@ -9959,6 +9961,7 @@
       "bDetailed": "1",
       "name": "AW201 Door Sensor",
       "chip": "XR809",
+      "board": "XR3",      
       "pins": {},
       "image": "https://obrazki.elektroda.pl/7067073100_1611483584.jpg",
       "wiki": "https://www.elektroda.pl/rtvforum/topic3771510.html"
@@ -9968,6 +9971,7 @@
       "bDetailed": "1",
       "name": "Tuya Smart WiFi Water Leak Sensor",
       "chip": "XR809",
+      "board": "XR3",      
       "pins": {},
       "image": "https://obrazki.elektroda.pl/6511416900_1650973467.jpg",
       "wiki": "https://www.elektroda.pl/rtvforum/viewtopic.php?p=20003017#20003017"
