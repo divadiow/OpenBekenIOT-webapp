@@ -9967,6 +9967,36 @@
       "wiki": "https://www.elektroda.pl/rtvforum/topic3771510.html"
     },
     {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Rti-Tek Smart Wi-Fi Water Irrigation Timer",
+      "model": "WT501W",
+      "chip": "XR806",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "XR806af2e",
+        "DCDC",
+        "RT-WT501",
+        "h9tjkhgeovlaeelc",
+        "e1kgnhpc",
+        "keyej9mtcmegv4qe"
+      ],
+      "pins": {
+        "3": "BAT_ADC;7",
+        "11": "Btn_ScriptOnly;0",
+        "12": "AlwaysLow;1",
+        "19": "Rel;3",
+        "20": "Rel;4",
+        "21": "LED;5",
+        "22": "LED;6",
+        "23": "BAT_Relay;7"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/3359479500_1776343824.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4171463.html"
+    },    
+    {
       "vendor": "Smartlife",
       "bDetailed": "1",
       "name": "Tuya Smart WiFi Water Leak Sensor",
