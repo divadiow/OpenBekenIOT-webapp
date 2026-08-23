@@ -2,7 +2,7 @@
     <div>
         <div>
             <div class="flashIntro">
-            <p>Use this page to read and download flash regions directly from the device, and write RF/CFG partitions. The RF partition contains Beken calibration and network identity data, while the OBK configuration contains OpenBeken settings.</p>
+            <p>Use this page to read and download flash regions directly from the device, write RF/CFG partitions, or write a file at a custom flash offset. The RF partition contains Beken calibration and network identity data, while the OBK configuration contains OpenBeken settings.</p>
             <p>If your device has an invalid MAC address ending in <code>00:00:00</code>, use Restore RF configuration (supported on BK7231N/T2/T34, BK7231T, BK7231U, BK7252, BK7231M, BK7258/T5, BK7238/T1, BK7252N/T4, BK7236/T3). This rewrites the RF partition from a built-in template and generates a new MAC address by randomising the last 3 bytes. Reboot the device afterward.</p>
             <p><b>BK7238/T1 recommendation:</b> If you have a backup of the device's factory RF partition (TLV data), restoring it using <i>Write RF data to device</i> is recommended. The file should be the RF partition only (TLV header; typically <code>0x1000</code> bytes), not a full flash dump. OpenBK7238 stores RF at <code>0x1E0000</code>, while stock Tuya BK7238 firmware typically stores it at <code>0x1E3000</code>. Writing a known-good backup restores the factory MAC address and may also restore RF calibration data.</p>
             </div>
@@ -50,7 +50,17 @@
             <tr>
                 <td>  <button @click="readCustom(null, $event)">Read custom region (prompts for offset/length)</button></td>
                 <td> <button @click="downloadCustom(null, $event)">Download custom region (prompts for offset/length)</button></td>
-                <td></td>
+                <td>
+                    <div>
+                        <label for="customFilePicker">Select a file to write:</label>
+                        <input id="customFilePicker" type="file" @change="customFileSelected($event)">
+                        <label for="customFlashOffset">Flash offset (hex):</label>
+                        <input id="customFlashOffset" type="text" v-model.trim="customFlashOffset" placeholder="0x0">
+                        <div v-if="customFileName">Selected {{ customFileName }} ({{ customFileData.byteLength }} bytes).</div>
+                        <div v-if="customWriteStatus" :class="{invalid: invalidCustomWrite}">{{ customWriteStatus }}</div>
+                        <button @click="writeCustom(null, $event)" :disabled="!customFileData">Write custom</button>
+                    </div>
+                </td>
                 <td></td>
             </tr>
             </table>
@@ -110,6 +120,11 @@
         rfCfgText: '',
         invalidRFCFGSelected: true,
         RFcfgStatus: '',
+        customFileData: null,
+        customFileName: '',
+        customFlashOffset: '0x0',
+        customWriteStatus: '',
+        invalidCustomWrite: false,
       }
     },
     computed:{
@@ -511,6 +526,94 @@
 	        })
 	        .catch(err => console.error(err));
 	},
+        customFileSelected(ev) {
+            this.customFileData = null;
+            this.customFileName = '';
+            this.customWriteStatus = '';
+            this.invalidCustomWrite = false;
+
+            const file = ev.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const result = event.target.result;
+                if (!result || result.byteLength === 0) {
+                    this.customWriteStatus = 'The selected file is empty.';
+                    this.invalidCustomWrite = true;
+                    return;
+                }
+                this.customFileData = result;
+                this.customFileName = file.name;
+            };
+            reader.onerror = () => {
+                this.customWriteStatus = 'Unable to read the selected file.';
+                this.invalidCustomWrite = true;
+            };
+            reader.readAsArrayBuffer(file);
+        },
+        parseCustomFlashOffset() {
+            const value = String(this.customFlashOffset).trim();
+            if (!/^(?:0x)?[0-9a-f]+$/i.test(value)) return null;
+
+            const offset = parseInt(value.replace(/^0x/i, ''), 16);
+            return Number.isSafeInteger(offset) && offset >= 0 ? offset : null;
+        },
+        writeCustom(cb) {
+            if (!this.customFileData) {
+                alert('Select a non-empty file first.');
+                return;
+            }
+
+            const offset = this.parseCustomFlashOffset();
+            if (offset === null) {
+                this.customWriteStatus = 'Enter a valid hexadecimal flash offset.';
+                this.invalidCustomWrite = true;
+                return;
+            }
+
+            const endOffset = offset + this.customFileData.byteLength;
+            if (!Number.isSafeInteger(endOffset)) {
+                this.customWriteStatus = 'The selected offset and file length are too large.';
+                this.invalidCustomWrite = true;
+                return;
+            }
+
+            const confirmation = prompt(`This will overwrite ${this.customFileData.byteLength} bytes of flash from 0x${offset.toString(16)} to 0x${(endOffset - 1).toString(16)}. Type WRITE to continue.`, 'CANCEL');
+            if (confirmation !== 'WRITE') return;
+
+            this.writeCustomInternal(offset, cb);
+        },
+        writeCustomInternal(offset, cb) {
+            const length = this.customFileData.byteLength;
+            const range = `${offset.toString(16)}-${length.toString(16)}`;
+            const url = window.device + '/api/flash/' + range;
+            this.customWriteStatus = `Writing ${length} bytes to 0x${offset.toString(16)}...`;
+            this.invalidCustomWrite = false;
+            this.status += `<br/>${this.customWriteStatus}`;
+            console.log('Will use URL ' + url);
+
+            fetch(url, {
+                method: 'POST',
+                body: this.customFileData
+            })
+            .then(response => response.text().then(text => {
+                if (!response.ok) throw new Error(text || `HTTP ${response.status}`);
+                return text;
+            }))
+            .then(text => {
+                console.log('received ' + text);
+                this.customWriteStatus = `Write complete: ${length} bytes written at 0x${offset.toString(16)}.`;
+                this.status += `<br/>${this.customWriteStatus}`;
+                if (cb) cb();
+            })
+            .catch(err => {
+                console.error(err);
+                this.customWriteStatus = 'Write failed: ' + err.toString();
+                this.invalidCustomWrite = true;
+                this.status += `<br/>${this.customWriteStatus}`;
+            });
+        },
         downloadFullDump() {
             if(0){
                 alert("Not available yet.");
