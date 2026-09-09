@@ -6697,6 +6697,25 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4135429.html"
     },
     {
+    "vendor": "GratKit",
+    "bDetailed": "0",
+    "name": "Filament Dryer Box",
+    "model": "Firefly V2.0",
+    "chip": "ECR6600",
+    "board": "AXYU",
+    "flags": "1024",
+    "keywords": [
+    "keywh3g9gqysykat",
+    "l0mtei3zr6xllasa",
+    "CJ-306K-V1.1",
+    "TuyaMCU"
+    ],
+    "pins": {},
+    "command": "startDriver TuyaMCU",
+    "image": "https://obrazki.elektroda.pl/9694864800_1788866080.png",
+    "wiki": "https://www.elektroda.com/rtvforum/topic4182695.html"
+    },
+    {
       "vendor": "EXTRASTAR",
       "bDetailed": "0",
       "name": "E14 Smart Bulb",
