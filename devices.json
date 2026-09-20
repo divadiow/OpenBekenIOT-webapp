@@ -1974,6 +1974,27 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4016922.html"
     },
     {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Martin Jerry 3-way Switch",
+      "model": "RP-ST01",
+      "chip": "BK7231N",
+      "board": "CB3S",
+      "flags": "1024",
+      "keywords": [
+        "e1kfkvfc",
+        "28uwxmn4ivbyslm9",
+        "nogdesx1o8a63f7t",
+        "TuyaMCU",
+        "Night Light Brightness",
+        "stvrdl"
+      ],
+      "pins": {},
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/7606147600_1789493956.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4183190.html"
+    },    
+    {
       "vendor": "Feit",
       "bDetailed": "1",
       "name": "Feit BPA800/RGBW/2 Bulb Article No. 1528975",
@@ -1989,6 +2010,21 @@
       },
       "image": "https://obrazki.elektroda.pl/9274879600_1700769145.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4016922.html"
+    },
+    {
+      "vendor": "Feit",
+      "bDetailed": "0",
+      "name": "Feit Electric A19 Smart Light Bulb",
+      "model": "BPA800/RGBW/AG/3/UK",      
+      "chip": "BK7238",
+      "board": "T1-U-HL",
+      "keywords": ["RGBCW","BP5758D","E26"],
+      "pins": {
+        "24": "BP5758D_DAT",
+        "9": "BP5758D_CLK"
+      },
+      "image": "https://obrazki.elektroda.pl/9274879600_1700769145.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4182326.html"
     },
     {
       "vendor": "eWelink",
@@ -6695,6 +6731,25 @@
       "command": "powersave 1",
       "image": "https://obrazki.elektroda.pl/4688195300_1755977721.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4135429.html"
+    },
+    {
+    "vendor": "GratKit",
+    "bDetailed": "0",
+    "name": "Filament Dryer Box",
+    "model": "Firefly V2.0",
+    "chip": "ECR6600",
+    "board": "AXYU",
+    "flags": "1024",
+    "keywords": [
+    "keywh3g9gqysykat",
+    "l0mtei3zr6xllasa",
+    "CJ-306K-V1.1",
+    "TuyaMCU"
+    ],
+    "pins": {},
+    "command": "startDriver TuyaMCU",
+    "image": "https://obrazki.elektroda.pl/9694864800_1788866080.png",
+    "wiki": "https://www.elektroda.com/rtvforum/topic4182695.html"
     },
     {
       "vendor": "EXTRASTAR",
