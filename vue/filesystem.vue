@@ -26,11 +26,18 @@
                 <button @click="getTar(null, $event)">Download filesystem backup (.tar)</button>
             </div>
             <div class="toolbarRow toolbarRowAdvanced">
-                <button @click="backup(null, $event)">Read FS block</button>
-                <button @click="restore(null, $event)">Restore FS block</button>
+                <button :disabled="lfsState.busy || lfsState.pending" @click="backup(null, $event)">Read FS block</button>
+                <button :disabled="lfsState.busy || lfsState.pending || !backupdata" @click="restore(null, $event)">Restore FS block</button>
                 <button @click="resetSVM(null, $event)">Reset scripts</button>
-                <button class="danger" @click="formatLittleFS(null, $event)">Format LittleFS</button>
-                <button class="danger" @click="resizeLittleFS(null, $event)">Resize LittleFS</button>
+                <button class="danger" :disabled="lfsState.busy || lfsState.pending" @click="formatLittleFS(null, $event)">Format LittleFS</button>
+                <button class="danger" :disabled="lfsState.busy || lfsState.pending" @click="resizeLittleFS(null, $event)">Schedule LittleFS resize</button>
+            </div>
+            <p v-if="lfsState.message" class="lfsNotice" role="status">{{ lfsState.message }}</p>
+            <div v-if="lfsState.pending" class="lfsNotice">
+                A resize may be pending. Reboot the device before using Format or raw FS-block tools.
+                The live file listing does not confirm the new size; files may be reformatted on reboot.
+                Refreshing this page does not reboot the device. Avoid FS-block/OTA tools elsewhere until after reboot.
+                <button :disabled="lfsState.busy" @click="acknowledgeLfsReboot">I have rebooted the device</button>
             </div>
         </div>
         <div class="bottom">
@@ -89,12 +96,28 @@
 </template>
 
 <script>
+  // Share an in-flight operation across tab remounts; remember a pending resize
+  // across page reloads. Firmware does not expose mounted/configured LFS geometry.
+  function getLfsMaintenanceState() {
+    const key = 'OpenBekenLfsResize:' + String(window.device || '').replace(/\/+$/, '');
+    const states = window.OpenBekenLfsMaintenance || (window.OpenBekenLfsMaintenance = {});
+    const state = states[key] || (states[key] = { key: key, busy: false, pending: false, message: '' });
+    try {
+      state.pending = state.pending || window.sessionStorage.getItem(key) === '1';
+    } catch (error) {
+      state.pending = true;
+      state.message = 'Cannot read the saved resize warning. Enable browser session storage before using LFS maintenance.';
+    }
+    return state;
+  }
+
   module.exports = {
 
     data: ()=>{
       return {
         msg: 'world!',
         backupdata: null,
+        lfsState: getLfsMaintenanceState(),
         status:'Ready.',
         folder:'',
         otatext:'Drop file(s) or a .tar archive here',
@@ -340,34 +363,45 @@
         },
 
         backup(cb){
+            if (!this.beginLfsOperation()) return;
+            this.backupdata = null;
             this.status += '<br/>Starting backup...';
             let url = window.device+'/api/fsblock';
-            fetch(url)
-                .then(response => response.arrayBuffer())
+            return fetch(url, { cache: 'no-store' })
+                .then(response => {
+                    if (!response.ok) throw new Error('HTTP ' + response.status);
+                    return response.arrayBuffer();
+                })
                 .then(buffer => {
                     this.backupdata = buffer; 
                     console.log('received '+buffer.byteLength);
                     this.status += ' backup complete.';
                     if(cb) cb();
                 })
-                .catch(err => console.error(err)); // Never forget the final catch!
+                .catch(err => { this.lfsState.message = 'FS-block read failed: ' + err.message; })
+                .finally(() => { this.lfsState.busy = false; });
         },
 
         restore(cb){
+            if (!this.backupdata || !this.beginLfsOperation()) return;
             this.status += '<br/>Starting restore...';
             let url = window.device+'/api/fsblock';
             if (this.backupdata){
-                fetch(url, { 
+                return fetch(url, {
                         method: 'POST',
                         body: this.backupdata
                     })
-                    .then(response => response.text())
+                    .then(response => {
+                        if (!response.ok) throw new Error('HTTP ' + response.status);
+                        return response.text();
+                    })
                     .then(text => {
                         console.log('received '+text);
                         this.status += ' restore complete.';
                         if(cb) cb();
                     })
-                    .catch(err => console.error(err)); // Never forget the final catch!
+                    .catch(err => { this.lfsState.message = 'FS-block restore not verified: ' + err.message; })
+                    .finally(() => { this.lfsState.busy = false; });
             }
         },
 
@@ -515,115 +549,109 @@
                     });
             }
         },
-        formatLittleFS(cb, event) {
-            const r = confirm("Format LittleFS? This will permanently delete all files on the device.");
-            if (r === false) {
-                this.status += '<br/>LittleFS format canceled.';
-                return;
-            }
-
-            // Close the editor (the file may no longer exist after formatting)
-            this.edittext = '';
-            this.editname = '';
-            const lbl = document.getElementById('fileEditorLabel');
-            const body = document.getElementById('fileEditorBody');
-            if (lbl) lbl.innerHTML = 'File editor: select a file to begin.';
-            if (body) body.style.display = 'none';
-
-            this.status += '<br/>Formatting LittleFS...';
-            const url = window.device + '/api/cmnd';
-            const cmd = 'lfs_format';
-
-            fetch(url, {
-                body: cmd,
-                method: 'POST',
-            })
-                .then(response => response.text())
-                .then(text => {
-                    console.log('lfs_format response:', text);
-                    this.status += ' done.';
-                    if (cb) cb();
-
-                    // The format can take a moment; refresh the listing shortly afterwards.
-                    setTimeout(() => {
-                        this.read();
-                    }, 1500);
-                })
-                .catch(err => {
-                    console.error(err);
-                    this.status += '<br/>LittleFS format failed: ' + err;
-                });
+        beginLfsOperation() {
+            if (this.lfsState.busy || this.lfsState.pending) return false;
+            this.lfsState.busy = true;
+            this.lfsState.message = '';
+            return true;
         },
-        resizeLittleFS(cb, event) {
-            const input = prompt(
-                "Enter new LittleFS size in bytes (hex like 0x10000 or decimal like 65536):",
-                "0x10000"
-            );
-
-            if (input === null) {
-                this.status += '<br/>LittleFS resize canceled.';
-                return;
+        setLfsResizePending(pending) {
+            // Write before sending lfs_size: losing its reply does not undo it.
+            if (pending) window.sessionStorage.setItem(this.lfsState.key, '1');
+            else window.sessionStorage.removeItem(this.lfsState.key);
+            this.lfsState.pending = pending;
+        },
+        acknowledgeLfsReboot() {
+            if (this.lfsState.busy || !this.lfsState.pending) return;
+            if (!confirm('Confirm that you have rebooted this device since the resize attempt. A page refresh is not a reboot. This only clears the browser warning; it does not reboot or verify filesystem geometry.')) return;
+            try {
+                this.setLfsResizePending(false);
+                this.backupdata = null;
+                this.lfsState.message = 'Reboot acknowledged. Read a new FS block before any raw restore.';
+            } catch (error) {
+                this.lfsState.message = 'Cannot clear the resize warning: ' + error.message;
             }
-
+        },
+        async sendLfsCommand(command) {
+            const response = await fetch(window.device + '/api/cmnd', { method: 'POST', body: command });
+            const text = await response.text();
+            let result;
+            try {
+                // Some firmware builds omit the value after the final "res":.
+                result = JSON.parse(text.replace(/("res"\s*:)\s*}$/, '$1null}'));
+            } catch (error) { /* An HTML fallback/error page is not command success. */ }
+            if (!response.ok || !result || result.success !== 200 || result.error !== undefined) {
+                const error = new Error('HTTP ' + response.status + ': ' + ((result && result.msg) || text.slice(0, 200)));
+                error.rejected = (response.status === 400 || response.status === 501) && result && result.error === response.status;
+                throw error;
+            }
+        },
+        async formatLittleFS(cb) {
+            if (this.lfsState.busy || this.lfsState.pending) return;
+            if (!confirm('Format LittleFS? This permanently deletes all files. Back up files and stop scripts/file transfers first. Unsaved editor text will be cleared only after verification.')) return;
+            if (!this.beginLfsOperation()) return;
+            const editname = this.editname, edittext = this.edittext;
+            this.lfsState.message = 'Formatting LittleFS...';
+            try {
+                await this.sendLfsCommand('lfs_format');
+                // lfs_format is synchronous, but its return code can hide an
+                // internal format/remount failure. Check the live root, not a timer.
+                const response = await fetch(window.device + '/api/lfs/', { cache: 'no-store' });
+                if (!response.ok) throw new Error('Filesystem check returned HTTP ' + response.status);
+                const listing = await response.json();
+                if (!listing || typeof listing.dir !== 'string' || !Array.isArray(listing.content) ||
+                    listing.content.some(file => !file || file.error !== undefined || file.type !== 2 || (file.name !== '.' && file.name !== '..'))) {
+                    throw new Error('Could not verify an empty root directory. Check the device log and files.');
+                }
+                this.files = [];
+                if (this.editname === editname && this.edittext === edittext) {
+                    this.edittext = '';
+                    this.editname = '';
+                    const label = document.getElementById('fileEditorLabel');
+                    const body = document.getElementById('fileEditorBody');
+                    if (label) label.textContent = 'File editor: select or create a file to begin.';
+                    if (body) body.style.display = 'none';
+                }
+                this.lfsState.message = 'Format command accepted; LittleFS is readable and its root directory is empty.';
+                if (cb) cb();
+            } catch (error) {
+                this.lfsState.message = 'Format not verified: ' + error.message + ' Files may already have changed. Editor text was kept; no automatic retry.';
+            } finally {
+                this.lfsState.busy = false;
+            }
+        },
+        async resizeLittleFS(cb) {
+            if (this.lfsState.busy || this.lfsState.pending) return;
+            const input = prompt('New LittleFS size in bytes (hex such as 0x10000 or decimal such as 65536):', '0x10000');
+            if (input === null) return;
             const raw = input.trim();
-            if (!raw) {
-                alert("Size cannot be empty.");
+            const size = /^(0x[0-9a-f]+|[0-9]+)$/i.test(raw) ? Number(raw) : NaN;
+            // strtol in the MCU firmware is signed 32-bit. Platform size/alignment
+            // checks remain in firmware, rather than another per-platform JS table.
+            if (!Number.isSafeInteger(size) || size <= 0 || size > 0x7fffffff) {
+                this.lfsState.message = 'Invalid size. Enter a positive integer no larger than 0x7fffffff in decimal or hex.';
                 return;
             }
-
-            // Accept hex (0x...) or decimal
-            let sizeVal = null;
-            if (/^0x[0-9a-fA-F]+$/.test(raw)) {
-                sizeVal = parseInt(raw, 16);
-            } else if (/^[0-9]+$/.test(raw)) {
-                sizeVal = parseInt(raw, 10);
-            } else {
-                alert("Invalid size. Use hex like 0x10000 or decimal like 65536.");
-                return;
+            const sizeHex = '0x' + size.toString(16);
+            if (!confirm('Schedule LittleFS size ' + sizeHex + ' (' + size + ' bytes)? Firmware may round down to its block size. The change takes effect on reboot and may reformat/delete files. Back up files first. Raw FS-block tools and Format will be blocked until you acknowledge a device reboot.')) return;
+            if (!this.beginLfsOperation()) return;
+            try {
+                this.setLfsResizePending(true);
+                this.backupdata = null;
+                this.lfsState.message = 'Requesting LittleFS size ' + sizeHex + '...';
+                await this.sendLfsCommand('lfs_size ' + sizeHex);
+                this.lfsState.message = 'Size request ' + sizeHex + ' accepted; reboot required. The live filesystem has not been resized by this command. Files may be reformatted on reboot.';
+                if (cb) cb();
+            } catch (error) {
+                // Only a recognized firmware rejection proves lfs_size was not
+                // accepted. Network/invalid-response failures leave the guard set.
+                if (error.rejected) {
+                    try { this.setLfsResizePending(false); } catch (storageError) { /* Keep the guard. */ }
+                }
+                this.lfsState.message = (error.rejected ? 'Resize rejected: ' : 'Resize outcome not confirmed: ') + error.message;
+            } finally {
+                this.lfsState.busy = false;
             }
-
-            if (!Number.isFinite(sizeVal) || sizeVal <= 0) {
-                alert("Size must be a positive number.");
-                return;
-            }
-
-            // Normalise to hex for the command (matches your example)
-            const sizeHex = '0x' + sizeVal.toString(16);
-
-            const ok = confirm(
-                `Resize LittleFS to ${sizeHex} (${sizeVal} bytes)?\n\nThis will erase existing files. Reboot to apply.`
-            );
-            if (!ok) {
-                this.status += '<br/>LittleFS resize canceled.';
-                return;
-            }
-
-            // Safer UX: close editor (resizing can invalidate files)
-            this.edittext = '';
-            this.editname = '';
-            const lbl = document.getElementById('fileEditorLabel');
-            const body = document.getElementById('fileEditorBody');
-            if (lbl) lbl.innerHTML = 'File editor: select a file to begin.';
-            if (body) body.style.display = 'none';
-
-            this.status += `<br/>Resizing LittleFS to ${sizeHex}...`;
-            const url = window.device + '/api/cmnd';
-            const cmd = `lfs_size ${sizeHex}`;
-
-            fetch(url, { body: cmd, method: 'POST' })
-                .then(r => r.text())
-                .then(text => {
-                    console.log('lfs_size response:', text);
-                    this.status += ' done.';
-                    if (cb) cb();
-
-                    // Give the device a moment, then refresh file list
-                    setTimeout(() => this.read(), 1500);
-                })
-                .catch(err => {
-                    console.error(err);
-                    this.status += '<br/>LittleFS resize failed: ' + err;
-                });
         },
 
         startScript_simple() {
@@ -1202,7 +1230,17 @@
         border-top: none;
     }
     button.danger {
-        border-width: 2px;
+        border: 2px solid #a32020;
+        color: #8b1b1b;
+    }
+    button.danger:disabled {
+        opacity: 0.5;
+    }
+    .lfsNotice {
+        margin: 0;
+        padding: 6px 8px;
+        border-left: 3px solid #a46a00;
+        overflow-wrap: anywhere;
     }
 
     /* Main 3-column layout */
