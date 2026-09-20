@@ -28,6 +28,8 @@
                 class="importTextarea importTextarea--mono"
                 placeholder="Paste an OpenBeken template or Cloudcutter JSON here, a Tuya config partition, or drop a 2MB .bin firmware dump onto this box."
                 @input="handleImportTemplateChange"
+                @dragover.prevent
+                @drop="handleDrop"
                 v-model="importTemplateText"
               ></textarea>
             </div>
@@ -63,8 +65,8 @@
 
           <div class="importCardBody importCardBody--top">
             <div class="importTopText">
-              <p id="generateTextID" class="importBodyText">OpenBeken configuration script:</p>
-              <p id="generateStatusID" class="importStatusLine"></p>
+              <p class="importBodyText">OpenBeken configuration script:</p>
+              <p class="importStatusLine" :class="'importStatusLine--' + generationState" aria-live="polite">{{ generationMessage }}</p>
             </div>
 
             <div class="importMainPane">
@@ -94,8 +96,8 @@
               <p class="importBodyText">When you are satisfied with the script, click Apply to update the device.</p>
 
               <div class="importApplyActionRow">
-                <button class="importBtn importBtn--primary importBtn--slim" type="button" @click="applyScript()">
-                  Apply script (clears current configuration)
+                <button class="importBtn importBtn--primary importBtn--slim" type="button" :disabled="!canApply" @click="applyScript()">
+                  {{ isApplying ? 'Applying script...' : 'Apply script (clears current configuration)' }}
                 </button>
               </div>
             </div>
@@ -103,7 +105,7 @@
             <div class="importMainPane importMainPane--apply">
               <div class="importStatusBlock">
                 <div class="importPlaceholderLabel">Apply status</div>
-                <p id="progressTextID" class="importStatusLine importStatusLine--mono"></p>
+                <p class="importStatusLine importStatusLine--mono" :class="'importStatusLine--' + applyState" aria-live="polite">{{ applyMessage }}</p>
               </div>
             </div>
 
@@ -124,7 +126,11 @@
             Shows progress, successes, and errors while processing dropped files and extracting Tuya configuration data.
           </p>
 
-          <div id="debugLog" class="importLogBox" v-html="logHtml"></div>
+          <div ref="debugLog" class="importLogBox">
+            <div v-for="entry in logEntries" :key="entry.id" class="importLogEntry" :class="'importLogEntry--' + entry.type">
+              [{{ entry.time }}] {{ entry.message }}
+            </div>
+          </div>
         </div>
       </section>
     </div>
@@ -132,249 +138,461 @@
 </template>
 
 <script>
+  const IMPORT_DEPENDENCIES_PROMISE = 'OpenBekenWebAppImportDependenciesPromise';
+  const CRYPTO_JS_URL = 'https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js';
+  const PUBLIC_WEBAPP_ROOT = 'https://openbekeniot.github.io/webapp/';
+
+  function joinImportAssetUrl(root, filename) {
+    const base = (root || '').toString().replace(/\/+$/, '');
+    const path = filename.replace(/^\/+/, '');
+    return base ? base + '/' + path : path;
+  }
+
+  function absoluteScriptUrl(url) {
+    try {
+      return new URL(url, document.baseURI).href;
+    } catch (error) {
+      return url;
+    }
+  }
+
+  function loadImportScript(url, isReady, label) {
+    if (isReady()) return Promise.resolve();
+
+    const absoluteUrl = absoluteScriptUrl(url);
+    const scripts = Array.prototype.slice.call(document.querySelectorAll('script[src]'));
+    let script = scripts.find(item => item.src === absoluteUrl);
+
+    return new Promise((resolve, reject) => {
+      const onLoad = () => {
+        script.setAttribute('data-openbeken-import-state', 'loaded');
+        if (isReady()) resolve();
+        else reject(new Error(label + ' loaded but did not expose the expected API.'));
+      };
+      const onError = () => {
+        script.setAttribute('data-openbeken-import-state', 'error');
+        reject(new Error('Failed to load ' + label + ' from ' + url + '.'));
+      };
+
+      if (script) {
+        const state = script.getAttribute('data-openbeken-import-state');
+        if (state === 'loaded') {
+          onLoad();
+          return;
+        }
+        if (state === 'error') {
+          onError();
+          return;
+        }
+        // Only wait on scripts created by this loader and explicitly marked
+        // as still loading. An unrelated/pre-existing script may already have
+        // fired its load event, in which case waiting here would hang forever.
+        if (state !== 'loading') {
+          script = null;
+        }
+      }
+
+      if (!script) {
+        script = document.createElement('script');
+        script.src = url;
+        script.async = false;
+        script.setAttribute('data-openbeken-import-dependency', label);
+        script.setAttribute('data-openbeken-import-state', 'loading');
+      }
+
+      script.addEventListener('load', onLoad, { once: true });
+      script.addEventListener('error', onError, { once: true });
+      if (!script.parentNode) document.head.appendChild(script);
+    });
+  }
+
+  function loadImportScriptWithFallback(urls, isReady, label) {
+    const uniqueUrls = [];
+    const seen = {};
+    urls.forEach(url => {
+      const key = absoluteScriptUrl(url);
+      if (!seen[key]) {
+        seen[key] = true;
+        uniqueUrls.push(url);
+      }
+    });
+
+    let next = Promise.reject(new Error('No URL available for ' + label + '.'));
+    uniqueUrls.forEach(url => {
+      next = next.catch(() => loadImportScript(url, isReady, label));
+    });
+    return next;
+  }
+
+  function getImportDependencies() {
+    const dependenciesReady = () => (
+      typeof window.CryptoJS !== 'undefined' &&
+      typeof window.processJSON === 'function' &&
+      typeof window.TuyaExporter !== 'undefined' &&
+      typeof window.TuyaExporter.extractConfig === 'function'
+    );
+
+    if (dependenciesReady()) return Promise.resolve();
+    if (window[IMPORT_DEPENDENCIES_PROMISE]) return window[IMPORT_DEPENDENCIES_PROMISE];
+
+    const parserUrls = [
+      joinImportAssetUrl(window.root, 'templateParser.js'),
+      joinImportAssetUrl(PUBLIC_WEBAPP_ROOT, 'templateParser.js')
+    ];
+    const exporterUrls = [
+      joinImportAssetUrl(window.root, 'tuyaExporter.js'),
+      joinImportAssetUrl(PUBLIC_WEBAPP_ROOT, 'tuyaExporter.js')
+    ];
+
+    const dependencyPromise = loadImportScript(
+      CRYPTO_JS_URL,
+      () => typeof window.CryptoJS !== 'undefined',
+      'CryptoJS'
+    )
+      .then(() => loadImportScriptWithFallback(
+        parserUrls,
+        () => typeof window.processJSON === 'function',
+        'templateParser.js'
+      ))
+      .then(() => loadImportScriptWithFallback(
+        exporterUrls,
+        () => typeof window.TuyaExporter !== 'undefined' && typeof window.TuyaExporter.extractConfig === 'function',
+        'tuyaExporter.js'
+      ));
+
+    // Do not permanently cache a rejected Promise. A transient network/CDN
+    // failure should be recoverable by reopening the Import tab and retrying.
+    window[IMPORT_DEPENDENCIES_PROMISE] = dependencyPromise.catch(error => {
+      delete window[IMPORT_DEPENDENCIES_PROMISE];
+      throw error;
+    });
+
+    return window[IMPORT_DEPENDENCIES_PROMISE];
+  }
+
   module.exports = {
     components: {
       'import': window.getComponent('import')
     },
     data: ()=> {
       return {
-        generateText: "",
         importTemplateText: "",
         generatedScriptText: "",
-        progressText: "",
-        generateTextElem: undefined,
-        generateStatusElem: undefined,
-        progressTextElem: undefined,
-        logHtml: "",
+        generatedScriptValid: false,
+        sourceRevision: 0,
+        dependencyState: "loading",
+        dependencyMessage: "Loading import dependencies...",
+        generationState: "loading",
+        generationMessage: "Waiting for import dependencies...",
+        isApplying: false,
+        applyState: "idle",
+        applyMessage: "No script is ready to apply.",
+        logEntries: [],
+        nextLogId: 1,
+      }
+    },
+    computed: {
+      canApply() {
+        return this.generatedScriptValid && this.generatedScriptText.trim().length > 0 && !this.isApplying;
       }
     },
     methods: {
       log(msg, type = 'info') {
-          let color = 'black';
-          if(type === 'error') color = 'red';
-          if(type === 'warning') color = 'orange';
-          if(type === 'success') color = 'green';
-          if(type === 'info') color = 'blue';
+        const allowedTypes = ['error', 'warning', 'success', 'info'];
+        const safeType = allowedTypes.indexOf(type) >= 0 ? type : 'info';
+        const message = String(msg);
+        this.logEntries.push({
+          id: this.nextLogId++,
+          time: new Date().toLocaleTimeString(),
+          message: message,
+          type: safeType
+        });
 
-          const time = new Date().toLocaleTimeString();
-          const html = `<div style="color:${color}">[${time}] ${msg}</div>`;
-          this.logHtml += html;
-
-          this.$nextTick(() => {
-             const elem = document.getElementById('debugLog');
-             if(elem) elem.scrollTop = elem.scrollHeight;
-          });
-          console.log(`[${type}] ${msg}`);
+        this.$nextTick(() => {
+          const elem = this.$refs && this.$refs.debugLog;
+          if(elem) elem.scrollTop = elem.scrollHeight;
+        });
+        console.log(`[${safeType}] ${message}`);
       },
       clearLog() {
-        this.logHtml = "";
+        this.logEntries = [];
       },
-      getinfo() {
-
-      },
-      onSendFailed(response, line) {
-        if(response.status == 501 || response.status == 400) {
-           this.progressTextElem.innerHTML += "<span style='color:red;'>Failed: invalid command \"" + line + "\".</span>";
-        } else {
-           this.progressTextElem.innerHTML += "<span style='color:red;'>Failed. Check your network connection and try again.</span>";
+      invalidateGeneratedScript(message, state = 'idle') {
+        this.generatedScriptText = "";
+        this.generatedScriptValid = false;
+        this.generationState = state;
+        this.generationMessage = message;
+        if (!this.isApplying) {
+          this.applyState = 'idle';
+          this.applyMessage = 'No script is ready to apply.';
         }
+      },
+      sourceInputChanged() {
+        this.sourceRevision++;
+        this.invalidateGeneratedScript('Validating current input...', 'loading');
+        this.refreshTemplateImport(this.sourceRevision);
+      },
+      async loadDependencies() {
+        this.dependencyState = 'loading';
+        this.dependencyMessage = 'Loading import dependencies...';
+        if (!this.importTemplateText.trim()) {
+          this.generationState = 'loading';
+          this.generationMessage = 'Waiting for import dependencies...';
+        }
+
+        try {
+          await getImportDependencies();
+          this.dependencyState = 'ready';
+          this.dependencyMessage = 'Import dependencies are ready.';
+          if (this.importTemplateText.trim()) {
+            this.refreshTemplateImport(this.sourceRevision);
+          } else {
+            this.invalidateGeneratedScript('No input provided.', 'idle');
+          }
+        } catch (error) {
+          const message = error && error.message ? error.message : String(error);
+          this.dependencyState = 'error';
+          this.dependencyMessage = 'Import dependencies failed to load: ' + message;
+          this.invalidateGeneratedScript(this.dependencyMessage, 'error');
+          this.log(this.dependencyMessage, 'error');
+        }
+      },
+      executableLines(lines) {
+        return lines
+          .map((line, index) => ({ command: line.trim(), lineNumber: index + 1 }))
+          .filter(item => item.command.length > 0 && !item.command.startsWith('//'));
       },
       async sendLines(lines) {
-        this.progressTextElem.innerHTML = "Sending...";
-        let idx = 0;
-        for (let line of lines) {
-          line = line.trim();
-          if(line.length < 1) { idx++; continue; }
-          if(line.length >= 2 && line[0] == '/' && line[1] == '/') { idx++; continue; }
-
-          let dbg = "";
-          if(false){
-            dbg = " (" + line + ")";
-          }
-          this.progressTextElem.innerHTML += " Sending " + idx + " of " + lines.length + dbg + "...";
-          await this.sendLine(line, this.onSendFailed);
-          idx++;
+        const commands = this.executableLines(lines);
+        if (commands.length === 0) {
+          const emptyError = new Error('The generated script contains no executable commands.');
+          emptyError.lineNumber = 0;
+          emptyError.command = '';
+          emptyError.completedCount = 0;
+          throw emptyError;
         }
-        this.progressTextElem.innerHTML += "<span style='color:green;'> Completed.</span>";
-        this.progressTextElem.innerHTML += "<span style='color:green;'> Restart the device if required.</span>";
-      },
-      async sendLine(line, errorHandler) {
-        line = line.trim();
-        if(line.length < 1) return;
 
-        console.log("sending line: " + line);
-        let url = window.device + '/api/cmnd';
-        return new Promise((resolve, reject) => {
-          fetch(url, {
-            method: "POST",
-            body: line
-          })
-          .then(response => {
-            if (!response.ok) {
-              errorHandler(response, line);
-              throw new Error("Failed to send line " + line + " with error " + response.status);
-            }
-            resolve();
-          })
-          .catch(error => {
-            reject(error);
-          });
-        });
+        let completedCount = 0;
+        for (const item of commands) {
+          this.applyMessage = `Sending command ${completedCount + 1} of ${commands.length} (line ${item.lineNumber}): ${item.command}`;
+          try {
+            await this.sendLine(item.command);
+            completedCount++;
+          } catch (error) {
+            error.lineNumber = item.lineNumber;
+            error.command = item.command;
+            error.completedCount = completedCount;
+            error.totalCount = commands.length;
+            throw error;
+          }
+        }
+        return { completedCount: completedCount, totalCount: commands.length };
       },
-      applyScript() {
-        const lines = this.generatedScriptText.split("\n");
-        this.sendLines(lines);
+      async sendLine(line) {
+        console.log('sending line: ' + line);
+        const url = window.device + '/api/cmnd';
+        let response;
+        try {
+          response = await fetch(url, { method: 'POST', body: line });
+        } catch (error) {
+          throw new Error('Network error: ' + (error && error.message ? error.message : String(error)));
+        }
+
+        const responseText = await response.text();
+        if (!response.ok) {
+          let detail = responseText;
+          try {
+            const parsed = JSON.parse(responseText);
+            detail = parsed.msg || responseText;
+          } catch (error) {
+            // Keep the plain response text when the body is not JSON.
+          }
+          throw new Error('Device rejected the command (HTTP ' + response.status + ')' + (detail ? ': ' + detail : '.'));
+        }
+      },
+      async applyScript() {
+        if (!this.canApply) return;
+
+        const confirmed = window.confirm(
+          'Apply this generated script?\n\n' +
+          'This can clear the current GPIO/channel configuration, format and clear LittleFS, clear the startup command, stop drivers, and then apply the replacement configuration.\n\n' +
+          'This operation is not atomic. If a command fails part-way through, the device may be left only partially reconfigured.'
+        );
+        if (!confirmed) {
+          this.applyState = 'idle';
+          this.applyMessage = 'Apply canceled.';
+          return;
+        }
+
+        this.isApplying = true;
+        this.applyState = 'running';
+        this.applyMessage = 'Starting script application...';
+
+        try {
+          const result = await this.sendLines(this.generatedScriptText.split('\n'));
+          this.applyState = 'success';
+          this.applyMessage = `Completed successfully. ${result.completedCount} commands were applied. Restart the device if required.`;
+          this.log(this.applyMessage, 'success');
+        } catch (error) {
+          const commandDescription = error.command ? `line ${error.lineNumber} (${error.command})` : 'the script';
+          if (error.completedCount > 0) {
+            this.applyState = 'partial';
+            this.applyMessage = `Stopped at ${commandDescription}: ${error.message} ${error.completedCount} earlier command(s) succeeded, so the device may now be partially reconfigured.`;
+          } else {
+            this.applyState = 'failure';
+            this.applyMessage = `Failed at ${commandDescription}: ${error.message} No commands were successfully applied.`;
+          }
+          this.log(this.applyMessage, 'error');
+        } finally {
+          this.isApplying = false;
+        }
       },
       setImportSrc(txt) {
         this.importTemplateText = txt;
-        this.refreshTemplateImport();
+        this.sourceInputChanged();
       },
-      loadDemo(url) {
-        fetch(url)
-          .then(response => response.text())
-          .then(res => {
-            this.setImportSrc(res);
-          })
-          .catch(err => {
-            this.error = err.toString();
-            console.error(err)
-          });
-      },
-      handleImportTemplateChange(event) {
-        console.log("Import template changed!");
+      async loadDemo(url) {
         this.clearLog();
-        this.refreshTemplateImport();
-      },
-      refreshTemplateImport() {
-        let res;
-        if(processJSON == undefined){
-          if(this.generateStatusElem) this.generateStatusElem.innerHTML = "<span style='color:red;'>Template parser is not loaded yet.</span>";
-          return;
-        }
-        let jsonText = (this.importTemplateText || "").trim();
-        if(jsonText.length < 1) {
-          if(this.generateStatusElem) this.generateStatusElem.innerHTML = "<span style='color:orange;'>No input provided.</span>";
-          return;
-        }
-        try {
-          res = processJSON(jsonText);
-        } catch (error) {
-          if(this.generateStatusElem) this.generateStatusElem.innerHTML = "<span style='color:red;'>Failed: " + error + ".</span>";
-          return;
-        }
-        this.generatedScriptText  = "";
-        this.generatedScriptText += "ClearIO // clear old GPIO/channels\n";
-        this.generatedScriptText += "lfs_format // clear LittleFS\n";
-        this.generatedScriptText += "StartupCommand \"\"  // clear STARTUP\n";
-        this.generatedScriptText += "stopDriver *  // stop drivers\n";
-        this.generatedScriptText += res.scr;
+        this.sourceRevision++;
+        const revision = this.sourceRevision;
+        this.invalidateGeneratedScript('Loading example...', 'loading');
 
-        if(this.generateStatusElem) this.generateStatusElem.innerHTML = "<span style='color:green;'>OK. Script generated.</span>";
+        try {
+          const response = await fetch(url);
+          if (!response.ok) throw new Error('HTTP ' + response.status);
+          const text = await response.text();
+          if (revision !== this.sourceRevision) return;
+          this.setImportSrc(text);
+        } catch (error) {
+          if (revision !== this.sourceRevision) return;
+          const message = 'Failed to load example: ' + (error && error.message ? error.message : String(error));
+          this.invalidateGeneratedScript(message, 'error');
+          this.log(message, 'error');
+        }
       },
-      handleDragOver(event) {
-        event.preventDefault();
+      handleImportTemplateChange() {
+        this.clearLog();
+        this.sourceInputChanged();
+      },
+      refreshTemplateImport(revision = this.sourceRevision) {
+        this.invalidateGeneratedScript('Validating current input...', 'loading');
+
+        const jsonText = (this.importTemplateText || '').trim();
+        if (jsonText.length < 1) {
+          this.invalidateGeneratedScript('No input provided.', 'idle');
+          return;
+        }
+        if (this.dependencyState === 'error') {
+          this.invalidateGeneratedScript(this.dependencyMessage, 'error');
+          return;
+        }
+        if (this.dependencyState !== 'ready' || typeof window.processJSON !== 'function') {
+          this.invalidateGeneratedScript('Waiting for import dependencies...', 'loading');
+          return;
+        }
+
+        let result;
+        try {
+          result = window.processJSON(jsonText);
+          if (!result || typeof result.scr !== 'string') {
+            throw new Error('The template parser did not return a configuration script.');
+          }
+        } catch (error) {
+          if (revision !== this.sourceRevision) return;
+          this.invalidateGeneratedScript('Failed to parse current input: ' + (error && error.message ? error.message : String(error)), 'error');
+          return;
+        }
+
+        if (revision !== this.sourceRevision) return;
+        this.generatedScriptText = [
+          '// Clear current GPIO and channel configuration',
+          'ClearIO',
+          '// Clear LittleFS',
+          'lfs_format',
+          '// Clear the startup command',
+          'StartupCommand ""',
+          '// Stop active drivers',
+          'stopDriver *',
+          '// Apply replacement configuration',
+          result.scr
+        ].join('\n');
+        this.generatedScriptValid = true;
+        this.generationState = 'ready';
+        this.generationMessage = 'Script generated from the current input. Review and edit it before applying.';
+        this.applyState = 'idle';
+        this.applyMessage = 'Script is ready to apply.';
       },
       handleDrop(event) {
         event.preventDefault();
 
         this.clearLog();
-        this.importTemplateText = ""; // Clear old content immediately
+        this.importTemplateText = '';
+        this.sourceInputChanged();
+        const revision = this.sourceRevision;
         const files = event.dataTransfer.files;
 
-        if (files.length > 0) {
-          const file = files[0];
+        if (files.length < 1) return;
+        const file = files[0];
 
-          if (file.name.toLowerCase().endsWith('.bin')) {
-            this.log(`Processing dropped file: ${file.name}`, 'info');
-            const reader = new FileReader();
-            reader.onload = (evt) => {
-              const arrayBuffer = evt.target.result;
-              const uint8Array = new Uint8Array(arrayBuffer);
-              try {
-                if (typeof window.TuyaExporter === 'undefined' || !window.TuyaExporter.extractConfig) {
-                   this.log('TuyaExporter library not loaded correctly.', 'error');
-                   return;
-                }
-                const result = window.TuyaExporter.extractConfig(uint8Array, this.log);
-                if (result) {
-                  if (typeof result === 'object') {
-                    this.importTemplateText = JSON.stringify(result, null, 2);
-                    this.refreshTemplateImport();
-                    this.log('Config extracted and loaded successfully.', 'success');
-                  } else {
-                    this.importTemplateText = result;
-                    this.refreshTemplateImport();
-                    this.log('Config extracted but parsing had issues. Raw/Repaired text loaded.', 'warning');
-                  }
-                } else {
-                  this.log('Failed to extract config from binary.', 'error');
-                }
-              } catch (err) {
-                this.log(`Decryption crash: ${err.message}`, 'error');
-                console.error(err);
+        if (file.name.toLowerCase().endsWith('.bin')) {
+          this.log(`Processing dropped file: ${file.name}`, 'info');
+          const reader = new FileReader();
+          reader.onload = async(evt) => {
+            try {
+              if (revision !== this.sourceRevision) return;
+              await getImportDependencies();
+              if (revision !== this.sourceRevision) return;
+              if (typeof window.TuyaExporter === 'undefined' || typeof window.TuyaExporter.extractConfig !== 'function') {
+                throw new Error('TuyaExporter library is not available.');
               }
-            };
-            reader.readAsArrayBuffer(file);
-          } else {
-            this.log(`Dropped file is not .bin, trying text read for ${file.name}`, 'info');
-            const reader = new FileReader();
-            reader.onload = (e) => {
-              this.importTemplateText = e.target.result;
-              this.refreshTemplateImport();
-              this.log("Loaded text file content.", 'success');
-            };
-            reader.readAsText(file);
-          }
+
+              const result = window.TuyaExporter.extractConfig(new Uint8Array(evt.target.result), this.log);
+              if (!result) {
+                this.invalidateGeneratedScript('Failed to extract configuration from binary.', 'error');
+                this.log('Failed to extract config from binary.', 'error');
+                return;
+              }
+
+              if (typeof result === 'object') {
+                this.setImportSrc(JSON.stringify(result, null, 2));
+                this.log('Config extracted and loaded successfully.', 'success');
+              } else {
+                this.setImportSrc(result);
+                this.log('Config extracted but parsing had issues. Raw/Repaired text loaded.', 'warning');
+              }
+            } catch (error) {
+              if (revision !== this.sourceRevision) return;
+              const message = error && error.message ? error.message : String(error);
+              this.invalidateGeneratedScript('Binary extraction failed: ' + message, 'error');
+              this.log('Binary extraction failed: ' + message, 'error');
+              console.error(error);
+            }
+          };
+          reader.onerror = () => {
+            if (revision !== this.sourceRevision) return;
+            this.invalidateGeneratedScript('Failed to read the dropped binary file.', 'error');
+            this.log('Failed to read dropped binary file: ' + file.name, 'error');
+          };
+          reader.readAsArrayBuffer(file);
+        } else {
+          this.log(`Dropped file is not .bin, trying text read for ${file.name}`, 'info');
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            if (revision !== this.sourceRevision) return;
+            this.setImportSrc(event.target.result);
+            this.log('Loaded text file content.', 'success');
+          };
+          reader.onerror = () => {
+            if (revision !== this.sourceRevision) return;
+            this.invalidateGeneratedScript('Failed to read the dropped text file.', 'error');
+            this.log('Failed to read dropped text file: ' + file.name, 'error');
+          };
+          reader.readAsText(file);
         }
       },
     },
     mounted () {
-        this.progressTextElem = document.getElementById("progressTextID");
-        this.generateTextElem = document.getElementById("generateTextID");
-        this.generateStatusElem = document.getElementById("generateStatusID");
-
-        if(this.generateTextElem) {
-          this.generateTextElem.innerHTML = "OpenBeken configuration script:";
-        }
-        if(this.generateStatusElem) {
-          this.generateStatusElem.innerHTML = "<span style='color:#111;'>Waiting for input...</span>";
-        }
-        if(this.progressTextElem) {
-          this.progressTextElem.innerHTML = "";
-        }
-
-        const cryptoScript = document.createElement("script");
-        cryptoScript.setAttribute(
-          "src",
-          "https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"
-        );
-        cryptoScript.async = true;
-        document.head.appendChild(cryptoScript);
-
-        const plugin = document.createElement("script");
-        plugin.setAttribute(
-          "src",
-          "https://openbekeniot.github.io/webapp/templateParser.js"
-        );
-        plugin.async = true;
-        document.head.appendChild(plugin);
-
-        const plugin2 = document.createElement("script");
-        plugin2.setAttribute(
-          "src",
-          "https://openbekeniot.github.io/webapp/tuyaExporter.js"
-        );
-        plugin2.async = true;
-        document.head.appendChild(plugin2);
-
-        let importTemplateTextarea = document.getElementById("importTemplate");
-        if(importTemplateTextarea){
-          importTemplateTextarea.addEventListener('dragover', this.handleDragOver);
-          importTemplateTextarea.addEventListener('drop', this.handleDrop);
-        }
-    },
-    destroyed() {
-      clearInterval(this.interval);
+      this.loadDependencies();
     }
   }
 //@ sourceURL=/vue/import.vue
@@ -642,6 +860,12 @@
     filter: brightness(1.05);
   }
 
+  .importBtn:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    filter: none;
+  }
+
   .importBtn--primary {
     width: 100%;
   }
@@ -709,6 +933,22 @@
     color: #111827;
   }
 
+  .importStatusLine--ready,
+  .importStatusLine--success {
+    color: #1b5e20;
+  }
+
+  .importStatusLine--error,
+  .importStatusLine--failure,
+  .importStatusLine--partial {
+    color: #b71c1c;
+  }
+
+  .importStatusLine--loading,
+  .importStatusLine--running {
+    color: #1e40af;
+  }
+
   .importHint {
     font-size: 0.95em;
     color: #4b5563;
@@ -728,6 +968,11 @@
     background: #ffffff;
     white-space: pre-wrap;
   }
+
+  .importLogEntry--info { color: #1e40af; }
+  .importLogEntry--success { color: #1b5e20; }
+  .importLogEntry--warning { color: #9a6700; }
+  .importLogEntry--error { color: #b71c1c; }
 
   @media (max-width: 640px) {
     .importIntro {
