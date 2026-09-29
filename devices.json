@@ -2048,6 +2048,28 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4182326.html"
     },
     {
+      "vendor": "Action",
+      "bDetailed": "0",
+      "name": "Smart Wall Washer Light",
+      "model": "3225769",
+      "chip": "BK7238",
+      "board": "T1-U-HL",
+      "flags": "0",
+      "keywords": [
+        "NL2523-POWER-U1.8-26.04.10-W",
+        "WORLDSEM",
+        "WS2811",
+        "20251128A"
+      ],
+      "pins": {
+        "6": "Btn;0",
+        "16": "SM16703P_DIN;0"
+      },
+      "command": "backlog startDriver SM16703P; SM16703P_Init 3 RGB; startDriver PixelAnim; SetFlag 10 1; addEventHandler OnClick 6 power toggle;",
+      "image": "https://obrazki.elektroda.pl/1369043900_1790660706.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4184137.html"
+    },    
+    {
       "vendor": "Tuya",
       "bDetailed": "0",
       "name": "Pearl Auvisio Infrared IR Blaster",
