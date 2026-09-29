@@ -2068,6 +2068,32 @@
       "command": "backlog startDriver SM16703P; SM16703P_Init 3 RGB; startDriver PixelAnim; SetFlag 10 1; addEventHandler OnClick 6 power toggle;",
       "image": "https://obrazki.elektroda.pl/1369043900_1790660706.png",
       "wiki": "https://www.elektroda.com/rtvforum/topic4184137.html"
+    },
+    {
+      "vendor": "Behogan",
+      "bDetailed": "0",
+      "name": "16A Mini Smart Light Switch Module",
+      "model": "B0FY6PXZVN",
+      "chip": "LN882H",
+      "board": "on PCB",
+      "flags": "1024",
+      "keywords": [
+        "Tuya",
+        "Smart Life",
+        "16A mini relay",
+        "S1 S2",
+        "Input:AC100-240V 50/60Hz 16A Max",
+        "Ouput AC100-240V 50/60Hz 16A Max"
+      ],
+      "pins": {
+        "5": "Btn;1",
+        "7": "LED;1",
+        "12": "TglChanOnTgl;1",
+        "19": "Rel;1"
+      },
+      "command": "PowerSave 1",
+      "image": "https://obrazki.elektroda.pl/9604497200_1790508464.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4184037.html"
     },    
     {
       "vendor": "Tuya",
