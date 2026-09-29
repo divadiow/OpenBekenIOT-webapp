@@ -2048,6 +2048,29 @@
       "wiki": "https://www.elektroda.com/rtvforum/topic4182326.html"
     },
     {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Pearl Auvisio Infrared IR Blaster",
+      "model": "NX-4519-675",
+      "chip": "BK7231N",
+      "board": "TODO",
+      "flags": "1073759232",
+      "keywords": [
+        "REV2_2022_11_03_SK-CM",
+        "WEEE-Reg.-Nr. DE 60771113",
+        "Los-Nr.182337"
+      ],
+      "pins": {
+        "7": "IRSend;0",
+        "8": "IRRecv;0",
+        "24": "LED;0",
+        "26": "Btn;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/3660939000_1790602360.jpg",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4184108.html"
+    },    
+    {
       "vendor": "BAW",
       "bDetailed": "0",
       "name": "Smart Plug (AU)",
