@@ -2094,6 +2094,26 @@
       "command": "PowerSave 1",
       "image": "https://obrazki.elektroda.pl/9604497200_1790508464.jpg",
       "wiki": "https://www.elektroda.com/rtvforum/topic4184037.html"
+    },
+    {
+      "vendor": "Tuya",
+      "bDetailed": "0",
+      "name": "Smart Plug",
+      "model": "TC0301_TW02_PLUG_L1_P0",
+      "chip": "W600",
+      "board": "TW02",
+      "flags": "1024",
+      "keywords": [
+        "winnermicro"
+      ],
+      "pins": {
+        "11": "Rel;1",
+        "13": "LED_n;1",
+        "14": "Btn;1"
+      },
+      "command": "",
+      "image": "https://obrazki.elektroda.pl/2673550500_1790798193.png",
+      "wiki": "https://www.elektroda.com/rtvforum/topic4184072.html"
     },    
     {
       "vendor": "Tuya",
